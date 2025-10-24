@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package com.application.filter;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,3 +53,10 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 }
+=======
+package com.Hospital.Management.System.filter;
+
+public class JwtFilter {
+
+}
+>>>>>>> ff2c655914f571e660ce35dea584a6f1ea9655d9
