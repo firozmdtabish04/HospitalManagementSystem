@@ -1,21 +1,12 @@
 package com.application.controller;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.LinkedHashSet;
+import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import com.application.model.Appointments;
 import com.application.model.Doctor;
 import com.application.model.Prescription;
@@ -27,214 +18,128 @@ import com.application.service.PrescriptionService;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class DoctorController {
-    @Autowired
-    private DoctorRegistrationService doctorRegisterService;
 
     @Autowired
-    private AppointmentBookingService appointmentBookingService;
+    private DoctorRegistrationService doctorService;
+
+    @Autowired
+    private AppointmentBookingService appointmentService;
 
     @Autowired
     private PrescriptionService prescriptionService;
 
     @GetMapping("/doctorlist")
-
-    public ResponseEntity<List<Doctor>> getDoctors() throws Exception {
-        List<Doctor> doctors = doctorRegisterService.getAllDoctors();
-        return new ResponseEntity<List<Doctor>>(doctors, HttpStatus.OK);
+    public ResponseEntity<List<Doctor>> getDoctors() {
+        return ResponseEntity.ok(doctorService.getAllDoctors());
     }
 
     @GetMapping("/gettotaldoctors")
-
-    public ResponseEntity<List<Integer>> getTotalDoctors() throws Exception {
-        List<Doctor> doctors = doctorRegisterService.getAllDoctors();
-        List<Integer> al = new ArrayList<>();
-        al.add(doctors.size());
-        return new ResponseEntity<List<Integer>>(al, HttpStatus.OK);
+    public ResponseEntity<Integer> getTotalDoctors() {
+        return ResponseEntity.ok(doctorService.getAllDoctors().size());
     }
 
     @GetMapping("/gettotalslots")
-
-    public ResponseEntity<List<Integer>> getTotalSlots() throws Exception {
-        List<Slots> slots = appointmentBookingService.getSlotList();
-        List<Integer> al = new ArrayList<>();
-        al.add(slots.size());
-        return new ResponseEntity<List<Integer>>(al, HttpStatus.OK);
+    public ResponseEntity<Integer> getTotalSlots() {
+        return ResponseEntity.ok(appointmentService.getSlotList().size());
     }
 
     @GetMapping("/acceptstatus/{email}")
-
-    public ResponseEntity<List<String>> updateStatus(@PathVariable String email) throws Exception {
-        doctorRegisterService.updateStatus(email);
-        List<String> al = new ArrayList<>();
-        al.add("accepted");
-        return new ResponseEntity<List<String>>(al, HttpStatus.OK);
+    public ResponseEntity<String> acceptDoctor(@PathVariable String email) {
+        doctorService.updateStatus(email);
+        return ResponseEntity.ok("accepted");
     }
 
     @GetMapping("/rejectstatus/{email}")
-
-    public ResponseEntity<List<String>> rejectStatus(@PathVariable String email) throws Exception {
-        doctorRegisterService.rejectStatus(email);
-        List<String> al = new ArrayList<>();
-        al.add("rejected");
-        return new ResponseEntity<List<String>>(al, HttpStatus.OK);
+    public ResponseEntity<String> rejectDoctor(@PathVariable String email) {
+        doctorService.rejectStatus(email);
+        return ResponseEntity.ok("rejected");
     }
 
     @GetMapping("/acceptpatient/{slot}")
-
-    public ResponseEntity<List<String>> updatePatientStatus(@PathVariable String slot) throws Exception {
-        List<Appointments> patient = appointmentBookingService.findPatientBySlot(slot);
-        String doctorName = "";
-        for (Appointments obj : patient) {
-            if (obj.getSlot().equals(slot))
-                doctorName = obj.getDoctorname();
-        }
-        doctorRegisterService.updatePatientStatus(slot, doctorName);
-        List<String> al = new ArrayList<>();
-        al.add("accepted");
-        return new ResponseEntity<List<String>>(al, HttpStatus.OK);
+    public ResponseEntity<String> acceptPatient(@PathVariable String slot) {
+        doctorService.updatePatientStatus(slot, appointmentService.getDoctorNameBySlot(slot));
+        return ResponseEntity.ok("accepted");
     }
 
     @GetMapping("/rejectpatient/{slot}")
-
-    public ResponseEntity<List<String>> rejectPatientStatus(@PathVariable String slot) throws Exception {
-        List<Appointments> patient = appointmentBookingService.findPatientBySlot(slot);
-        String doctorName = "";
-        for (Appointments obj : patient) {
-            if (obj.getSlot().equals(slot))
-                doctorName = obj.getDoctorname();
-        }
-        doctorRegisterService.rejectPatientStatus(slot, doctorName);
-        List<String> al = new ArrayList<>();
-        al.add("rejected");
-        return new ResponseEntity<List<String>>(al, HttpStatus.OK);
+    public ResponseEntity<String> rejectPatient(@PathVariable String slot) {
+        doctorService.rejectPatientStatus(slot, appointmentService.getDoctorNameBySlot(slot));
+        return ResponseEntity.ok("rejected");
     }
 
     @PostMapping("/addBookingSlots")
-
-    public String addNewSlot(@RequestBody Slots slots) throws Exception {
-        appointmentBookingService.saveSlots(slots);
-        return "modified successfully !!!";
+    public ResponseEntity<String> addSlot(@RequestBody Slots slots) {
+        appointmentService.saveSlots(slots);
+        return ResponseEntity.ok("Slot added successfully");
     }
 
     @GetMapping("/doctorlistbyemail/{email}")
-
-    public ResponseEntity<List<Doctor>> getRequestHistoryByEmail(@PathVariable String email) throws Exception {
-        System.out.print("requesting");
-        List<Doctor> history = doctorRegisterService.getDoctorListByEmail(email);
-        return new ResponseEntity<List<Doctor>>(history, HttpStatus.OK);
+    public ResponseEntity<List<Doctor>> getDoctorByEmail(@PathVariable String email) {
+        return ResponseEntity.ok(doctorService.getDoctorListByEmail(email));
     }
 
     @GetMapping("/slotDetails/{email}")
-
-    public ResponseEntity<List<Slots>> getSlotDetails(@PathVariable String email) throws Exception {
-        List<Slots> slots = appointmentBookingService.getSlotDetails(email);
-        return new ResponseEntity<List<Slots>>(slots, HttpStatus.OK);
+    public ResponseEntity<List<Slots>> getSlotDetails(@PathVariable String email) {
+        return ResponseEntity.ok(appointmentService.getSlotDetails(email));
     }
 
     @GetMapping("/slotDetails")
-
-    public ResponseEntity<List<Slots>> getSlotList() throws Exception {
-        List<Slots> slots = appointmentBookingService.getSlotList();
-        return new ResponseEntity<List<Slots>>(slots, HttpStatus.OK);
+    public ResponseEntity<List<Slots>> getAllSlots() {
+        return ResponseEntity.ok(appointmentService.getSlotList());
     }
 
     @GetMapping("/slotDetailsWithUniqueDoctors")
-
-    public ResponseEntity<Set<String>> getSlotDetailsWithUniqueDoctors() throws Exception {
-        List<Slots> slots = appointmentBookingService.getSlotDetailsWithUniqueDoctors();
-        Set<String> set = new LinkedHashSet<>();
-        for (Slots obj : slots) {
-            set.add(obj.getDoctorname());
-        }
-        return new ResponseEntity<Set<String>>(set, HttpStatus.OK);
+    public ResponseEntity<Set<String>> getUniqueDoctors() {
+        Set<String> doctorNames = new LinkedHashSet<>();
+        appointmentService.getSlotDetailsWithUniqueDoctors()
+                .forEach(slot -> doctorNames.add(slot.getDoctorname()));
+        return ResponseEntity.ok(doctorNames);
     }
 
     @GetMapping("/slotDetailsWithUniqueSpecializations")
-
-    public ResponseEntity<Set<String>> getSlotDetailsWithUniqueSpecializations() throws Exception {
-        List<Slots> slots = appointmentBookingService.getSlotDetailsWithUniqueSpecializations();
-        Set<String> set = new LinkedHashSet<>();
-        for (Slots obj : slots) {
-            set.add(obj.getSpecialization());
-        }
-        return new ResponseEntity<Set<String>>(set, HttpStatus.OK);
+    public ResponseEntity<Set<String>> getUniqueSpecializations() {
+        Set<String> specializations = new LinkedHashSet<>();
+        appointmentService.getSlotDetailsWithUniqueSpecializations()
+                .forEach(slot -> specializations.add(slot.getSpecialization()));
+        return ResponseEntity.ok(specializations);
     }
 
     @GetMapping("/patientlistbydoctoremail/{email}")
-
-    public ResponseEntity<List<Appointments>> getPatientDetails(@PathVariable String email) throws Exception {
-        List<Doctor> history = doctorRegisterService.getDoctorListByEmail(email);
-        String doctorname = "";
-        for (Doctor obj : history) {
-            if (obj.getEmail().equals(email)) {
-                doctorname = obj.getDoctorname();
-                break;
-            }
-        }
-        List<Appointments> patients = appointmentBookingService.findPatientByDoctorName(doctorname);
-        return new ResponseEntity<List<Appointments>>(patients, HttpStatus.OK);
+    public ResponseEntity<List<Appointments>> getPatientsByDoctorEmail(@PathVariable String email) {
+        String doctorName = doctorService.getDoctorNameByEmail(email);
+        return ResponseEntity.ok(appointmentService.findPatientByDoctorName(doctorName));
     }
 
     @PostMapping("/addPrescription")
-
-    public ResponseEntity<Prescription> addNewPrescription(@RequestBody Prescription prescription) throws Exception {
-        List<Appointments> patients = appointmentBookingService.getAllPatients();
-        String patientID = "";
-        OUTER: for (Appointments obj : patients) {
-            if (obj.getPatientname().equals(prescription.getPatientname())) {
-                patientID = obj.getPatientid();
-                break OUTER;
-            }
-        }
+    public ResponseEntity<Prescription> addPrescription(@RequestBody Prescription prescription) {
+        String patientID = appointmentService.getPatientIdByPatientName(prescription.getPatientname());
         prescription.setPatientid(patientID);
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = new Date();
-        String todayDate = formatter.format(date);
+        String todayDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         prescription.setDate(todayDate);
 
-        Prescription prescriptions = prescriptionService.savePrescriptions(prescription);
-        return new ResponseEntity<Prescription>(prescriptions, HttpStatus.OK);
+        return ResponseEntity.ok(prescriptionService.savePrescriptions(prescription));
     }
 
     @GetMapping("/doctorProfileDetails/{email}")
-
-    public ResponseEntity<List<Doctor>> getDoctorProfileDetails(@PathVariable String email) throws Exception {
-        List<Doctor> doctors = doctorRegisterService.fetchProfileByEmail(email);
-        return new ResponseEntity<List<Doctor>>(doctors, HttpStatus.OK);
+    public ResponseEntity<List<Doctor>> getDoctorProfile(@PathVariable String email) {
+        return ResponseEntity.ok(doctorService.fetchProfileByEmail(email));
     }
 
     @PutMapping("/updatedoctor")
-
-    public ResponseEntity<Doctor> updateDoctorProfile(@RequestBody Doctor doctor) throws Exception {
-        Doctor doctorobj = doctorRegisterService.updateDoctorProfile(doctor);
-        return new ResponseEntity<Doctor>(doctorobj, HttpStatus.OK);
+    public ResponseEntity<Doctor> updateDoctor(@RequestBody Doctor doctor) {
+        return ResponseEntity.ok(doctorService.updateDoctorProfile(doctor));
     }
 
     @GetMapping("/patientlistbydoctoremailanddate/{email}")
+    public ResponseEntity<List<Appointments>> getTodayPatients(@PathVariable String email) {
+        String doctorName = doctorService.getDoctorNameByEmail(email);
+        String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
-    public ResponseEntity<List<Appointments>> getPatientDetailsAndDate(@PathVariable String email) throws Exception {
-        List<Appointments> patients = appointmentBookingService.getAllPatients();
-        List<Doctor> history = doctorRegisterService.getDoctorListByEmail(email);
-        String doctorname = "";
-        OUTER: for (Doctor obj : history) {
-            if (obj.getEmail().equals(email)) {
-                doctorname = obj.getDoctorname();
-                break OUTER;
-            }
-        }
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = new Date();
-        String todayDate = formatter.format(date);
-        List<Appointments> appointmentsList = new ArrayList<>();
-        OUTER: for (Appointments obj : patients) {
-            if (obj.getDoctorname().equals(doctorname) && obj.getDate().equals(todayDate)) {
-                doctorname = obj.getDoctorname();
-                appointmentsList.add(obj);
-                break OUTER;
-            }
-        }
-        return new ResponseEntity<List<Appointments>>(appointmentsList, HttpStatus.OK);
+        List<Appointments> todayAppointments = appointmentService.getAllPatients().stream()
+                .filter(p -> p.getDoctorname().equals(doctorName) && p.getDate().equals(today))
+                .toList();
+
+        return ResponseEntity.ok(todayAppointments);
     }
-
 }
