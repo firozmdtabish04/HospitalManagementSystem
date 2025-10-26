@@ -29,7 +29,6 @@ public class DoctorController {
     private AppointmentBookingService appointmentBookingService;
 
     @Autowired
-    private PrescriptionService prescriptionService;
 
     @GetMapping("/doctorlist")
 
