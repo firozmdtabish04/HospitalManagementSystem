@@ -1,4 +1,4 @@
-package com.application.controller;
+package com.Hospital.Management.System.controller;
 
 import java.util.ArrayList;
 import java.util.List;
