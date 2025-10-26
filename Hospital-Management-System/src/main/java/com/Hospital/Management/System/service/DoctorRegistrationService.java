@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package com.application.service;
 
 import java.util.List;
@@ -62,3 +63,10 @@ public class DoctorRegistrationService {
     }
 
 }
+=======
+package com.Hospital.Management.System.service;
+
+public class DoctorRegistrationService {
+
+}
+>>>>>>> main

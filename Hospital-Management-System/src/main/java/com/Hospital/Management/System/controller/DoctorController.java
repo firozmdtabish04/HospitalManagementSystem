@@ -16,13 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.application.model.Appointments;
-import com.application.model.Doctor;
-import com.application.model.Prescription;
-import com.application.model.Slots;
-import com.application.service.AppointmentBookingService;
-import com.application.service.DoctorRegistrationService;
-import com.application.service.PrescriptionService;
+
+import com.Hospital.Management.System.service.DoctorRegistrationService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -34,7 +29,6 @@ public class DoctorController {
     private AppointmentBookingService appointmentBookingService;
 
     @Autowired
-    private PrescriptionService prescriptionService;
 
     @GetMapping("/doctorlist")
 
