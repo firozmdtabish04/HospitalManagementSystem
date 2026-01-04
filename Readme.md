@@ -1,5 +1,5 @@
-Hospital Management System
-![image](https://github.com/firozmdtabish04/HospitalManagementSystem/blob/f0c4a6ae12cad892b142198673d9660f42ebf368/HMS/HMS-2.png,https://github.com/firozmdtabish04/HospitalManagementSystem/blob/f0c4a6ae12cad892b142198673d9660f42ebf368/HMS/HMS-3.png,https://github.com/firozmdtabish04/HospitalManagementSystem/blob/f0c4a6ae12cad892b142198673d9660f42ebf368/HMS/HMS-1.png)
+[Hospital Management System
+![image](https://github.com/firozmdtabish04/HospitalManagementSystem/blob/f0c4a6ae12cad892b142198673d9660f42ebf368/HMS/HMS-2.png);
 🔗 Repository:
 https://github.com/firozmdtabish04/HospitalManagementSystem.git
 
