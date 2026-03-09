@@ -1,165 +1,164 @@
-<div class="content">
-  <!-- HEADER -->
-  <div class="header" id="header">
-    <!-- NAVBAR -->
-    <div class="nav">
-      <div class="switchs">
-        <!-- HOME -->
-        <button
-          type="button"
-          class="log"
-          [routerLink]="['/']"
-          aria-label="Home"
-        >
-          <i class="fa fa-home"></i>
-          Home
+
+
+<div class="homepage">
+  <!-- NAVBAR -->
+
+  <nav class="navbar">
+    <div class="logo">
+      <i class="fa fa-heartbeat"></i> Health<span>Care</span>
+    </div>
+
+    <div class="menu">
+      <button routerLink="/" class="nav-btn">
+        <i class="fa fa-home"></i> Home
+      </button>
+
+      <button routerLink="/services" class="nav-btn">
+        <i class="fa fa-cog"></i> Services
+      </button>
+
+      <button routerLink="/about" class="nav-btn">
+        <i class="fa fa-info-circle"></i> About
+      </button>
+
+      <button routerLink="/login" class="nav-btn">
+        <i class="fa fa-sign-in"></i> Login
+      </button>
+
+      <button routerLink="/registration" class="register-btn">
+        Create Account
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+
+  <section class="hero">
+    <div class="hero-left">
+      <span class="tag">Trusted Healthcare Provider</span>
+
+      <h1>
+        Modern Hospital <br />
+        Management System
+      </h1>
+
+      <p>
+        Manage doctors, patients, appointments and hospital operations with a
+        modern healthcare management platform.
+      </p>
+
+      <div class="hero-buttons">
+        <button routerLink="/bookappointment" class="btn-primary">
+          Schedule Appointment
         </button>
 
-        <!-- SERVICES -->
-        <button
-          type="button"
-          class="log"
-          [routerLink]="['/services']"
-          aria-label="Services"
-        >
-          <i class="fa fa-cog"></i>
-          Services
-        </button>
-
-        <button
-          type="button"
-          class="log"
-          [routerLink]="['/about']"
-          aria-label="About"
-        >
-          <i class="fa fa-info-circle"></i>
-          About
-        </button>
-        <!-- LOGIN -->
-        <button
-          type="button"
-          class="log"
-          [routerLink]="['/login']"
-          aria-label="Login"
-        >
-          <i class="fa fa-sign-in"></i>
-          Login
-        </button>
-
-        <button
-          type="button"
-          class="create_acc"
-          [routerLink]="['/registration']"
-          aria-label="Create Account"
-        >
-          <i class="fa fa-user-plus"></i>
-          Create Account
+        <button routerLink="/services" class="btn-secondary">
+          Explore Services
         </button>
       </div>
     </div>
 
-    <!-- HERO SECTION -->
-    <div class="main">
-      <div class="text">
-        <h1 class="main-title">Hospital Management System</h1>
+    <div class="hero-right">
+      <img src="assets/img/hospital.png" />
+
+      <div class="hero-card card1">
+        <i class="fa fa-heartbeat"></i>
+        <span>Advanced Care</span>
       </div>
 
-      <!-- HERO IMAGE -->
-      <img
-        class="floating"
-        id="img3"
-        src="assets/img/healthcaresystem.png"
-        alt="Healthcare Management System Illustration"
-      />
-    </div>
-  </div>
-</div>
-
-<!-- MARQUEE -->
-<marquee class="marquee" direction="left">
-  <i class="fa fa-bell"></i>
-  Welcome to the Healthcare Management System, designed and developed by Tabish
-  Firoz.
-</marquee>
-
-<!-- SERVICES SECTION -->
-<main id="main">
-  <section id="services" class="services section-bg">
-    <div class="container">
-      <!-- SECTION TITLE -->
-      <div class="section-title">
-        <h2 class="services-title">
-          Three Different Logins with New Registration
-        </h2>
+      <div class="hero-card card2">
+        <i class="fa fa-user-md"></i>
+        <span>Expert Doctors</span>
       </div>
 
-      <!-- LOGIN CARDS -->
-      <div class="mid_body2">
-        <div class="details">
-          <!-- ADMIN -->
-          <div
-            class="detail_1"
-            (click)="navigate()"
-            role="button"
-            tabindex="0"
-            aria-label="Admin Login"
-          >
-            <h2 class="card-title">Admin Login</h2>
-
-            <div class="circle">
-              <img
-                src="assets/img/admin.png"
-                width="130"
-                height="130"
-                alt="Admin Login Icon"
-              />
-            </div>
-          </div>
-
-          <!-- DOCTOR -->
-          <div
-            class="detail_2"
-            (click)="navigate()"
-            role="button"
-            tabindex="0"
-            aria-label="Doctor Login"
-          >
-            <h2 class="card-title">Doctor Login</h2>
-
-            <div class="circle">
-              <img
-                src="assets/img/maledoctor.png"
-                width="130"
-                height="130"
-                alt="Doctor Login Icon"
-              />
-            </div>
-          </div>
-
-          <!-- USER -->
-          <div
-            class="detail_3"
-            (click)="navigate()"
-            role="button"
-            tabindex="0"
-            aria-label="User Login"
-          >
-            <h2 class="card-title">User Login</h2>
-
-            <div class="circle">
-              <img
-                src="assets/img/maleuser.png"
-                width="130"
-                height="130"
-                alt="User Login Icon"
-              />
-            </div>
-          </div>
-        </div>
+      <div class="hero-card card3">
+        <i class="fa fa-ambulance"></i>
+        <span>24/7 Emergency</span>
       </div>
     </div>
   </section>
-</main>
 
-<!-- FOOTER -->
-<app-footer></app-footer>
+  <!-- PORTAL SECTION -->
+
+  <section class="portal-section">
+    <h2>Select Your Portal</h2>
+
+    <div class="portal-container">
+      <div class="portal-card admin" (click)="navigate()">
+        <img src="assets/img/admin.png" />
+        <h3>Admin Portal</h3>
+        <p>Manage hospital operations</p>
+      </div>
+
+      <div class="portal-card doctor" (click)="navigate()">
+        <img src="assets/img/maledoctor.png" />
+        <h3>Doctor Portal</h3>
+        <p>Manage patients and reports</p>
+      </div>
+
+      <div class="portal-card user" (click)="navigate()">
+        <img src="assets/img/maleuser.png" />
+        <h3>User Portal</h3>
+        <p>Book appointments online</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+
+  <section class="services">
+    <h2>Our Medical Services</h2>
+
+    <div class="services-grid" routerLink="/services">
+      <div class="service-card" >
+        <i class="fa fa-heartbeat"></i>
+        <h3>Cardiology</h3>
+        <p>Advanced heart care with modern technology.</p>
+      </div>
+
+      <div class="service-card">
+        <i class="fa fa-user-md"></i>
+        <h3>Expert Doctors</h3>
+        <p>Highly qualified specialists.</p>
+      </div>
+
+      <div class="service-card">
+        <i class="fa fa-hospital-o"></i>
+        <h3>Modern Facility</h3>
+        <p>State-of-the-art hospital infrastructure.</p>
+      </div>
+
+      <div class="service-card">
+        <i class="fa fa-ambulance"></i>
+        <h3>Emergency Care</h3>
+        <p>24/7 emergency medical support.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+
+  <section class="stats">
+    <div class="stat">
+      <h2>25K+</h2>
+      <p>Patients Treated</p>
+    </div>
+
+    <div class="stat">
+      <h2>150+</h2>
+      <p>Medical Experts</p>
+    </div>
+
+    <div class="stat">
+      <h2>35+</h2>
+      <p>Years Experience</p>
+    </div>
+
+    <div class="stat">
+      <h2>24/7</h2>
+      <p>Emergency Support</p>
+    </div>
+  </section>
+
+  <app-footer></app-footer>
+</div>
