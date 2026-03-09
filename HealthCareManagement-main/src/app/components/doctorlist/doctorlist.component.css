@@ -1,193 +1,182 @@
-@import url('https://fonts.googleapis.com/css2?family=Aladin&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap');
+
+* {
+  font-family: 'Poppins', sans-serif;
+}
+
+.page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
 
-/* ---------- Heading ---------- */
+/* TOP BAR */
+
+.top-bar {
+  margin: 20px;
+}
+
+.back-btn {
+  background: #13534e;
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.back-btn:hover {
+  background: #0e3f3b;
+}
+
+
+/* HEADINGS */
 
 .heading-text {
-
-  font-size: 40px;
-  color: maroon;
-  font-family: 'Aladin', cursive;
   text-align: center;
-  margin-top: 15px;
-
+  font-size: 36px;
+  color: #1a2a3a;
+  margin-top: 10px;
 }
-
 
 .subheading-text {
-
   text-align: center;
-  color: green;
-  font-weight: bold;
+  color: #4e7a5a;
   margin-bottom: 20px;
-
 }
 
 
-/* ---------- Search ---------- */
+/* SEARCH */
 
 .search-container {
-
-  text-align: center;
-  margin-bottom: 20px;
-
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
 }
 
 .search-box {
-
-  width: 300px;
-  padding: 8px;
-  border-radius: 8px;
-  border: 1px solid gray;
+  width: 350px;
+  padding: 10px;
+  border-radius: 25px;
+  border: 1px solid #ccc;
   outline: none;
+  transition: 0.3s;
+}
 
+.search-box:focus {
+  border-color: #13534e;
+  box-shadow: 0 0 8px rgba(19, 83, 78, 0.2);
 }
 
 
-/* ---------- Container ---------- */
+/* DOCTOR GRID */
 
 .doctor-container {
-
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 30px;
-
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 25px;
+  padding: 20px;
 }
 
 
-/* ---------- Card ---------- */
+/* CARD */
 
 .doctor-card {
 
-  width: 420px;
   display: flex;
-  background: #eaeaea;
-  border-radius: 15px;
-  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.3);
-  transition: 0.3s ease;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  gap: 20px;
+  transition: 0.3s;
 
 }
 
 .doctor-card:hover {
-
-  transform: scale(1.05);
-
+  transform: translateY(-5px);
 }
 
 
-/* ---------- Image Section ---------- */
+/* IMAGE */
 
-.img-block {
-
-  width: 40%;
-  background: rgb(192, 56, 56);
-  border-radius: 15px 0 0 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-}
-
-
-.circle {
-
-  width: 130px;
-  height: 130px;
-  background: rgb(212, 188, 50);
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-}
-
-
-/* FIXED IMAGE SIZE */
-.doctor-img {
+.doctor-image img {
 
   width: 90px;
   height: 90px;
-  object-fit: contain;
+  border-radius: 50%;
+  border: 3px solid #13534e;
+  object-fit: cover;
 
 }
 
 
-/* ---------- Details ---------- */
+/* DETAILS */
 
-.card-details {
+.doctor-details h3 {
+  margin: 0;
+  color: #13534e;
+}
 
-  padding: 15px;
-  width: 60%;
+.doctor-details p {
+  margin: 3px 0;
+  font-size: 14px;
+}
 
+.email {
+  color: #777;
+  font-size: 13px;
 }
 
 
-.text {
-
-  font-weight: bold;
-  color: maroon;
-  margin: 5px 0;
-
-}
-
-
-/* ---------- Status ---------- */
+/* STATUS */
 
 .status {
 
-  text-align: center;
-  padding: 6px;
-  border-radius: 15px;
-  margin-top: 10px;
+  display: inline-block;
+  margin-top: 8px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
   color: white;
-  font-style: italic;
-  font-weight: bold;
 
 }
 
-
 .approved {
-
-  background: green;
-
+  background: #2ecc71;
 }
 
 .pending {
-
-  background: orange;
-
+  background: #f39c12;
 }
 
 .rejected {
-
-  background: red;
-
+  background: #e74c3c;
 }
 
 
-/* ---------- Responsive ---------- */
+/* FOOTER STICK */
+
+app-footer {
+  margin-top: auto;
+}
+
+
+/* MOBILE */
 
 @media(max-width:768px) {
 
   .doctor-card {
-
-    width: 90%;
     flex-direction: column;
-
+    align-items: center;
+    text-align: center;
   }
 
-  .img-block {
-
-    width: 100%;
-    border-radius: 15px 15px 0 0;
-
-  }
-
-  .card-details {
-
-    width: 100%;
-
+  .doctor-details {
+    text-align: center;
   }
 
 }

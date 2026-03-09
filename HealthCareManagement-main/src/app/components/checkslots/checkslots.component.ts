@@ -10,20 +10,41 @@ import { DoctorService } from 'src/app/services/doctor.service';
 })
 export class CheckslotsComponent implements OnInit {
 
-  currRole = '';
-  loggedUser = '';
-  slots: Observable<Slots[]> | undefined;
+  currRole: string = '';
+  loggedUser: string = '';
+
+  slots!: Observable<Slots[]>;
+
+  // ⭐ Search variables
+  doctorSearch: string = '';
+  specializationSearch: string = '';
 
   constructor(private _service: DoctorService) { }
 
   ngOnInit(): void {
-    this.loggedUser = JSON.stringify(sessionStorage.getItem('loggedUser') || '{}');
-    this.loggedUser = this.loggedUser.replace(/"/g, '');
 
-    this.currRole = JSON.stringify(sessionStorage.getItem('ROLE') || '{}');
-    this.currRole = this.currRole.replace(/"/g, '');
+    this.loggedUser = sessionStorage.getItem('loggedUser') || '';
+    this.currRole = sessionStorage.getItem('ROLE') || '';
 
     this.slots = this._service.getSlotList();
+
+  }
+
+  // ⭐ Filter function
+  filterSlot(doctor: Slots): boolean {
+
+    const doctorName = this.doctorSearch.toLowerCase();
+    const specialization = this.specializationSearch.toLowerCase();
+
+    const nameMatch =
+      !doctorName ||
+      doctor.doctorname?.toLowerCase().includes(doctorName);
+
+    const specializationMatch =
+      !specialization ||
+      doctor.specialization?.toLowerCase().includes(specialization);
+
+    return nameMatch && specializationMatch;
 
   }
 

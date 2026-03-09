@@ -10,10 +10,8 @@ import { DoctorService } from 'src/app/services/doctor.service';
 })
 export class DoctorlistComponent implements OnInit {
 
-  // Doctor List Observable
   doctors!: Observable<Doctor[]>;
 
-  // Search Text
   searchText: string = '';
 
   constructor(private _service: DoctorService) { }
@@ -22,18 +20,13 @@ export class DoctorlistComponent implements OnInit {
     this.loadDoctors();
   }
 
-  // ⭐ Load Doctors
   loadDoctors(): void {
     this.doctors = this._service.getDoctorList();
   }
 
-  // ⭐ Search Filter Function
   filterDoctor(doctor: Doctor): boolean {
 
-    if (!this.searchText || this.searchText.trim() === '')
-    {
-      return true;
-    }
+    if (!this.searchText.trim()) return true;
 
     const search = this.searchText.toLowerCase();
 
@@ -45,42 +38,28 @@ export class DoctorlistComponent implements OnInit {
     );
   }
 
-  // ⭐ Status Helper (Optional UI Usage)
-  getDoctorStatus(status: string | undefined): string {
+  getDoctorStatus(status?: string): string {
 
     switch (status)
     {
-      case 'accept':
-        return 'Approved Doctor';
-
-      case 'false':
-        return 'Approval Pending';
-
-      case 'reject':
-        return 'Not Approved';
-
-      default:
-        return 'Unknown Status';
+      case 'accept': return 'Approved Doctor';
+      case 'false': return 'Approval Pending';
+      case 'reject': return 'Not Approved';
+      default: return 'Unknown';
     }
+
   }
 
-  // ⭐ Status CSS Class Helper
-  getStatusClass(status: string | undefined): string {
+  getStatusClass(status?: string): string {
 
     switch (status)
     {
-      case 'accept':
-        return 'approved';
-
-      case 'false':
-        return 'pending';
-
-      case 'reject':
-        return 'rejected';
-
-      default:
-        return '';
+      case 'accept': return 'approved';
+      case 'false': return 'pending';
+      case 'reject': return 'rejected';
+      default: return '';
     }
+
   }
 
 }

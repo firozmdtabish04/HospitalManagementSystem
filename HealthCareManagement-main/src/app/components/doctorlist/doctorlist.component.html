@@ -1,68 +1,68 @@
 <app-header></app-header>
 
-<div class="heading-text">Doctors List</div>
+<div class="page-container">
+  <!-- BACK BUTTON -->
+  <div class="top-bar">
+    <button class="back-btn" routerLink="/userdashboard">← Back</button>
+  </div>
 
-<div class="subheading-text">
-  (only approved doctors are suggested by the management)
-</div>
+  <!-- PAGE TITLE -->
+  <h1 class="heading-text">Doctors List</h1>
 
-<!-- Search -->
-<div class="search-container">
-  <input
-    type="text"
-    placeholder="Search doctors..."
-    [(ngModel)]="searchText"
-    class="search-box"
-  />
-</div>
+  <p class="subheading-text">
+    Only approved doctors are suggested by the management
+  </p>
 
-<!-- Doctor Cards -->
-<div class="doctor-container">
-  <div
-    *ngFor="let doctor of doctors | async"
-    class="doctor-card"
-    [hidden]="!filterDoctor(doctor)"
-  >
-    <!-- Image Section -->
-    <div class="img-block">
-      <div class="circle">
+  <!-- SEARCH -->
+  <div class="search-container">
+    <input
+      type="text"
+      placeholder="Search doctor by name, email, specialization..."
+      [(ngModel)]="searchText"
+      class="search-box"
+    />
+  </div>
+
+  <!-- DOCTOR GRID -->
+
+  <div class="doctor-container">
+    <div
+      *ngFor="let doctor of doctors | async"
+      class="doctor-card"
+      [hidden]="!filterDoctor(doctor)"
+    >
+      <!-- IMAGE -->
+      <div class="doctor-image">
         <img
           [src]="
-            doctor.gender && doctor.gender.toLowerCase().trim() === 'female'
+            doctor.gender?.toLowerCase() === 'female'
               ? 'assets/img/femaledoctor.png'
               : 'assets/img/maledoctor.png'
           "
-          class="doctor-img"
-          alt="Doctor Image"
+          alt="Doctor"
         />
       </div>
-    </div>
 
-    <!-- Doctor Info -->
-    <div class="card-details">
-      <p class="text">{{ doctor.doctorname }}</p>
+      <!-- DETAILS -->
 
-      <p class="text">{{ doctor.email }}</p>
+      <div class="doctor-details">
+        <h3>{{ doctor.doctorname }}</h3>
 
-      <p class="text">{{ doctor.experience }} yrs experience</p>
+        <p class="email">{{ doctor.email }}</p>
 
-      <p class="text">{{ doctor.specialization }}</p>
+        <p>📱 {{ doctor.mobile }}</p>
 
-      <p class="text">{{ doctor.gender }}</p>
+        <p>🩺 {{ doctor.specialization }}</p>
 
-      <p class="text">{{ doctor.mobile }}</p>
+        <p>📊 {{ doctor.experience }} yrs experience</p>
 
-      <!-- Status -->
-      <div class="status approved" *ngIf="doctor.status === 'accept'">
-        Approved Doctor
-      </div>
+        <p>👤 {{ doctor.gender }}</p>
 
-      <div class="status pending" *ngIf="doctor.status === 'false'">
-        Approval Pending
-      </div>
+        <!-- STATUS -->
 
-      <div class="status rejected" *ngIf="doctor.status === 'reject'">
-        Not Approved
+        <span class="status" [ngClass]="getStatusClass(doctor.status)">
+          {{ getDoctorStatus(doctor.status) }}
+        </span>
       </div>
     </div>
   </div>

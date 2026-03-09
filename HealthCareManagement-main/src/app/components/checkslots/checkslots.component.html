@@ -1,84 +1,127 @@
 <app-header></app-header>
 
-<div class="panel panel-primary">
-  <div class="panel-heading">
-    <h2
-      style="
-        text-align: center;
-        font-family: &quot;Oswald&quot;, sans-serif;
-        color: darkgreen;
-        margin-top: 3%;
-        margin-bottom: 3%;
-      "
-    >
-      Available Booking Slots
-    </h2>
+<div class="page-container">
+  <!-- BACK BUTTON -->
+  <div class="top-bar">
+    <button class="back-btn" routerLink="/userdashboard">← Back</button>
   </div>
-  <div class="panel-body">
-    <table class="table table-bordered">
+
+  <!-- PAGE TITLE -->
+  <h1 class="heading">Available Booking Slots</h1>
+
+  <!-- SEARCH -->
+  <div class="search-container">
+    <input
+      type="text"
+      placeholder="Search Doctor Name..."
+      [(ngModel)]="doctorSearch"
+      class="search-box"
+    />
+
+    <input
+      type="text"
+      placeholder="Search Specialization..."
+      [(ngModel)]="specializationSearch"
+      class="search-box"
+    />
+  </div>
+
+  <!-- TABLE -->
+
+  <div class="table-card">
+    <table>
       <thead>
-        <tr>
+        <tr style="background: none;">
           <th>Date</th>
-          <th>Name</th>
+          <th>Doctor</th>
           <th>Specialization</th>
-          <th>FN slot</th>
-          <th>Noon slot</th>
-          <th>PM slot</th>
+          <th>FN Slot</th>
+          <th>Noon Slot</th>
+          <th>PM Slot</th>
           <th>Patient Type</th>
         </tr>
       </thead>
+
       <tbody>
-        <tr *ngFor="let doctor of slots | async">
+        <tr *ngFor="let doctor of slots | async" [hidden]="!filterSlot(doctor)">
+          <!-- DATE -->
           <td>
-            <div class="datecover">{{ doctor.date }}</div>
+            <span class="date-badge">
+              {{ doctor.date }}
+            </span>
           </td>
+
+          <!-- NAME -->
           <td>{{ doctor.doctorname }}</td>
+
+          <!-- SPECIALIZATION -->
           <td>{{ doctor.specialization }}</td>
+
+          <!-- FN SLOT -->
+
           <td>
-            <div *ngIf="doctor.amslot === 'empty'">
-              <b class="noslot">No Slots</b>
-            </div>
-            <div *ngIf="doctor.amstatus === 'booked'">
-              <b class="accepted">Booked</b>
-            </div>
-            <div
+            <span *ngIf="doctor.amslot === 'empty'" class="badge no-slot">
+              No Slots
+            </span>
+
+            <span *ngIf="doctor.amstatus === 'booked'" class="badge booked">
+              Booked
+            </span>
+
+            <span
               *ngIf="
                 doctor.amslot !== 'empty' && doctor.amstatus === 'unbooked'
               "
+              class="badge available"
             >
-              <b class="pending">{{ doctor.amslot }}</b>
-            </div>
+              {{ doctor.amslot }}
+            </span>
           </td>
+
+          <!-- NOON SLOT -->
+
           <td>
-            <div *ngIf="doctor.noonslot === 'empty'">
-              <b class="noslot">No Slots</b>
-            </div>
-            <div *ngIf="doctor.noonstatus === 'booked'">
-              <b class="accepted">Booked</b>
-            </div>
-            <div
+            <span *ngIf="doctor.noonslot === 'empty'" class="badge no-slot">
+              No Slots
+            </span>
+
+            <span *ngIf="doctor.noonstatus === 'booked'" class="badge booked">
+              Booked
+            </span>
+
+            <span
               *ngIf="
                 doctor.noonslot !== 'empty' && doctor.noonstatus === 'unbooked'
               "
+              class="badge available"
             >
-              <b class="pending">{{ doctor.noonslot }}</b>
-            </div>
+              {{ doctor.noonslot }}
+            </span>
           </td>
+
+          <!-- PM SLOT -->
+
           <td>
-            <div *ngIf="doctor.pmslot === 'empty'">
-              <b class="noslot">No Slots</b>
-            </div>
-            <div *ngIf="doctor.pmstatus === 'booked'">
-              <b class="accepted">Booked</b>
-            </div>
-            <div
+            <span *ngIf="doctor.pmslot === 'empty'" class="badge no-slot">
+              No Slots
+            </span>
+
+            <span *ngIf="doctor.pmstatus === 'booked'" class="badge booked">
+              Booked
+            </span>
+
+            <span
               *ngIf="
                 doctor.pmslot !== 'empty' && doctor.pmstatus === 'unbooked'
               "
+              class="badge available"
             >
-              <b class="pending">{{ doctor.pmslot }}</b>
-            </div>
+              {{ doctor.pmslot }}
+            </span>
           </td>
+
+          <!-- PATIENT TYPE -->
+
           <td>{{ doctor.patienttype }}</td>
         </tr>
       </tbody>
@@ -86,5 +129,4 @@
   </div>
 </div>
 
-<br /><br /><br /><br /><br /><br /><br /><br />
 <app-footer></app-footer>
