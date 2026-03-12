@@ -1,129 +1,24 @@
-[Hospital Management System
-![image](https://github.com/firozmdtabish04/HospitalManagementSystem/blob/f0c4a6ae12cad892b142198673d9660f42ebf368/HMS/HMS-2.png);
-🔗 Repository:
-https://github.com/firozmdtabish04/HospitalManagementSystem.git
+﻿# HealthCareManagement-
 
-📖 Overview
 
-The Hospital Management System (HMS) is a full-stack Spring Boot–based web application designed to streamline and automate hospital operations. The system efficiently manages patient registration, appointment scheduling, doctor management, medical services, and medicine tracking.
 
-It follows a role-based architecture with separate modules for Admin, Doctor, and Patient, ensuring secure and organized access to healthcare data.
+![image]( https://github.com/firozmdtabish04/HealthCareManagement-/blob/c5c47a9320798b7cf71664e4658549141d0a6e30/PHOTO/Screenshot%20(1254).png)
+![image](https://github.com/firozmdtabish04/HealthCareManagement-/blob/c5c47a9320798b7cf71664e4658549141d0a6e30/PHOTO/Screenshot%20(1255).png)
+![image](https://github.com/firozmdtabish04/HealthCareManagement-/blob/c5c47a9320798b7cf71664e4658549141d0a6e30/PHOTO/Screenshot%20(1256).png)
+![image](https://github.com/firozmdtabish04/HealthCareManagement-/blob/c5c47a9320798b7cf71664e4658549141d0a6e30/PHOTO/Screenshot%20(1251).png)
+![image](https://github.com/firozmdtabish04/HealthCareManagement-/blob/c5c47a9320798b7cf71664e4658549141d0a6e30/PHOTO/Screenshot%20(1250).png)
 
-🛠️ Tech Stack
 
-Backend: Java, Spring Boot
-
-Frontend: HTML, CSS, JavaScript (Angular if integrated)
-
-Database: MySQL
-
-API: RESTful Web Services
-
-Authentication: Role-based login (Admin, Doctor, Patient)
-
-Tools: Maven, Git, GitHub, Postman
-
-⚙️ Features
-👨‍⚕️ Doctor Module
-
-View and manage assigned patient appointments
-
-Prescribe medicines to patients
-
-Track patient medical records
-
-🧑‍💻 Admin Module
-
-Add, update, and manage doctors, patients, and staff
-
-Manage hospital services and departments
-
-View and monitor overall hospital records
-
-🧍 Patient Module
-
-Register and log in securely
-
-Book appointments with doctors
-
-View appointment history and prescribed medicines
-
-🧾 Hospital Services Management
-
-CRUD operations for medical services
-
-Manage availability of hospital facilities
-
-🔐 User Authentication & Authorization
-
-Secure login system
-
-Role-based access control (Admin, Doctor, Patient)
-
-📦 RESTful API Design
-
-Clean and structured REST APIs
-
-Easily integrable with frontend or mobile applications
-
-📂 Project Structure (High-Level)
-HospitalManagementSystem
-│
-├── controller
-├── service
-├── repository
-├── model
-├── config
-├── resources
-│   ├── application.properties
-│
-├── pom.xml
-└── README.md
-
-⚙️ Installation & Setup
-Prerequisites
-
-Java 8 or higher
-
-MySQL
-
-Maven
-
-Git
-
-Steps to Run Locally
-# Clone the repository
-git clone https://github.com/firozmdtabish04/HospitalManagementSystem.git
-
-# Navigate to project directory
-cd HospitalManagementSystem
-
-# Configure database in application.properties
-
-# Build the project
-mvn clean install
-
-# Run the application
-mvn spring-boot:run
-
-🧪 API Testing
-
-APIs can be tested using Postman
-
-Supports CRUD operations for all major modules
-
-🎯 Use Cases
-
-Academic / College Project
-
-Java Full Stack Practice
-
-Resume & Internship Showcase
-
-Backend REST API Learning
-
-👨‍💻 Author
-
-Tabish Firoz
-
-GitHub: https://github.com/firozmdtabish04
+🧰 Tech Stack
+Layer	Technology	Purpose
+Frontend	Angular	User interface, forms, dashboards
+Backend	Spring Boot (Java)	Business logic & REST APIs
+API Type	REST API	Communication between frontend & backend
+Database	MySQL	Store users, patients, records
+ORM	Hibernate / JPA	Database interaction
+Security	Spring Security	Authentication & role-based access
+Auth Type	JWT	Secure login & authorization
+Build Tool	Maven	Dependency management
+Frontend Tools	HTML, CSS, TypeScript	UI development
+Version Control	Git & GitHub	Source code management
+Server	Apache Tomcat	Application deployment
