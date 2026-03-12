@@ -1,0 +1,287 @@
+@import url('https://fonts.googleapis.com/css2?family=Aladin&family=Poppins:wght@300;400;600&display=swap');
+
+
+/* ===== Page Heading ===== */
+
+.heading {
+  text-align: center;
+  font-family: 'Aladin', cursive;
+  margin-top: 25px;
+}
+
+.heading h1 {
+  color: darkgreen;
+  font-size: 42px;
+  letter-spacing: 1px;
+}
+
+
+/* ===== Search Card ===== */
+
+.message {
+
+  width: 420px;
+  margin: 30px auto;
+  padding: 30px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #ffffff, #f3f7f9);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+}
+
+
+/* ===== Search Button ===== */
+
+.registerbtn {
+
+  margin-top: 15px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 25px;
+  border: none;
+  background: linear-gradient(135deg, #0b5c5c, #0f8a8a);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+
+}
+
+.registerbtn:hover {
+
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #094747, #0c6b6b);
+
+}
+
+
+/* ===== Print Button ===== */
+
+.print-btn {
+
+  float: right;
+  margin: 20px;
+  padding: 10px 25px;
+  border-radius: 25px;
+  border: none;
+  background: linear-gradient(135deg, #0b5394, #3d85c6);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+
+}
+
+.print-btn:hover {
+
+  transform: scale(1.1);
+
+}
+
+
+/* ===== Prescription Card ===== */
+
+.prescription-card {
+
+  margin: auto;
+  border-radius: 20px;
+  background: white;
+  width: 720px;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+
+}
+
+
+/* ===== Header ===== */
+
+.header-flag {
+
+  background: linear-gradient(135deg, #073636, #0f8a8a);
+  padding: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+
+}
+
+.header-left h3 {
+
+  color: #ff4d4d;
+  margin-bottom: 5px;
+
+}
+
+.header-left h5 {
+
+  font-weight: 300;
+
+}
+
+
+/* Patient Image */
+
+.user-img {
+
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  background: white;
+  padding: 5px;
+  border: 3px solid white;
+
+}
+
+
+/* ===== Body ===== */
+
+.prescription-body {
+
+  padding: 35px;
+  font-family: 'Poppins', sans-serif;
+
+}
+
+
+/* Doctor Name */
+
+.doctor-name {
+
+  font-size: 18px;
+  font-weight: 600;
+  color: #0b5394;
+  margin-bottom: 15px;
+
+}
+
+
+/* Info Rows */
+
+.info-row {
+
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-weight: 500;
+
+}
+
+.highlight {
+
+  color: maroon;
+  font-weight: bold;
+
+}
+
+
+/* Data Rows */
+
+.data-row {
+
+  margin-top: 12px;
+  font-weight: 500;
+  color: #333;
+
+}
+
+.data-row span {
+
+  color: maroon;
+  margin-left: 10px;
+
+}
+
+
+/* ===== Status Badges ===== */
+
+.status {
+
+  margin-left: 10px;
+  padding: 6px 18px;
+  border-radius: 25px;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+
+}
+
+.accepted {
+  background: linear-gradient(135deg, #0b8a0b, #28a745);
+}
+
+.pending {
+  background: linear-gradient(135deg, #ff9800, #ffc107);
+}
+
+.rejected {
+  background: linear-gradient(135deg, #b30000, #ff4d4d);
+}
+
+
+/* ===== Footer ===== */
+
+.footer-flag {
+
+  background: linear-gradient(135deg, #073636, #0f8a8a);
+  color: white;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+
+}
+
+
+/* ===== Footer Message ===== */
+
+.footer-message {
+
+  text-align: center;
+  margin-top: 25px;
+  font-weight: bold;
+  color: darkgreen;
+
+}
+
+
+/* ===== Responsive ===== */
+
+@media(max-width:768px) {
+
+  .prescription-card {
+
+    width: 95%;
+
+  }
+
+  .message {
+
+    width: 90%;
+
+  }
+
+}
+
+
+/* ===== Print ===== */
+
+@media print {
+
+  app-header,
+  app-footer,
+  .print-btn,
+  .message {
+
+    display: none;
+
+  }
+
+  .prescription-card {
+
+    width: 100%;
+    box-shadow: none;
+
+  }
+
+}

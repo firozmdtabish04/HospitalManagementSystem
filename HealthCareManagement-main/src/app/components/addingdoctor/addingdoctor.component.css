@@ -1,0 +1,242 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Volkhov:ital,wght@1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mate+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Aladin&display=swap');
+
+
+/* Page background */
+body {
+  background: linear-gradient(to right, #f4f7f6, #e3f2fd);
+}
+
+
+/* Main container */
+.container {
+
+  max-width: 720px;
+  padding: 40px;
+  border-radius: 16px;
+
+  background: white;
+
+  margin: 30px auto;
+
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.15),
+    0 5px 10px rgba(0, 0, 0, 0.05);
+
+  transition: transform 0.3s ease;
+
+}
+
+
+/* Hover effect */
+.container:hover {
+
+  transform: translateY(-3px);
+
+}
+
+
+/* Title */
+.textual {
+
+  color: #0f5132;
+
+  text-align: center;
+
+  font-family: 'Aladin', cursive;
+
+  font-weight: bold;
+
+  font-size: 32px;
+
+  letter-spacing: 1px;
+
+  margin-bottom: 10px;
+
+}
+
+
+/* Info text */
+.info-text {
+
+  display: block;
+
+  text-align: center;
+
+  color: #842029;
+
+  font-weight: bold;
+
+  margin-bottom: 25px;
+
+}
+
+
+/* Form group spacing */
+.form-group {
+
+  margin-bottom: 20px;
+
+}
+
+
+/* Labels */
+label {
+
+  font-family: 'Volkhov', serif;
+
+  font-size: 15px;
+
+  font-weight: bold;
+
+  color: #2c3e50;
+
+}
+
+
+/* Input fields */
+input,
+select {
+
+  width: 100%;
+
+  padding: 10px 14px;
+
+  margin-top: 6px;
+
+  border-radius: 10px;
+
+  border: 1px solid #ced4da;
+
+  font-size: 14px;
+
+  transition: all 0.3s ease;
+
+}
+
+
+/* Focus effect */
+input:focus,
+select:focus {
+
+  border-color: #198754;
+
+  outline: none;
+
+  box-shadow: 0 0 8px rgba(25, 135, 84, 0.3);
+
+}
+
+
+/* Error text */
+.error {
+
+  color: red;
+
+  font-size: 12px;
+
+  margin-top: 3px;
+
+}
+
+
+/* Required star */
+.required {
+
+  color: red;
+
+}
+
+
+/* Submit button */
+.registerbtn {
+
+  width: 100%;
+
+  padding: 12px;
+
+  border-radius: 12px;
+
+  border: none;
+
+  font-weight: bold;
+
+  font-size: 16px;
+
+  letter-spacing: 1px;
+
+  color: white;
+
+  background: linear-gradient(to right, #198754, #20c997);
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+
+}
+
+
+/* Button hover */
+.registerbtn:hover {
+
+  background: linear-gradient(to right, #157347, #0dcaf0);
+
+  transform: scale(1.03);
+
+}
+
+
+/* Button disabled */
+.registerbtn:disabled {
+
+  background: gray;
+
+  cursor: not-allowed;
+
+}
+
+
+/* Logout button */
+.logoutbtn {
+
+  border: none;
+
+  background: transparent;
+
+  color: #198754;
+
+  border-radius: 10px;
+
+  border: 1px solid #198754;
+
+  padding: 7px 14px;
+
+  font-size: 14px;
+
+  transition: all 0.3s ease;
+
+}
+
+
+.logoutbtn:hover {
+
+  background-color: #198754;
+
+  color: white;
+
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+
+  .container {
+
+    margin: 15px;
+    padding: 25px;
+
+  }
+
+}

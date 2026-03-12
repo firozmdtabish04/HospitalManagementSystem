@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Aladin&display=swap');
+
+
+/* ---------- Heading ---------- */
+
+.heading-text {
+
+  font-weight: bold;
+  font-size: 40px;
+  margin-top: 15px;
+  color: green;
+  font-family: 'Aladin', cursive;
+  text-align: center;
+
+}
+
+
+/* ---------- Search ---------- */
+
+.search-container {
+
+  text-align: center;
+  margin-bottom: 20px;
+
+}
+
+.search-box {
+
+  width: 300px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid gray;
+  outline: none;
+
+}
+
+
+/* ---------- Container ---------- */
+
+.user-container {
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+
+}
+
+
+/* ---------- Card ---------- */
+
+.user-card {
+
+  width: 420px;
+  display: flex;
+  background: #eaeaea;
+  border-radius: 15px;
+  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.3);
+  transition: 0.3s ease;
+
+}
+
+.user-card:hover {
+
+  transform: scale(1.05);
+
+}
+
+
+/* ---------- Image Section ---------- */
+
+.img-block {
+
+  width: 40%;
+  background: rgb(192, 56, 56);
+  border-radius: 15px 0 0 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+
+.circle {
+
+  width: 130px;
+  height: 130px;
+  background: rgb(212, 188, 50);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+
+/* ---------- User Image ---------- */
+
+.user-img {
+
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+
+}
+
+
+/* ---------- Details ---------- */
+
+.card-details {
+
+  padding: 15px;
+  width: 60%;
+
+}
+
+
+.text {
+
+  font-weight: bold;
+  color: maroon;
+  margin: 5px 0;
+
+}
+
+
+/* ---------- Responsive ---------- */
+
+@media(max-width:768px) {
+
+  .user-card {
+
+    width: 90%;
+    flex-direction: column;
+
+  }
+
+  .img-block {
+
+    width: 100%;
+    border-radius: 15px 15px 0 0;
+
+  }
+
+  .card-details {
+
+    width: 100%;
+
+  }
+
+}

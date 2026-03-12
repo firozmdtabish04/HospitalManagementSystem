@@ -1,0 +1,169 @@
+<app-header></app-header>
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+/>
+
+<div class="dashboard-wrapper">
+  <!-- SIDEBAR -->
+
+  <div class="sidebar" [class.collapsed]="isCollapsed">
+    <div class="hamburger" (click)="toggleSidebar()">
+      <i class="fa fa-bars"></i>
+    </div>
+
+    <div class="profile-card">
+      <img
+        *ngIf="gender === 'male' || gender === 'Male'"
+        src="assets/img/maleuser.png"
+      />
+
+      <img
+        *ngIf="gender === 'female' || gender === 'Female'"
+        src="assets/img/femaleuser.png"
+      />
+
+
+      <p *ngIf="!isCollapsed">User Panel</p>
+    </div>
+
+    <ul class="menu-list">
+      <li routerLink="/edituserprofile">
+        <i class="fa fa-edit"></i>
+        <span *ngIf="!isCollapsed">Edit Profile</span>
+      </li>
+
+      <li routerLink="/doctorlist">
+        <i class="fa fa-user-md"></i>
+        <span *ngIf="!isCollapsed">Doctor List</span>
+      </li>
+
+      <li routerLink="/checkslots">
+        <i class="fa fa-clock-o"></i>
+        <span *ngIf="!isCollapsed">Check Slots</span>
+      </li>
+
+      <li routerLink="/bookappointment">
+        <i class="fa fa-calendar"></i>
+        <span *ngIf="!isCollapsed">New Appointment</span>
+      </li>
+
+      <li routerLink="/approvalstatus">
+        <i class="fa fa-check"></i>
+        <span *ngIf="!isCollapsed">Approval Status</span>
+      </li>
+
+      <li routerLink="/prescriptionlist">
+        <i class="fa fa-sticky-note-o"></i>
+        <span *ngIf="!isCollapsed">Prescription</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- MAIN CONTENT -->
+
+  <div class="dashboard-content">
+    <h1 class="dashboard-title">Welcome back, {{ name }}</h1>
+
+    <p class="dashboard-subtitle">
+      Manage your healthcare activities from your dashboard
+    </p>
+
+    <div class="cards-grid">
+      <!-- DOCTORS -->
+
+      <div class="stat-card blue" routerLink="/doctorlist">
+        <div class="icon-circle">
+          <i class="fa fa-user-md"></i>
+        </div>
+
+        <h3>Total Doctors</h3>
+
+        <p *ngFor="let doctor of doctors | async">
+          {{ doctor }}
+        </p>
+      </div>
+
+      <!-- USERS -->
+
+      <div class="stat-card orange" routerLink="/userlist">
+        <div class="icon-circle">
+          <i class="fa fa-users"></i>
+        </div>
+
+        <h3>Total Users</h3>
+
+        <p *ngFor="let user of users | async">
+          {{ user }}
+        </p>
+      </div>
+
+      <!-- PATIENTS -->
+
+      <div class="stat-card red" routerLink="/patientlist">
+        <div class="icon-circle">
+          <i class="fa fa-user"></i>
+        </div>
+
+        <h3>Total Patients</h3>
+
+        <p *ngFor="let patient of patients | async">
+          {{ patient }}
+        </p>
+      </div>
+
+      <!-- SLOTS -->
+
+      <div class="stat-card green" routerLink="/checkslots">
+        <div class="icon-circle">
+          <i class="fa fa-calendar"></i>
+        </div>
+
+        <h3>Available Slots</h3>
+
+        <p *ngFor="let slot of slots | async">
+          {{ slot }}
+        </p>
+      </div>
+
+      <!-- APPOINTMENTS -->
+
+      <div class="stat-card purple" routerLink="/bookappointment">
+        <div class="icon-circle">
+          <i class="fa fa-calendar-check-o"></i>
+        </div>
+
+        <h3>Book Appointments</h3>
+
+        <p>Manage your appointments</p>
+      </div>
+
+      <!-- PRESCRIPTIONS -->
+
+      <div class="stat-card teal" routerLink="/prescriptionlist">
+        <div class="icon-circle">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+
+        <h3>Prescriptions</h3>
+
+        <p>View medical prescriptions</p>
+      </div>
+
+      <!-- SERVICES -->
+
+      <div class="stat-card dark" routerLink="/services">
+        <div class="icon-circle">
+          <i class="fa fa-hospital-o"></i>
+        </div>
+
+        <h3>Hospital Services</h3>
+
+        <p>Explore available services</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

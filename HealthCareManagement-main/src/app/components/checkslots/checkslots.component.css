@@ -1,0 +1,166 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap');
+
+* {
+  font-family: 'Poppins', sans-serif;
+}
+
+
+/* PAGE */
+
+.page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+
+/* BACK BUTTON */
+
+.top-bar {
+  margin-bottom: 10px;
+}
+
+.back-btn {
+  background: #13534e;
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.back-btn:hover {
+  background: #0e3f3b;
+}
+
+
+/* HEADING */
+
+.heading {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 30px;
+  color: #13534e;
+}
+
+
+/* SEARCH */
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.search-box {
+  padding: 10px;
+  width: 250px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: 0.3s;
+}
+
+.search-box:focus {
+  border-color: #13534e;
+  box-shadow: 0 0 6px rgba(19, 83, 78, 0.2);
+}
+
+
+/* TABLE CARD */
+
+.table-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  overflow-x: auto;
+}
+
+
+/* TABLE */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+thead {
+  background: #13534e;
+  color: white;
+}
+
+th {
+  padding: 12px;
+  font-weight: 500;
+}
+
+td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+tr:hover {
+  background: #f6f9f8;
+}
+
+
+
+/* BADGES */
+
+.date-badge {
+  background: #1f2d3d;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+}
+
+.badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  color: white;
+}
+
+.booked {
+  background: #e74c3c;
+}
+
+.available {
+  background: #2ecc71;
+}
+
+.no-slot {
+  background: #7f8c8d;
+}
+
+
+/* FOOTER */
+
+app-footer {
+  margin-top: auto;
+}
+
+
+/* MOBILE */
+
+@media(max-width:768px) {
+
+  .heading {
+    font-size: 24px;
+  }
+
+  th,
+  td {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+}

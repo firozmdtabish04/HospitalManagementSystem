@@ -1,0 +1,114 @@
+<app-header></app-header>
+
+<div class="heading">
+  Approve Doctors Here
+  <small>(after proper verification)</small>
+</div>
+
+<div class="search-box">
+  <input type="text" placeholder="Search doctor..." [(ngModel)]="searchText" />
+</div>
+
+<!-- Loading -->
+<div class="center" *ngIf="loading">Loading doctors...</div>
+
+<!-- Error -->
+<div class="error" *ngIf="error">
+  {{ error }}
+</div>
+
+<div class="table-container" *ngIf="!loading">
+  <table *ngIf="(doctors | async)?.length; else noData">
+    <thead>
+      <tr>
+        <th>Identity</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Gender</th>
+        <th>Experience</th>
+        <th>Specialization</th>
+        <th>Worked At</th>
+        <th>Mobile</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr
+        *ngFor="let doctor of doctors | async"
+        [hidden]="!filterDoctor(doctor)"
+      >
+        <!-- Image -->
+        <td>
+          <img
+            [src]="
+              doctor.gender && doctor.gender.toLowerCase().trim() === 'female'
+                ? 'assets/img/femaledoctor.png'
+                : 'assets/img/maledoctor.png'
+            "
+            class="doc-img"
+            alt="Doctor Image"
+          />
+        </td>
+
+        <td>{{ doctor.doctorname }}</td>
+
+        <td>{{ doctor.email }}</td>
+
+        <td>{{ doctor.gender }}</td>
+
+        <td class="highlight">{{ doctor.experience }} yrs</td>
+
+        <td class="highlight">
+          {{ doctor.specialization }}
+        </td>
+
+        <td class="hospital">
+          {{ doctor.previoushospital }}
+        </td>
+
+        <td>
+          {{ doctor.mobile }}
+        </td>
+
+        <td>
+          <!-- ADMIN VIEW -->
+          <ng-container *ngIf="currRole === 'admin'">
+            <!-- Pending -->
+            <ng-container *ngIf="doctor.status === 'false'; else showStatus">
+              <button class="accepted" (click)="acceptRequest(doctor.email!)">
+                Accept
+              </button>
+
+              <button class="rejected" (click)="rejectRequest(doctor.email!)">
+                Reject
+              </button>
+            </ng-container>
+
+            <!-- Accepted / Rejected -->
+            <ng-template #showStatus>
+              <span class="status" [ngClass]="getStatusClass(doctor.status)">
+                {{ getStatusLabel(doctor.status) }}
+              </span>
+            </ng-template>
+          </ng-container>
+
+          <!-- DOCTOR VIEW -->
+          <ng-container
+            *ngIf="currRole === 'DOCTOR' && doctor.email === loggedUser"
+          >
+            <span class="status" [ngClass]="getStatusClass(doctor.status)">
+              {{ getStatusLabel(doctor.status) }}
+            </span>
+          </ng-container>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #noData>
+    <div class="center">No doctors found</div>
+  </ng-template>
+</div>
+
+<app-footer></app-footer>

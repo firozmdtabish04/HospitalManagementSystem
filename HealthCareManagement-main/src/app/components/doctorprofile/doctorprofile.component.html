@@ -1,0 +1,212 @@
+<app-header></app-header>
+
+<!-- PROFILE CARD -->
+<div class="profile-wrapper" id="profilecard">
+  <div *ngFor="let doctor of profileDetails | async" class="profile-card">
+    <!-- Header -->
+    <div class="profile-header">
+      <img
+        *ngIf="doctor.gender === 'Male' || doctor.gender === 'male'"
+        src="assets/img/maledoctor.png"
+        class="profile-img"
+        alt="Male Doctor"
+      />
+
+      <img
+        *ngIf="doctor.gender === 'Female' || doctor.gender === 'female'"
+        src="assets/img/femaledoctor.png"
+        class="profile-img"
+        alt="Female Doctor"
+      />
+
+      <h2>Dr. {{ doctor.doctorname }}</h2>
+    </div>
+
+    <!-- Body -->
+    <div class="profile-body">
+      <div class="profile-row">
+        <span>Email:</span>
+        <span>{{ doctor.email }}</span>
+      </div>
+
+      <div class="profile-row">
+        <span>Mobile:</span>
+        <span>{{ doctor.mobile }}</span>
+      </div>
+
+      <div class="profile-row">
+        <span>Gender:</span>
+        <span>{{ doctor.gender }}</span>
+      </div>
+
+      <div class="profile-row">
+        <span>Experience:</span>
+        <span>{{ doctor.experience }} years</span>
+      </div>
+
+      <div class="profile-row">
+        <span>Specialization:</span>
+        <span>{{ doctor.specialization }}</span>
+      </div>
+
+      <div class="profile-row">
+        <span>Hospital:</span>
+        <span>{{ doctor.previoushospital }}</span>
+      </div>
+    </div>
+
+    <!-- Button -->
+    <div class="profile-footer">
+      <button class="edit-btn" (click)="editProfile()">Edit Profile</button>
+
+      <small *ngIf="temp" class="success-msg">
+        Profile Updated Successfully!
+      </small>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT FORM -->
+<div class="form-wrapper" id="profileform">
+  <div class="form-card">
+    <h3>Edit Doctor Profile</h3>
+
+    <form #Updateform="ngForm" (ngSubmit)="updateDoctorProfile()">
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Email</label>
+
+        <input
+          id="email"
+          type="email"
+          name="email"
+          [(ngModel)]="doctor.email"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <!-- Name -->
+      <div class="form-group">
+        <label for="doctorname">Doctor Name</label>
+
+        <input
+          id="doctorname"
+          type="text"
+          name="doctorname"
+          [(ngModel)]="doctor.doctorname"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <!-- Gender -->
+      <div class="form-group">
+        <label for="gender">Gender</label>
+
+        <select
+          id="gender"
+          name="gender"
+          [(ngModel)]="doctor.gender"
+          class="form-control"
+          required
+        >
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Others">Others</option>
+        </select>
+      </div>
+
+      <!-- Mobile -->
+      <div class="form-group">
+        <label for="mobile">Mobile Number</label>
+
+        <input
+          id="mobile"
+          type="text"
+          name="mobile"
+          [(ngModel)]="doctor.mobile"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <!-- Experience -->
+      <div class="form-group">
+        <label for="experience">Experience</label>
+
+        <input
+          id="experience"
+          type="text"
+          name="experience"
+          [(ngModel)]="doctor.experience"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <!-- Specialization -->
+      <div class="form-group">
+        <label for="specialization">Specialization</label>
+
+        <input
+          id="specialization"
+          type="text"
+          name="specialization"
+          [(ngModel)]="doctor.specialization"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <!-- Hospital -->
+      <div class="form-group">
+        <label for="hospital">Previous Hospital</label>
+
+        <input
+          id="hospital"
+          type="text"
+          name="previoushospital"
+          [(ngModel)]="doctor.previoushospital"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <!-- Address -->
+      <div class="form-group">
+        <label for="address">Address</label>
+
+        <input
+          id="address"
+          type="text"
+          name="address"
+          [(ngModel)]="doctor.address"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password">Password</label>
+
+        <input
+          id="password"
+          type="password"
+          name="password"
+          [(ngModel)]="doctor.password"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <!-- Button -->
+      <button type="submit" [disabled]="Updateform.invalid" class="update-btn">
+        Update Profile
+      </button>
+    </form>
+  </div>
+</div>
+
+<app-footer></app-footer>
