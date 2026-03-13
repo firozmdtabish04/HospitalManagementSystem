@@ -1,0 +1,190 @@
+/* ===============================
+   Heading
+================================ */
+.heading {
+  text-align: center;
+  font-size: 32px;
+  color: green;
+  margin: 20px 0;
+  font-weight: bold;
+}
+
+
+/* ===============================
+   Search Box
+================================ */
+.search-box {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.search-box input {
+  padding: 10px;
+  width: 320px;
+  border-radius: 8px;
+  border: 1px solid gray;
+  font-size: 16px;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+.search-box input:focus {
+  border-color: maroon;
+  box-shadow: 0 0 5px rgba(128, 0, 0, 0.3);
+}
+
+
+/* ===============================
+   Table Container
+================================ */
+.table-container {
+  margin: 20px;
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Scrollbar Styling */
+.table-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: maroon;
+  border-radius: 4px;
+}
+
+
+/* ===============================
+   Table Styling
+================================ */
+table {
+  width: 100%;
+  min-width: 1100px;
+  border-collapse: collapse;
+  background: white;
+}
+
+thead {
+  background: maroon;
+  color: white;
+}
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 12px;
+  text-align: center;
+}
+
+/* Hover Effect */
+tr:hover {
+  background-color: #f5f5f5;
+  color: black;
+}
+
+/* Ensure Status column visible */
+th:last-child,
+td:last-child {
+  min-width: 160px;
+}
+
+
+/* ===============================
+   Doctor Image
+================================ */
+.doc-img {
+  width: 60px;
+  height: auto;
+}
+
+
+/* ===============================
+   Text Highlight
+================================ */
+.highlight {
+  color: maroon;
+  font-weight: bold;
+}
+
+.hospital {
+  color: navy;
+  font-weight: bold;
+}
+
+
+/* ===============================
+   Buttons
+================================ */
+.accepted {
+  background: green;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  margin: 2px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s ease;
+}
+
+.accepted:hover {
+  background: darkgreen;
+}
+
+.rejected {
+  background: red;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  margin: 2px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s ease;
+}
+
+.rejected:hover {
+  background: darkred;
+}
+
+
+/* ===============================
+   Status Labels (Clean Version)
+================================ */
+.status {
+  padding: 6px 14px;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  display: inline-block;
+  min-width: 100px;
+  text-align: center;
+}
+
+.status.pending {
+  background-color: orange;
+}
+
+.status.accepted {
+  background-color: green;
+}
+
+.status.rejected {
+  background-color: red;
+}
+
+
+/* ===============================
+   Utility
+================================ */
+.center {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.error {
+  text-align: center;
+  color: red;
+  font-weight: bold;
+}

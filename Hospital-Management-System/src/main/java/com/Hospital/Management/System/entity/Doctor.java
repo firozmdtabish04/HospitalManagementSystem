@@ -1,63 +1,119 @@
 package com.Hospital.Management.System.entity;
 
-import java.time.LocalDate;
-
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "doctor")
 public class Doctor {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long doctorId;
-
-    private String firstName;
-    private String lastName;
-    private String gender;
-    private String specialization;
-    private String phoneNumber;
     private String email;
-    private Integer experienceYears;
-    private LocalDate joiningDate;
-    private Double salary;
-    private String department;
+    private String doctorname;
+    private String mobile;
+    private String gender;
+    private String experience;
+    private String specialization;
+    private String previoushospital;
+    private String address;
+    private String password;
+    private String status;
 
-    // Getters and Setters
-    public Long getDoctorId() { return doctorId; }
-    public void setDoctorId(Long doctorId) { this.doctorId = doctorId; }
+    public Doctor() {
+        super();
+    }
 
-    public String getFirstName() { return firstName; }
-    public void setFirstName(String firstName) { this.firstName = firstName; }
+    public Doctor(String email, String doctorname, String mobile, String gender, String experience,
+            String specialization, String previoushospital, String address, String password, String status) {
+        super();
+        this.email = email;
+        this.doctorname = doctorname;
+        this.mobile = mobile;
+        this.gender = gender;
+        this.experience = experience;
+        this.specialization = specialization;
+        this.previoushospital = previoushospital;
+        this.address = address;
+        this.password = password;
+        this.status = status;
+    }
 
-    public String getLastName() { return lastName; }
-    public void setLastName(String lastName) { this.lastName = lastName; }
+    public String getEmail() {
+        return email;
+    }
 
-    public String getGender() { return gender; }
-    public void setGender(String gender) { this.gender = gender; }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-    public String getSpecialization() { return specialization; }
-    public void setSpecialization(String specialization) { this.specialization = specialization; }
+    public String getDoctorname() {
+        return doctorname;
+    }
 
-    public String getPhoneNumber() { return phoneNumber; }
-    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+    public void setDoctorname(String doctorname) {
+        this.doctorname = doctorname;
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public String getMobile() {
+        return mobile;
+    }
 
-    public Integer getExperienceYears() { return experienceYears; }
-    public void setExperienceYears(Integer experienceYears) { this.experienceYears = experienceYears; }
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
 
-    public LocalDate getJoiningDate() { return joiningDate; }
-    public void setJoiningDate(LocalDate joiningDate) { this.joiningDate = joiningDate; }
+    public String getGender() {
+        return gender;
+    }
 
-    public Double getSalary() { return salary; }
-    public void setSalary(Double salary) { this.salary = salary; }
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
-    public String getDepartment() { return department; }
-    public void setDepartment(String department) { this.department = department; }
+    public String getExperience() {
+        return experience;
+    }
+
+    public void setExperience(String experience) {
+        this.experience = experience;
+    }
+
+    public String getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
+    }
+
+    public String getPrevioushospital() {
+        return previoushospital;
+    }
+
+    public void setPrevioushospital(String previoushospital) {
+        this.previoushospital = previoushospital;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
 }

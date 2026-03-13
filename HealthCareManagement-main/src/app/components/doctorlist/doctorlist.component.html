@@ -1,0 +1,71 @@
+<app-header></app-header>
+
+<div class="page-container">
+  <!-- BACK BUTTON -->
+  <div class="top-bar">
+    <button class="back-btn" routerLink="/userdashboard">← Back</button>
+  </div>
+
+  <!-- PAGE TITLE -->
+  <h1 class="heading-text">Doctors List</h1>
+
+  <p class="subheading-text">
+    Only approved doctors are suggested by the management
+  </p>
+
+  <!-- SEARCH -->
+  <div class="search-container">
+    <input
+      type="text"
+      placeholder="Search doctor by name, email, specialization..."
+      [(ngModel)]="searchText"
+      class="search-box"
+    />
+  </div>
+
+  <!-- DOCTOR GRID -->
+
+  <div class="doctor-container">
+    <div
+      *ngFor="let doctor of doctors | async"
+      class="doctor-card"
+      [hidden]="!filterDoctor(doctor)"
+    >
+      <!-- IMAGE -->
+      <div class="doctor-image">
+        <img
+          [src]="
+            doctor.gender?.toLowerCase() === 'female'
+              ? 'assets/img/femaledoctor.png'
+              : 'assets/img/maledoctor.png'
+          "
+          alt="Doctor"
+        />
+      </div>
+
+      <!-- DETAILS -->
+
+      <div class="doctor-details">
+        <h3>{{ doctor.doctorname }}</h3>
+
+        <p class="email">{{ doctor.email }}</p>
+
+        <p>📱 {{ doctor.mobile }}</p>
+
+        <p>🩺 {{ doctor.specialization }}</p>
+
+        <p>📊 {{ doctor.experience }} yrs experience</p>
+
+        <p>👤 {{ doctor.gender }}</p>
+
+        <!-- STATUS -->
+
+        <span class="status" [ngClass]="getStatusClass(doctor.status)">
+          {{ getDoctorStatus(doctor.status) }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

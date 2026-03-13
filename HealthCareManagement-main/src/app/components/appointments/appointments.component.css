@@ -1,0 +1,167 @@
+.appointments-container {
+
+  padding: 40px;
+
+  background: #f4fbfb;
+
+  min-height: 100vh;
+
+}
+
+
+/* TITLE */
+
+.page-title {
+
+  text-align: center;
+
+  color: #0d7377;
+
+  font-size: 36px;
+
+  font-weight: bold;
+
+}
+
+.page-subtitle {
+
+  text-align: center;
+
+  color: gray;
+
+  margin-bottom: 30px;
+
+}
+
+
+/* GRID */
+
+.appointments-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(320px, 1fr));
+
+  gap: 25px;
+
+}
+
+
+/* CARD */
+
+.appointment-card {
+
+  background: white;
+
+  border-radius: 15px;
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+
+  transition: 0.3s;
+
+}
+
+.appointment-card:hover {
+
+  transform: translateY(-10px);
+
+  box-shadow: 0 15px 35px rgba(13, 115, 119, 0.3);
+
+}
+
+
+/* IMAGE */
+
+.image-section {
+
+  background: linear-gradient(135deg, #14a098, #0d7377);
+
+  text-align: center;
+
+  padding: 20px;
+
+  border-radius: 15px 15px 0 0;
+
+}
+
+.image-section img {
+
+  width: 90px;
+
+}
+
+
+/* BODY */
+
+.card-body {
+
+  padding: 20px;
+
+}
+
+.card-body h3 {
+
+  color: #0d7377;
+
+  margin-bottom: 10px;
+
+}
+
+.card-body p {
+
+  margin: 5px 0;
+
+}
+
+
+/* STATUS */
+
+.status {
+
+  margin-top: 12px;
+
+  padding: 8px;
+
+  border-radius: 10px;
+
+  text-align: center;
+
+  color: white;
+
+  font-weight: bold;
+
+}
+
+.accepted {
+
+  background: #28a745;
+
+}
+
+.rejected {
+
+  background: #dc3545;
+
+}
+
+.pending {
+
+  background: #ffc107;
+
+  color: black;
+
+}
+
+
+/* RESPONSIVE */
+
+@media(max-width:768px) {
+
+  .appointments-container {
+
+    padding: 15px;
+
+  }
+
+}

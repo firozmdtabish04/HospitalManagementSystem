@@ -1,0 +1,117 @@
+<app-header></app-header>
+
+<div class="appointments-container">
+  <h1 class="page-title">Today's Appointments</h1>
+
+  <p class="page-subtitle">Verified patient booking details</p>
+
+  <div class="appointments-grid">
+    <div class="appointment-card" *ngFor="let patient of appointments | async">
+      <!-- IMAGE -->
+      <div class="image-section">
+        <img
+          *ngIf="patient.gender === 'Male' || patient.gender === 'male'"
+          src="assets/img/maleuser.png"
+        />
+
+        <img
+          *ngIf="patient.gender === 'Female' || patient.gender === 'female'"
+          src="assets/img/femaleuser.png"
+        />
+      </div>
+
+      <!-- DETAILS -->
+      <div class="card-body">
+        <h3>
+          {{ patient.patientname }}
+        </h3>
+
+        <p>
+          <strong>ID:</strong>
+          {{ patient.patientid }}
+        </p>
+
+        <p>
+          <strong>Email:</strong>
+          {{ patient.email }}
+        </p>
+
+        <p>
+          <strong>Age:</strong>
+          {{ patient.age }}
+        </p>
+
+        <p>
+          <strong>Gender:</strong>
+          {{ patient.gender }}
+        </p>
+
+        <p>
+          <strong>Disease:</strong>
+          {{ patient.problem }}
+        </p>
+
+        <!-- SLOT -->
+        <div *ngFor="let slot of slots | async">
+          <p
+            *ngIf="
+              patient.slot === 'AM slot' &&
+              slot.amstatus === 'booked' &&
+              patient.date === slot.date
+            "
+          >
+            <strong>Slot:</strong>
+            {{ slot.amslot }}
+          </p>
+
+          <p
+            *ngIf="
+              patient.slot === 'Noon slot' &&
+              slot.noonstatus === 'booked' &&
+              patient.date === slot.date
+            "
+          >
+            <strong>Slot:</strong>
+            {{ slot.noonslot }}
+          </p>
+
+          <p
+            *ngIf="
+              patient.slot === 'PM slot' &&
+              slot.pmstatus === 'booked' &&
+              patient.date === slot.date
+            "
+          >
+            <strong>Slot:</strong>
+            {{ slot.pmslot }}
+          </p>
+        </div>
+
+        <!-- STATUS -->
+
+        <div
+          class="status pending"
+          *ngIf="patient.appointmentstatus === 'false'"
+        >
+          Approval Pending
+        </div>
+
+        <div
+          class="status accepted"
+          *ngIf="patient.appointmentstatus === 'accept'"
+        >
+          Accepted
+        </div>
+
+        <div
+          class="status rejected"
+          *ngIf="patient.appointmentstatus === 'reject'"
+        >
+          Rejected
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>
