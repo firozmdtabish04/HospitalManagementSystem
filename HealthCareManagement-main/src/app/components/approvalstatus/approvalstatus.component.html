@@ -1,314 +1,131 @@
 <app-header></app-header>
 
-<!-- SEARCH -->
-<div class="message" id="messagecard">
-  <form #tempform="ngForm" (ngSubmit)="searchPatient()">
+<div class="main-container">
+  <div class="search-section">
+    <div class="search-card">
+      <form #tempform="ngForm" (ngSubmit)="searchPatient()" class="search-inner">
+        <div class="search-input-group">
+          <i class="fa fa-search search-icon"></i>
+          <input type="text" class="form-control-custom" placeholder="Enter Patient Email to search..."
+            name="patientname" [(ngModel)]="mail" required #patientname="ngModel" />
+        </div>
+        <button class="search-btn" [disabled]="tempform.form.invalid" type="submit">
+          Search Prescription
+        </button>
+      </form>
+      <div *ngIf="patientname.invalid && patientname.touched" class="error-text">
+        <i class="fa fa-exclamation-circle"></i> Email is required to search.
+      </div>
+    </div>
+  </div>
 
-    <div class="form-group">
-      <label>
-        Patient Email Address:
-        <b class="text-danger">*</b>
-      </label>
-
-      <input
-        type="text"
-        class="form-control"
-        placeholder="enter patient email"
-        name="patientname"
-        [(ngModel)]="mail"
-        required
-        #patientname="ngModel"
-      />
-
-      <small
-        class="text-danger"
-        *ngIf="patientname.invalid && patientname.touched"
-      >
-        required field
-      </small>
-
+  <div class="status-panel shadow-lg" id="doctorapproval">
+    <div class="panel-header doctor-header">
+      <div class="header-content">
+        <h2><i class="fa fa-user-md"></i> Doctor Approval Status</h2>
+        <div class="status-indicator" *ngFor="let doctor of approval | async">
+          <span class="status-tag accept" *ngIf="doctor.status === 'accept'">Verified & Accepted</span>
+          <span class="status-tag pending" *ngIf="doctor.status === 'false'">Awaiting Verification</span>
+          <span class="status-tag reject" *ngIf="doctor.status === 'reject'">Application Rejected</span>
+        </div>
+      </div>
     </div>
 
-    <button
-      class="registerbtn"
-      [disabled]="tempform.form.invalid"
-      type="submit"
-    >
-      search Prescription
-    </button>
-
-  </form>
-</div>
-
-
-<!-- DOCTOR APPROVAL -->
-<div class="panel panel-primary" id="doctorapproval">
-
-  <div class="panel-heading">
-    <h2>Your approval status</h2>
-
-    <div *ngFor="let doctor of approval | async">
-
-      <div *ngIf="doctor.status === 'accept'">
-        <small style="color: green">(Verified & Accepted)</small>
+    <div class="panel-body">
+      <div class="table-responsive">
+        <table class="modern-table">
+          <thead>
+            <tr>
+              <th>Profile</th>
+              <th>Doctor Name</th>
+              <th>Email</th>
+              <th>Specialization</th>
+              <th>Experience</th>
+              <th>Mobile</th>
+              <th>Action Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let doctor of approval | async">
+              <td>
+                <img
+                  [src]="doctor.gender?.toLowerCase() === 'female' ? 'assets/img/femaledoctor.png' : 'assets/img/maledoctor.png'"
+                  class="avatar-img" alt="Doctor" />
+              </td>
+              <td class="bold-text">{{ doctor.doctorname }}</td>
+              <td>{{ doctor.email }}</td>
+              <td><span class="spec-tag">{{ doctor.specialization }}</span></td>
+              <td>{{ doctor.experience }} Years</td>
+              <td>{{ doctor.mobile }}</td>
+              <td>
+                <span class="badge-capsule"
+                  [ngClass]="{'bg-success': doctor.status === 'accept', 'bg-warning': doctor.status === 'false', 'bg-danger': doctor.status === 'reject'}">
+                  {{ doctor.status === 'accept' ? 'Accepted' : (doctor.status === 'false' ? 'Pending' : 'Rejected') }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+    </div>
+  </div>
 
-      <div *ngIf="doctor.status === 'false'">
-        <small style="color: orange">(Not yet Verified)</small>
+  <div class="status-panel shadow-lg" id="patientapproval">
+    <div class="panel-header patient-header">
+      <div class="header-content">
+        <h2><i class="fa fa-calendar-check-o"></i> Patient Appointment Status</h2>
       </div>
-
-      <div *ngIf="doctor.status === 'reject'">
-        <small style="color: red">(Verified & Rejected)</small>
-      </div>
-
     </div>
 
+    <div class="panel-body">
+      <div class="table-responsive">
+        <table class="modern-table">
+          <thead>
+            <tr>
+              <th>Patient</th>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Slot & Date</th>
+              <th>Problem</th>
+              <th>Appointment</th>
+              <th>Admission</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let patient of appointment | async">
+              <td>
+                <img
+                  [src]="patient.gender?.toLowerCase() === 'female' ? 'assets/img/femaleuser.png' : 'assets/img/maleuser.png'"
+                  class="avatar-img" alt="Patient" />
+              </td>
+              <td><span class="id-tag">#{{ patient.patientid }}</span></td>
+              <td class="bold-text">{{ patient.patientname }}</td>
+              <td>
+                <div class="date-time">
+                  <span class="slot-mini">{{ patient.slot }}</span>
+                  <span class="date-mini">{{ patient.date }}</span>
+                </div>
+              </td>
+              <td class="problem-text">{{ patient.problem }}</td>
+              <td>
+                <span class="badge-capsule"
+                  [ngClass]="{'bg-success': patient.appointmentstatus === 'accept', 'bg-warning': patient.appointmentstatus === 'false', 'bg-danger': patient.appointmentstatus === 'reject'}">
+                  {{ patient.appointmentstatus === 'accept' ? 'Approved' : (patient.appointmentstatus === 'false' ?
+                  'Pending' : 'Rejected') }}
+                </span>
+              </td>
+              <td>
+                <span class="status-dot"
+                  [ngClass]="patient.admissionstatus === 'accept' ? 'dot-green' : (patient.admissionstatus === 'reject' ? 'dot-red' : 'dot-orange')"></span>
+                {{ patient.admissionstatus === 'accept' ? 'Admitted' : (patient.admissionstatus === 'reject' ? 'Not
+                Admitted' : 'Process') }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
-
-
-  <div class="panel-body">
-
-    <table>
-
-      <thead>
-        <tr>
-          <th>Identity</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Gender</th>
-          <th>Experience</th>
-          <th>Specialization</th>
-          <th>Worked at</th>
-          <th>Mobile</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-
-
-      <tbody>
-
-        <tr *ngFor="let doctor of approval | async">
-
-          <!-- FIXED TD -->
-          <td>
-            <img
-              [src]="
-                doctor.gender &&
-                doctor.gender.toLowerCase().trim() === 'female'
-                  ? 'assets/img/femaledoctor.png'
-                  : 'assets/img/maledoctor.png'
-              "
-              class="doc-img"
-              alt="Doctor Image"
-            />
-          </td>
-
-
-          <td>{{ doctor.doctorname }}</td>
-
-          <td>{{ doctor.email }}</td>
-
-          <td>{{ doctor.gender }}</td>
-
-          <td>{{ doctor.experience }} years</td>
-
-          <td>{{ doctor.specialization }}</td>
-
-          <td>{{ doctor.previoushospital }}</td>
-
-          <td>{{ doctor.mobile }}</td>
-
-
-          <td>
-
-            <div
-              *ngIf="
-                currRole === 'doctor' ||
-                (currRole === 'DOCTOR' && doctor.email === loggedUser)
-              "
-            >
-
-              <div
-                *ngIf="doctor.status === 'accept'"
-                class="accepted"
-              >
-                Accepted
-              </div>
-
-              <div
-                *ngIf="doctor.status === 'false'"
-                class="pending"
-              >
-                Pending
-              </div>
-
-              <div
-                *ngIf="doctor.status === 'reject'"
-                class="rejected"
-              >
-                Rejected
-              </div>
-
-            </div>
-
-          </td>
-
-        </tr>
-
-      </tbody>
-
-    </table>
-
-  </div>
-
 </div>
-
-
-
-<!-- PATIENT APPROVAL -->
-<div class="panel panel-primary" id="patientapproval">
-
-  <div class="panel-heading">
-    <h2>Your approval status</h2>
-  </div>
-
-
-  <div class="panel-body">
-
-    <table>
-
-      <thead>
-        <tr>
-          <th>Identity</th>
-          <th>Patient ID</th>
-          <th>Name</th>
-          <th>Age</th>
-          <th>Slot</th>
-          <th>Date</th>
-          <th>Problem</th>
-          <th>Approval</th>
-          <th>Admission</th>
-        </tr>
-      </thead>
-
-
-      <tbody>
-
-        <tr *ngFor="let patient of appointment | async">
-
-          <!-- FIXED TD -->
-          <td>
-            <img
-              [src]="
-                patient.gender &&
-                patient.gender.toLowerCase().trim() === 'female'
-                  ? 'assets/img/femaleuser.png'
-                  : 'assets/img/maleuser.png'
-              "
-              class="doc-img"
-              alt="Patient Image"
-            />
-          </td>
-
-
-          <td>
-            <div class="date-cover">
-              {{ patient.patientid }}
-            </div>
-          </td>
-
-
-          <td>{{ patient.patientname }}</td>
-
-          <td>{{ patient.age }}</td>
-
-
-          <td>
-            <div class="slotcover">
-              {{ patient.slot }}
-            </div>
-          </td>
-
-
-          <td>
-            <div class="date-cover">
-              {{ patient.date }}
-            </div>
-          </td>
-
-
-          <td>{{ patient.problem }}</td>
-
-
-          <td>
-
-            <div
-              *ngIf="
-                currRole === 'user' ||
-                (currRole === 'USER' && patient.email === loggedUser)
-              "
-            >
-
-              <div
-                *ngIf="patient.appointmentstatus === 'accept'"
-                class="accepted"
-              >
-                Accepted
-              </div>
-
-              <div
-                *ngIf="patient.appointmentstatus === 'false'"
-                class="pending"
-              >
-                Pending
-              </div>
-
-              <div
-                *ngIf="patient.appointmentstatus === 'reject'"
-                class="rejected"
-              >
-                Rejected
-              </div>
-
-            </div>
-
-          </td>
-
-
-          <td>
-
-            <div
-              *ngIf="patient.admissionstatus === 'accept'"
-              class="accepted"
-            >
-              Admitted
-            </div>
-
-            <div
-              *ngIf="patient.admissionstatus === 'false'"
-              class="pending"
-            >
-              Pending
-            </div>
-
-            <div
-              *ngIf="patient.admissionstatus === 'reject'"
-              class="rejected"
-            >
-              Not Admitted
-            </div>
-
-          </td>
-
-        </tr>
-
-      </tbody>
-
-    </table>
-
-  </div>
-
-</div>
-
 
 <app-footer></app-footer>

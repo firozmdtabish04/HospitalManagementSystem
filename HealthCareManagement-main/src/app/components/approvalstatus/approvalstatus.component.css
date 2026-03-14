@@ -1,379 +1,248 @@
-@import url('https://fonts.googleapis.com/css2?family=Mate+SC&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap');
-
-
-/* =========================
-   ROOT / PAGE
-========================= */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
 :host {
   display: block;
-  background: #f4f7fa;
+  background: #f0f4f8;
   min-height: 100vh;
-  font-family: 'Mate SC', serif;
-  padding: 20px;
-  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  color: #334155;
 }
 
+.main-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 15px;
+}
 
+/* SEARCH SECTION */
+.search-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
 
-/* =========================
-   SEARCH CARD
-========================= */
-
-.message {
-
+.search-card {
+  background: white;
+  padding: 10px;
+  border-radius: 50px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
   width: 100%;
-  max-width: 420px;
-
-  background: #ffffff;
-
-  padding: 25px;
-
-  margin: 20px auto;
-
-  border-radius: 15px;
-
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  max-width: 600px;
+  border: 1px solid #e2e8f0;
 }
 
-
-
-/* =========================
-   FORM
-========================= */
-
-.form-group {
-  margin-bottom: 15px;
+.search-inner {
+  display: flex;
+  align-items: center;
 }
 
-label {
-  font-weight: bold;
-  display: block;
-  margin-bottom: 5px;
+.search-input-group {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
 }
 
-input {
-
-  width: 100%;
-
-  padding: 12px;
-
-  border-radius: 8px;
-
-  border: 1px solid #ccc;
-
-  font-size: 15px;
-
-  box-sizing: border-box;
-
-  transition: 0.2s;
+.search-icon {
+  color: #94a3b8;
+  margin-right: 10px;
 }
 
-input:focus {
-  border-color: #3282b8;
-  outline: none;
-  box-shadow: 0 0 6px rgba(50, 130, 184, 0.4);
-}
-
-
-
-/* =========================
-   BUTTON
-========================= */
-
-.registerbtn {
-
-  width: 100%;
-
-  padding: 12px;
-
-  margin-top: 15px;
-
+.form-control-custom {
   border: none;
-
-  border-radius: 10px;
-
-  background: linear-gradient(45deg, #0f4c75, #3282b8);
-
-  color: white;
-
-  font-size: 16px;
-
-  cursor: pointer;
-}
-
-
-
-/* =========================
-   PANEL
-========================= */
-
-.panel {
-
   width: 100%;
-
-  margin: 20px auto;
-
-  border-radius: 12px;
-
-  background: #ffffff;
-
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-
-  overflow: hidden;
+  padding: 12px 5px;
+  outline: none;
+  font-size: 15px;
 }
 
+.search-btn {
+  background: #0f766e;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 40px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.3s;
+}
 
+.search-btn:hover {
+  background: #134e4a;
+  transform: scale(1.02);
+}
 
-/* =========================
-   PANEL HEADER
-========================= */
+.error-text {
+  color: #ef4444;
+  font-size: 12px;
+  margin: 10px 0 0 25px;
+}
 
-.panel-heading {
+/* PANELS */
+.status-panel {
+  background: white;
+  border-radius: 20px;
+  margin-bottom: 40px;
+  overflow: hidden;
+  border: 1px solid #f1f5f9;
+}
 
-  padding: 18px;
-
-  background: linear-gradient(90deg, #0f4c75, #3282b8);
-
+.panel-header {
+  padding: 25px;
   color: white;
 }
 
-.panel-heading h2 {
-
-  margin: 0;
-
-  font-family: 'Oswald', sans-serif;
-
-  text-align: center;
-
-  font-size: 22px;
+.doctor-header {
+  background: linear-gradient(135deg, #0f766e, #2daf94);
 }
 
+.patient-header {
+  background: linear-gradient(135deg, #1e293b, #334155);
+}
 
+.header-content h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-/* =========================
-   PANEL BODY
-========================= */
-
-.panel-body {
-
-  padding: 15px;
-
+/* TABLE UI */
+.table-responsive {
   overflow-x: auto;
 }
 
-
-
-/* =========================
-   TABLE
-========================= */
-
-table {
-
+.modern-table {
   width: 100%;
-
   border-collapse: collapse;
-
-  min-width: 700px;
+  background: white;
 }
 
-
-
-/* TABLE HEADER */
-
-thead {
-  background: linear-gradient(90deg, #8b0000, #b22222);
-}
-
-th {
-
-  padding: 14px;
-
-  color: white;
-
-  font-size: 15px;
-
+.modern-table th {
+  background: #f8fafc;
+  padding: 18px;
+  text-align: left;
+  font-size: 13px;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
+  border-bottom: 2px solid #f1f5f9;
 }
 
-
-
-/* TABLE BODY */
-
-td {
-
-  padding: 12px;
-
-  border-bottom: 1px solid #ddd;
-
-  font-size: 15px;
-
-  text-align: center;
+.modern-table td {
+  padding: 16px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+  font-size: 14px;
 }
 
-
-
-/* =========================
-   IMAGE
-========================= */
-
-.doc-img,
-.bloodimg {
-
-  width: 70px;
-  height: 70px;
-
-  border-radius: 50%;
-
-  border: 3px solid #3282b8;
-
+.avatar-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
   object-fit: cover;
+  border: 2px solid #e2e8f0;
 }
 
+.bold-text {
+  font-weight: 600;
+  color: #1e293b;
+}
 
+.spec-tag {
+  background: #f0fdfa;
+  color: #0f766e;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
 
-/* =========================
-   STATUS
-========================= */
+.id-tag {
+  color: #0f766e;
+  font-weight: bold;
+}
 
-.accepted {
-
-  background: linear-gradient(45deg, #28a745, #218838);
-
+/* STATUS BADGES */
+.badge-capsule {
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 600;
   color: white;
-
-  padding: 6px 14px;
-
-  border-radius: 20px;
 }
 
-.pending {
-
-  background: linear-gradient(45deg, #ff9800, #e68900);
-
-  color: white;
-
-  padding: 6px 14px;
-
-  border-radius: 20px;
+.bg-success {
+  background: #10b981;
 }
 
-.rejected {
-
-  background: linear-gradient(45deg, #dc3545, #b02a37);
-
-  color: white;
-
-  padding: 6px 14px;
-
-  border-radius: 20px;
+.bg-warning {
+  background: #f59e0b;
 }
 
-
-
-/* =========================
-   BADGES
-========================= */
-
-.date-cover {
-
-  background: linear-gradient(45deg, #0d47a1, #1976d2);
-
-  color: white;
-
-  padding: 6px 12px;
-
-  border-radius: 10px;
+.bg-danger {
+  background: #ef4444;
 }
 
-.slotcover {
-
-  background: linear-gradient(45deg, #6a1b9a, #8e24aa);
-
-  color: white;
-
-  padding: 6px 12px;
-
-  border-radius: 10px;
+.status-dot {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
 }
 
-
-
-/* =========================
-   RESPONSIVE BREAKPOINTS
-========================= */
-
-
-/* Tablet */
-
-@media (max-width: 992px) {
-
-  .panel-heading h2 {
-    font-size: 20px;
-  }
-
-  table {
-    min-width: 600px;
-  }
-
+.dot-green {
+  background: #10b981;
 }
 
+.dot-red {
+  background: #ef4444;
+}
 
+.dot-orange {
+  background: #f59e0b;
+}
 
-/* Mobile */
+/* DATE & SLOT */
+.date-time {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 
+.slot-mini {
+  color: #7c3aed;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.date-mini {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.problem-text {
+  max-width: 200px;
+  color: #64748b;
+  font-style: italic;
+}
+
+/* RESPONSIVE */
 @media (max-width: 768px) {
-
-  :host {
-    padding: 10px;
+  .grid-form {
+    grid-template-columns: 1fr;
   }
 
-  .panel {
-    margin: 10px 0;
-  }
-
-  .message {
-    max-width: 100%;
-    padding: 20px;
-  }
-
-  table {
-    min-width: 500px;
-  }
-
-  th,
-  td {
-    padding: 10px;
-    font-size: 13px;
-  }
-
-  .doc-img {
-    width: 50px;
-    height: 50px;
-  }
-
-}
-
-
-
-/* Small Mobile */
-
-@media (max-width: 480px) {
-
-  .panel-heading h2 {
+  .panel-header h2 {
     font-size: 18px;
   }
 
-  th,
-  td {
-    font-size: 12px;
-    padding: 8px;
+  .modern-table th,
+  .modern-table td {
+    padding: 12px;
+    font-size: 13px;
   }
-
-  .doc-img {
-    width: 40px;
-    height: 40px;
-  }
-
 }
