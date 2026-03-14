@@ -151,6 +151,8 @@
 }
 
 .dashboard-card {
+  display: block;
+  text-decoration: none;
   border-radius: 22px;
   padding: 22px;
   color: #ffffff;
@@ -159,6 +161,8 @@
 }
 
 .dashboard-card:hover {
+  text-decoration: none;
+  color: #ffffff;
   transform: translateY(-4px);
   box-shadow: 0 20px 34px rgba(15, 23, 42, 0.16);
 }

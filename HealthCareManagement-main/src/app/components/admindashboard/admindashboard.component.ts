@@ -15,6 +15,7 @@ interface DashboardCard {
   suffix: string;
   count$: Observable<number>;
   cardClass: string;
+  route: string;
 }
 
 @Component({
@@ -102,42 +103,48 @@ export class AdmindashboardComponent implements OnInit {
         icon: 'fa fa-user',
         suffix: 'users',
         count$: this.usersCount$,
-        cardClass: 'users-card'
+        cardClass: 'users-card',
+        route: '/userlist'
       },
       {
         title: 'Total Doctors',
         icon: 'fa fa-user-md',
         suffix: 'doctors',
         count$: this.doctorsCount$,
-        cardClass: 'doctors-card'
+        cardClass: 'doctors-card',
+        route: '/doctorlist'
       },
       {
         title: 'Total Slots',
         icon: 'fa fa-calendar',
         suffix: 'slots available',
         count$: this.slotsCount$,
-        cardClass: 'slots-card'
+        cardClass: 'slots-card',
+        route: '/checkslots'
       },
       {
         title: 'Total Patients',
         icon: 'fa fa-user-o',
         suffix: 'patients',
         count$: this.patientsCount$,
-        cardClass: 'patients-card'
+        cardClass: 'patients-card',
+        route: '/patientlist'
       },
       {
         title: 'Prescriptions',
         icon: 'fa fa-sticky-note',
         suffix: 'medications',
         count$: this.prescriptionsCount$,
-        cardClass: 'prescriptions-card'
+        cardClass: 'prescriptions-card',
+        route: '/prescriptionlist'
       },
       {
         title: 'Appointments',
         icon: 'fa fa-check',
         suffix: 'appointments',
         count$: this.appointmentsCount$,
-        cardClass: 'appointments-card'
+        cardClass: 'appointments-card',
+        route: '/appointments'
       }
     ];
   }

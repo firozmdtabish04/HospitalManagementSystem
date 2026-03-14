@@ -28,13 +28,12 @@
 
   <main class="dashboard-content">
     <div class="topbar">
-      <button type="button" class="menu-toggle" (click)="toggleMenu()">
-        <i class="fa fa-bars" aria-hidden="true"></i>
-      </button>
-
       <div class="topbar-text">
         <h1>Welcome to HealthCare Management System Admin Dashboard</h1>
-        <p>Manage doctors, users, appointments, prescriptions, and overall platform operations.</p>
+        <p>
+          Manage doctors, users, appointments, prescriptions, and overall
+          platform operations.
+        </p>
       </div>
     </div>
 
@@ -42,14 +41,16 @@
       <div>
         <h2>Welcome, {{ loggedUser }}</h2>
         <p>
-          This dashboard gives you a centralized overview of your healthcare management system.
+          This dashboard gives you a centralized overview of your healthcare
+          management system.
         </p>
       </div>
     </section>
 
     <section class="dashboard-grid">
-      <div
+      <a
         *ngFor="let card of dashboardCards; trackBy: trackByCard"
+        [routerLink]="card.route"
         class="dashboard-card"
         [ngClass]="card.cardClass"
       >
@@ -64,7 +65,7 @@
             <i [class]="card.icon" aria-hidden="true"></i>
           </div>
         </div>
-      </div>
+      </a>
     </section>
   </main>
 </div>
