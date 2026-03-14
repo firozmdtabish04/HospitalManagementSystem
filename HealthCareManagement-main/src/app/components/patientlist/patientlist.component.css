@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Mate+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap');
+
+.panel-body {
+  margin-left: 1%;
+  margin-right: 2%;
+}
+
+thead {
+  background-color: rgb(136, 96, 35);
+}
+
+table,
+td {
+  text-align: center;
+  align-items: center;
+  vertical-align: middle;
+}
+
+table,
+td,
+tr {
+  border: 1px solid rgb(163, 161, 161);
+  font-family: serif;
+  font-weight: bold;
+  font-style: normal;
+  font-size: large;
+}
+
+th {
+  text-transform: uppercase;
+  color: rgb(170, 44, 44);
+  font-family: Helvetica;
+  font-style: italic;
+  font-size: normal;
+}
+
+td {
+  text-transform: none;
+}
+
+.accepted {
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: rgb(30, 116, 30);
+  padding: 5px 10px 5px 10px;
+  color: rgb(192, 23, 23);
+  font-weight: bolder;
+}
+
+.pending {
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: rgb(196, 137, 28);
+  padding: 5px 10px 5px 10px;
+  color: rgb(190, 26, 26);
+  font-weight: bolder;
+}
+
+.rejected {
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: red;
+  padding: 5px 10px 5px 10px;
+  color: rgb(184, 26, 26);
+  font-weight: bolder;
+}
+
+.date-cover {
+  border-radius: 10px;
+  background-color: rgb(10, 15, 68);
+  padding: 5px 10px 5px 10px;
+  color: rgb(148, 23, 23);
+  font-weight: bolder;
+}
+
+.slotcover {
+  border-radius: 10px;
+  background-color: rgb(128, 44, 18);
+  padding: 5px 10px 5px 10px;
+  color: rgb(191, 29, 29);
+  font-weight: bolder;
+}

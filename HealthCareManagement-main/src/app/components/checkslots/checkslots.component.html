@@ -1,0 +1,132 @@
+<app-header></app-header>
+
+<div class="page-container">
+  <!-- BACK BUTTON -->
+  <div class="top-bar">
+    <button class="back-btn" routerLink="/userdashboard">← Back</button>
+  </div>
+
+  <!-- PAGE TITLE -->
+  <h1 class="heading">Available Booking Slots</h1>
+
+  <!-- SEARCH -->
+  <div class="search-container">
+    <input
+      type="text"
+      placeholder="Search Doctor Name..."
+      [(ngModel)]="doctorSearch"
+      class="search-box"
+    />
+
+    <input
+      type="text"
+      placeholder="Search Specialization..."
+      [(ngModel)]="specializationSearch"
+      class="search-box"
+    />
+  </div>
+
+  <!-- TABLE -->
+
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr style="background: none;">
+          <th>Date</th>
+          <th>Doctor</th>
+          <th>Specialization</th>
+          <th>FN Slot</th>
+          <th>Noon Slot</th>
+          <th>PM Slot</th>
+          <th>Patient Type</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let doctor of slots | async" [hidden]="!filterSlot(doctor)">
+          <!-- DATE -->
+          <td>
+            <span class="date-badge">
+              {{ doctor.date }}
+            </span>
+          </td>
+
+          <!-- NAME -->
+          <td>{{ doctor.doctorname }}</td>
+
+          <!-- SPECIALIZATION -->
+          <td>{{ doctor.specialization }}</td>
+
+          <!-- FN SLOT -->
+
+          <td>
+            <span *ngIf="doctor.amslot === 'empty'" class="badge no-slot">
+              No Slots
+            </span>
+
+            <span *ngIf="doctor.amstatus === 'booked'" class="badge booked">
+              Booked
+            </span>
+
+            <span
+              *ngIf="
+                doctor.amslot !== 'empty' && doctor.amstatus === 'unbooked'
+              "
+              class="badge available"
+            >
+              {{ doctor.amslot }}
+            </span>
+          </td>
+
+          <!-- NOON SLOT -->
+
+          <td>
+            <span *ngIf="doctor.noonslot === 'empty'" class="badge no-slot">
+              No Slots
+            </span>
+
+            <span *ngIf="doctor.noonstatus === 'booked'" class="badge booked">
+              Booked
+            </span>
+
+            <span
+              *ngIf="
+                doctor.noonslot !== 'empty' && doctor.noonstatus === 'unbooked'
+              "
+              class="badge available"
+            >
+              {{ doctor.noonslot }}
+            </span>
+          </td>
+
+          <!-- PM SLOT -->
+
+          <td>
+            <span *ngIf="doctor.pmslot === 'empty'" class="badge no-slot">
+              No Slots
+            </span>
+
+            <span *ngIf="doctor.pmstatus === 'booked'" class="badge booked">
+              Booked
+            </span>
+
+            <span
+              *ngIf="
+                doctor.pmslot !== 'empty' && doctor.pmstatus === 'unbooked'
+              "
+              class="badge available"
+            >
+              {{ doctor.pmslot }}
+            </span>
+          </td>
+
+          <!-- PATIENT TYPE -->
+
+          <td>{{ doctor.patienttype }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<app-footer></app-footer>

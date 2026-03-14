@@ -1,0 +1,379 @@
+@import url('https://fonts.googleapis.com/css2?family=Mate+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap');
+
+
+/* =========================
+   ROOT / PAGE
+========================= */
+
+:host {
+  display: block;
+  background: #f4f7fa;
+  min-height: 100vh;
+  font-family: 'Mate SC', serif;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+
+
+/* =========================
+   SEARCH CARD
+========================= */
+
+.message {
+
+  width: 100%;
+  max-width: 420px;
+
+  background: #ffffff;
+
+  padding: 25px;
+
+  margin: 20px auto;
+
+  border-radius: 15px;
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+
+
+/* =========================
+   FORM
+========================= */
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+input {
+
+  width: 100%;
+
+  padding: 12px;
+
+  border-radius: 8px;
+
+  border: 1px solid #ccc;
+
+  font-size: 15px;
+
+  box-sizing: border-box;
+
+  transition: 0.2s;
+}
+
+input:focus {
+  border-color: #3282b8;
+  outline: none;
+  box-shadow: 0 0 6px rgba(50, 130, 184, 0.4);
+}
+
+
+
+/* =========================
+   BUTTON
+========================= */
+
+.registerbtn {
+
+  width: 100%;
+
+  padding: 12px;
+
+  margin-top: 15px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: linear-gradient(45deg, #0f4c75, #3282b8);
+
+  color: white;
+
+  font-size: 16px;
+
+  cursor: pointer;
+}
+
+
+
+/* =========================
+   PANEL
+========================= */
+
+.panel {
+
+  width: 100%;
+
+  margin: 20px auto;
+
+  border-radius: 12px;
+
+  background: #ffffff;
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+
+  overflow: hidden;
+}
+
+
+
+/* =========================
+   PANEL HEADER
+========================= */
+
+.panel-heading {
+
+  padding: 18px;
+
+  background: linear-gradient(90deg, #0f4c75, #3282b8);
+
+  color: white;
+}
+
+.panel-heading h2 {
+
+  margin: 0;
+
+  font-family: 'Oswald', sans-serif;
+
+  text-align: center;
+
+  font-size: 22px;
+}
+
+
+
+/* =========================
+   PANEL BODY
+========================= */
+
+.panel-body {
+
+  padding: 15px;
+
+  overflow-x: auto;
+}
+
+
+
+/* =========================
+   TABLE
+========================= */
+
+table {
+
+  width: 100%;
+
+  border-collapse: collapse;
+
+  min-width: 700px;
+}
+
+
+
+/* TABLE HEADER */
+
+thead {
+  background: linear-gradient(90deg, #8b0000, #b22222);
+}
+
+th {
+
+  padding: 14px;
+
+  color: white;
+
+  font-size: 15px;
+
+  text-transform: uppercase;
+}
+
+
+
+/* TABLE BODY */
+
+td {
+
+  padding: 12px;
+
+  border-bottom: 1px solid #ddd;
+
+  font-size: 15px;
+
+  text-align: center;
+}
+
+
+
+/* =========================
+   IMAGE
+========================= */
+
+.doc-img,
+.bloodimg {
+
+  width: 70px;
+  height: 70px;
+
+  border-radius: 50%;
+
+  border: 3px solid #3282b8;
+
+  object-fit: cover;
+}
+
+
+
+/* =========================
+   STATUS
+========================= */
+
+.accepted {
+
+  background: linear-gradient(45deg, #28a745, #218838);
+
+  color: white;
+
+  padding: 6px 14px;
+
+  border-radius: 20px;
+}
+
+.pending {
+
+  background: linear-gradient(45deg, #ff9800, #e68900);
+
+  color: white;
+
+  padding: 6px 14px;
+
+  border-radius: 20px;
+}
+
+.rejected {
+
+  background: linear-gradient(45deg, #dc3545, #b02a37);
+
+  color: white;
+
+  padding: 6px 14px;
+
+  border-radius: 20px;
+}
+
+
+
+/* =========================
+   BADGES
+========================= */
+
+.date-cover {
+
+  background: linear-gradient(45deg, #0d47a1, #1976d2);
+
+  color: white;
+
+  padding: 6px 12px;
+
+  border-radius: 10px;
+}
+
+.slotcover {
+
+  background: linear-gradient(45deg, #6a1b9a, #8e24aa);
+
+  color: white;
+
+  padding: 6px 12px;
+
+  border-radius: 10px;
+}
+
+
+
+/* =========================
+   RESPONSIVE BREAKPOINTS
+========================= */
+
+
+/* Tablet */
+
+@media (max-width: 992px) {
+
+  .panel-heading h2 {
+    font-size: 20px;
+  }
+
+  table {
+    min-width: 600px;
+  }
+
+}
+
+
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+  :host {
+    padding: 10px;
+  }
+
+  .panel {
+    margin: 10px 0;
+  }
+
+  .message {
+    max-width: 100%;
+    padding: 20px;
+  }
+
+  table {
+    min-width: 500px;
+  }
+
+  th,
+  td {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .doc-img {
+    width: 50px;
+    height: 50px;
+  }
+
+}
+
+
+
+/* Small Mobile */
+
+@media (max-width: 480px) {
+
+  .panel-heading h2 {
+    font-size: 18px;
+  }
+
+  th,
+  td {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .doc-img {
+    width: 40px;
+    height: 40px;
+  }
+
+}

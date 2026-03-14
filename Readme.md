@@ -1,42 +1,24 @@
-Hospital Management System 
+# HealthCareManagement-
 
 
-https://github.com/firozmdtabish04/HospitalManagementSystem.git
 
-🏥 Hospital Management System
-📖 Overview
+![image]( https://github.com/firozmdtabish04/HealthCareManagement-/blob/c5c47a9320798b7cf71664e4658549141d0a6e30/PHOTO/Screenshot%20(1254).png)
+![image](https://github.com/firozmdtabish04/HealthCareManagement-/blob/c5c47a9320798b7cf71664e4658549141d0a6e30/PHOTO/Screenshot%20(1255).png)
+![image](https://github.com/firozmdtabish04/HealthCareManagement-/blob/c5c47a9320798b7cf71664e4658549141d0a6e30/PHOTO/Screenshot%20(1256).png)
+![image](https://github.com/firozmdtabish04/HealthCareManagement-/blob/c5c47a9320798b7cf71664e4658549141d0a6e30/PHOTO/Screenshot%20(1251).png)
+![image](https://github.com/firozmdtabish04/HealthCareManagement-/blob/c5c47a9320798b7cf71664e4658549141d0a6e30/PHOTO/Screenshot%20(1250).png)
 
-The Hospital Management System (HMS) is a full-stack Spring Boot application designed to streamline hospital operations such as patient registration, appointment scheduling, doctor management, and medicine tracking. It provides separate modules for doctors, administrators, and patients, ensuring efficient and secure management of healthcare data.
 
-⚙️ Features
-
-👨‍⚕️ Doctor Module
-
-Manage patient appointments.
-
-Prescribe and track medicines.
-
-🧑‍💻 Admin Module
-
-Add and manage users, doctors, and services.
-
-View all hospital records and analytics.
-
-🧍 Patient Module
-
-Book appointments with doctors.
-
-View prescribed medicines and appointment history.
-
-🧾 Hospital Services
-
-CRUD operations for available medical services.
-
-🔐 User Authentication
-
-Login and role-based access (Admin, Doctor, Patient).
-
-📦 RESTful API Design
-
-Supports easy frontend or mobile app integration.
-ffcghjkl;,.
+🧰 Tech Stack
+Layer	Technology	Purpose
+Frontend	Angular	User interface, forms, dashboards
+Backend	Spring Boot (Java)	Business logic & REST APIs
+API Type	REST API	Communication between frontend & backend
+Database	MySQL	Store users, patients, records
+ORM	Hibernate / JPA	Database interaction
+Security	Spring Security	Authentication & role-based access
+Auth Type	JWT	Secure login & authorization
+Build Tool	Maven	Dependency management
+Frontend Tools	HTML, CSS, TypeScript	UI development
+Version Control	Git & GitHub	Source code management
+Server	Apache Tomcat	Application deployment
