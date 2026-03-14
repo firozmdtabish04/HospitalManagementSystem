@@ -1,0 +1,209 @@
+/* ================= NAVBAR ================= */
+
+.navbar-custom {
+
+  background: linear-gradient(135deg, #0f4c4c, #0d7377);
+
+  padding: 12px 25px;
+
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+
+  transition: all 0.3s ease;
+
+}
+
+
+/* ================= BRAND ================= */
+
+.navbar-brand {
+
+  color: white;
+
+  font-weight: bold;
+
+  font-size: 22px;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+
+}
+
+.navbar-brand:hover {
+
+  color: #14a098;
+
+  transform: scale(1.05);
+
+}
+
+
+/* ================= NAV LINKS ================= */
+
+.nav-link {
+
+  color: white;
+
+  margin-left: 18px;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+
+  padding: 6px 12px;
+
+  border-radius: 8px;
+
+  border: 2px solid transparent;
+
+  position: relative;
+
+}
+
+
+/* RED BORDER HOVER */
+.nav-link:hover {
+
+  color: #fbfdfd;
+
+  border: 2px solid red;
+
+  background-color: rgba(255, 255, 255, 0.05);
+
+  transform: translateY(-2px);
+
+}
+
+
+/* UNDERLINE ANIMATION */
+.nav-link::after {
+
+  content: "";
+
+  position: absolute;
+
+  width: 0;
+
+  height: 2px;
+
+  bottom: -4px;
+
+  left: 50%;
+
+  background-color: red;
+
+  transition: all 0.3s ease;
+
+}
+
+.nav-link:hover::after {
+
+  width: 100%;
+
+  left: 0;
+
+}
+
+
+/* ACTIVE LINK */
+.nav-link.active {
+
+  border: 2px solid red;
+
+  color: #14a098;
+
+}
+
+
+/* ================= USER INFO ================= */
+
+.user-info {
+
+  color: white;
+
+  margin-left: 20px;
+
+  font-weight: 500;
+
+}
+
+
+/* ================= LOGOUT BUTTON ================= */
+
+.logout-btn {
+
+  background: linear-gradient(135deg, #14a098, #0d7377);
+
+  border: 2px solid transparent;
+
+  color: white;
+
+  padding: 6px 18px;
+
+  margin-left: 15px;
+
+  border-radius: 25px;
+
+  transition: all 0.3s ease;
+
+  font-weight: 500;
+
+}
+
+
+/* RED BORDER ON HOVER */
+.logout-btn:hover {
+
+  background: transparent;
+
+  border: 2px solid red;
+
+  color: white;
+
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
+
+  transform: translateY(-2px);
+
+}
+
+
+/* ================= TOGGLER ================= */
+
+.navbar-toggler {
+
+  border: 2px solid white;
+
+  border-radius: 8px;
+
+}
+
+.navbar-toggler:hover {
+
+  border-color: red;
+
+}
+
+.navbar-toggler-icon {
+
+  filter: invert(1);
+
+}
+
+
+/* ================= MOBILE ================= */
+
+@media(max-width: 768px) {
+
+  .nav-link {
+
+    margin-top: 8px;
+
+  }
+
+  .logout-btn {
+
+    margin-top: 10px;
+
+  }
+
+}

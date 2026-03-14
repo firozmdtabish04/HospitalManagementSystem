@@ -1,0 +1,169 @@
+/* ================= HERO ================= */
+
+.services-hero {
+
+    height: 70vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    color: white;
+
+    background: linear-gradient(135deg, #0f4c4c, #0d7377);
+
+    border-bottom-left-radius: 80px;
+
+    border-bottom-right-radius: 80px;
+
+}
+
+.services-hero-h1 {
+
+    font-size: 3.2rem;
+
+    font-weight: bold;
+
+}
+
+.services-hero p {
+
+    font-size: 1.2rem;
+
+    margin-top: 10px;
+
+}
+
+
+
+/* ================= GRID ================= */
+
+.services {
+
+    margin-top: 50px;
+
+}
+
+.services-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+
+    gap: 25px;
+
+}
+
+
+
+/* ================= CARD ================= */
+
+.service-card {
+
+    background: white;
+
+    border-radius: 15px;
+
+    padding: 30px;
+
+    text-align: center;
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+
+    transition: 0.3s;
+
+}
+
+.service-card:hover {
+
+    transform: translateY(-10px);
+
+    box-shadow: 0 15px 35px rgba(13, 115, 119, 0.3);
+
+}
+
+
+
+/* ICON */
+
+.service-icon {
+
+    font-size: 40px;
+
+    color: #14a098;
+
+    margin-bottom: 15px;
+
+}
+
+
+
+/* TEXT */
+
+.service-card h4 {
+
+    color: #0d7377;
+
+    font-weight: bold;
+
+}
+
+.service-card p {
+
+    color: #555;
+
+}
+
+
+
+/* BUTTON */
+
+.btn-book {
+
+    margin-top: 15px;
+
+    padding: 10px 20px;
+
+    border: none;
+
+    border-radius: 25px;
+
+    background: linear-gradient(135deg, #14a098, #0d7377);
+
+    color: white;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+
+}
+
+.btn-book:hover {
+
+    background: linear-gradient(135deg, #0d7377, #14a098);
+
+}
+
+
+
+/* ================= MOBILE ================= */
+
+@media(max-width:768px) {
+
+    .services-hero {
+
+        height: 50vh;
+
+    }
+
+    .services-hero-h1 {
+
+        font-size: 2rem;
+
+    }
+
+}

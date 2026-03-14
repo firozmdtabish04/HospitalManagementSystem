@@ -1,0 +1,224 @@
+<app-header></app-header>
+
+<div class="container">
+  <h2 class="textual"><i class="fa fa-user-md"></i> New Doctor</h2>
+
+  <small class="info-text">
+    On adding a doctor, he will be approved by default
+  </small>
+
+  <form #addDoctorform="ngForm" (ngSubmit)="addDoctor()">
+    <!-- Doctor Name -->
+    <div class="form-group">
+      <label for="doctorname">
+        Doctor Name <span class="required">*</span>
+      </label>
+
+      <input
+        type="text"
+        id="doctorname"
+        name="doctorname"
+        class="form-control"
+        placeholder="Enter doctor name"
+        [(ngModel)]="doctor.doctorname"
+        required
+        #doctorname="ngModel"
+      />
+
+      <small class="error" *ngIf="doctorname.invalid && doctorname.touched">
+        Doctor name is required
+      </small>
+    </div>
+
+    <!-- Email -->
+    <div class="form-group">
+      <label for="email"> Email Address <span class="required">*</span> </label>
+
+      <input
+        type="email"
+        id="email"
+        name="email"
+        class="form-control"
+        placeholder="Enter email"
+        [(ngModel)]="doctor.email"
+        required
+        email
+        #email="ngModel"
+      />
+
+      <small class="error" *ngIf="email.invalid && email.touched">
+        Valid email required
+      </small>
+    </div>
+
+    <!-- Mobile -->
+    <div class="form-group">
+      <label for="mobile">
+        Mobile Number <span class="required">*</span>
+      </label>
+
+      <input
+        type="tel"
+        id="mobile"
+        name="mobile"
+        class="form-control"
+        placeholder="Enter mobile number"
+        [(ngModel)]="doctor.mobile"
+        required
+        pattern="[0-9]{10}"
+        #mobile="ngModel"
+      />
+
+      <small class="error" *ngIf="mobile.invalid && mobile.touched">
+        Enter valid 10 digit mobile number
+      </small>
+    </div>
+
+    <!-- Gender (FIXED VERSION) -->
+    <div class="form-group">
+      <label for="gender"> Gender <span class="required">*</span> </label>
+
+      <select
+        id="gender"
+        name="gender"
+        class="form-control"
+        [(ngModel)]="doctor.gender"
+        required
+        #gender="ngModel"
+      >
+        <option value="" disabled selected>Select Gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Others">Others</option>
+      </select>
+
+      <small class="error" *ngIf="gender.invalid && gender.touched">
+        Gender is required
+      </small>
+    </div>
+
+    <!-- Experience -->
+    <div class="form-group">
+      <label for="experience">
+        Experience (years) <span class="required">*</span>
+      </label>
+
+      <input
+        type="number"
+        id="experience"
+        name="experience"
+        class="form-control"
+        placeholder="Enter experience"
+        [(ngModel)]="doctor.experience"
+        required
+        min="0"
+        #experience="ngModel"
+      />
+
+      <small class="error" *ngIf="experience.invalid && experience.touched">
+        Experience is required
+      </small>
+    </div>
+
+    <!-- Specialization -->
+    <div class="form-group">
+      <label for="specialization">
+        Specialization <span class="required">*</span>
+      </label>
+
+      <input
+        type="text"
+        id="specialization"
+        name="specialization"
+        class="form-control"
+        placeholder="Enter specialization"
+        [(ngModel)]="doctor.specialization"
+        required
+        #specialization="ngModel"
+      />
+
+      <small
+        class="error"
+        *ngIf="specialization.invalid && specialization.touched"
+      >
+        Specialization is required
+      </small>
+    </div>
+
+    <!-- Previous Hospital -->
+    <div class="form-group">
+      <label for="previoushospital">
+        Previous Hospital <span class="required">*</span>
+      </label>
+
+      <input
+        type="text"
+        id="previoushospital"
+        name="previoushospital"
+        class="form-control"
+        placeholder="Enter hospital"
+        [(ngModel)]="doctor.previoushospital"
+        required
+        #previoushospital="ngModel"
+      />
+
+      <small
+        class="error"
+        *ngIf="previoushospital.invalid && previoushospital.touched"
+      >
+        Hospital name required
+      </small>
+    </div>
+
+    <!-- Address -->
+    <div class="form-group">
+      <label for="address"> Address <span class="required">*</span> </label>
+
+      <input
+        type="text"
+        id="address"
+        name="address"
+        class="form-control"
+        placeholder="Enter address"
+        [(ngModel)]="doctor.address"
+        required
+        #address="ngModel"
+      />
+
+      <small class="error" *ngIf="address.invalid && address.touched">
+        Address required
+      </small>
+    </div>
+
+    <!-- Password -->
+    <div class="form-group">
+      <label for="password"> Password <span class="required">*</span> </label>
+
+      <input
+        type="password"
+        id="password"
+        name="password"
+        class="form-control"
+        placeholder="Enter password"
+        [(ngModel)]="doctor.password"
+        required
+        #password="ngModel"
+      />
+
+      <small class="error" *ngIf="password.invalid && password.touched">
+        Password required
+      </small>
+    </div>
+
+    <!-- Submit -->
+    <button
+      type="submit"
+      class="btn registerbtn"
+      [disabled]="addDoctorform.invalid"
+    >
+      Add Doctor
+    </button>
+  </form>
+</div>
+
+<app-footer></app-footer>

@@ -1,0 +1,227 @@
+<app-header></app-header>
+
+<div class="panel panel-primary">
+
+  <div class="panel-heading">
+    <h2 class="heading-text">
+      Patient List
+    </h2>
+  </div>
+
+
+  <div class="panel-body">
+
+    <table class="table table-bordered">
+
+      <thead>
+        <tr>
+          <th>Identity</th>
+          <th>Patient ID</th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Slot</th>
+          <th>Date</th>
+          <th>Problem</th>
+          <th>Approval</th>
+          <th>Admission</th>
+        </tr>
+      </thead>
+
+
+      <tbody>
+
+        <tr *ngFor="let patient of patients$ | async">
+
+          <!-- Identity -->
+          <td>
+
+            <img
+              *ngIf="patient.gender?.toLowerCase() === 'male'"
+              class="user-img"
+              src="assets/img/maleuser.png"
+              width="80"
+              height="80"
+              alt="Male Patient"
+            />
+
+            <img
+              *ngIf="patient.gender?.toLowerCase() === 'female'"
+              class="user-img"
+              src="assets/img/femaleuser.png"
+              width="80"
+              height="80"
+              alt="Female Patient"
+            />
+
+          </td>
+
+
+          <!-- Patient ID -->
+          <td>
+            <div class="date-cover">
+              {{ patient.patientid }}
+            </div>
+          </td>
+
+
+          <!-- Name -->
+          <td>
+            {{ patient.patientname }}
+          </td>
+
+
+          <!-- Age -->
+          <td>
+            {{ patient.age }} years
+          </td>
+
+
+          <!-- Slot -->
+          <td>
+
+            <ng-container *ngIf="slots$ | async as slots">
+
+              <ng-container *ngFor="let slot of slots">
+
+                <div *ngIf="
+                    patient.slot === 'AM slot'
+                    && slot.amstatus === 'booked'
+                    && patient.date === slot.date">
+
+                  {{ slot.amslot }}
+
+                </div>
+
+
+                <div *ngIf="
+                    patient.slot === 'Noon slot'
+                    && slot.noonstatus === 'booked'
+                    && patient.date === slot.date">
+
+                  {{ slot.noonslot }}
+
+                </div>
+
+
+                <div *ngIf="
+                    patient.slot === 'PM slot'
+                    && slot.pmstatus === 'booked'
+                    && patient.date === slot.date">
+
+                  {{ slot.pmslot }}
+
+                </div>
+
+              </ng-container>
+
+            </ng-container>
+
+          </td>
+
+
+          <!-- Date -->
+          <td>
+            {{ patient.date }}
+          </td>
+
+
+          <!-- Problem -->
+          <td>
+            {{ patient.problem }}
+          </td>
+
+
+          <!-- Approval -->
+          <td>
+
+            <!-- Admin View -->
+            <ng-container *ngIf="currRole.toLowerCase() === 'admin'">
+
+              <span class="accepted"
+                *ngIf="patient.appointmentstatus === 'accept'">
+                Accepted
+              </span>
+
+              <span class="pending"
+                *ngIf="patient.appointmentstatus === 'false'">
+                Pending
+              </span>
+
+              <span class="rejected"
+                *ngIf="patient.appointmentstatus === 'reject'">
+                Rejected
+              </span>
+
+            </ng-container>
+
+
+            <!-- Doctor View -->
+            <ng-container *ngIf="currRole.toLowerCase() === 'doctor'">
+
+              <button
+                *ngIf="patient.appointmentstatus === 'false'"
+                (click)="acceptRequest(patient.slot)"
+                class="accepted">
+
+                Accept
+
+              </button>
+
+
+              <button
+                *ngIf="patient.appointmentstatus === 'false'"
+                (click)="rejectRequest(patient.slot)"
+                class="rejected">
+
+                Reject
+
+              </button>
+
+
+              <span class="accepted"
+                *ngIf="patient.appointmentstatus === 'accept'">
+                Accepted
+              </span>
+
+
+              <span class="rejected"
+                *ngIf="patient.appointmentstatus === 'reject'">
+                Rejected
+              </span>
+
+            </ng-container>
+
+          </td>
+
+
+          <!-- Admission -->
+          <td>
+
+            <span class="accepted"
+              *ngIf="patient.admissionstatus === 'accept'">
+              Admitted
+            </span>
+
+            <span class="pending"
+              *ngIf="patient.admissionstatus === 'false'">
+              Pending
+            </span>
+
+            <span class="rejected"
+              *ngIf="patient.admissionstatus === 'reject'">
+              Not Admitted
+            </span>
+
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+<app-footer></app-footer>

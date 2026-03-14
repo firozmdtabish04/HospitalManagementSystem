@@ -1,0 +1,186 @@
+<app-header></app-header>
+
+<!-- PROFILE CARD -->
+<div class="profile-row" *ngIf="profileDetails | async as users">
+  <div *ngFor="let user of users" class="blood-card">
+    <!-- PROFILE IMAGE -->
+    <div class="profile-row" *ngIf="users">
+      <div *ngFor="let user of users" class="profile-card">
+        <!-- PROFILE HEADER -->
+        <div class="profile-header">
+          <div class="avatar">
+            <img
+              *ngIf="user.gender?.toLowerCase() === 'male'"
+              src="assets/img/maleuser.png"
+            />
+
+            <img
+              *ngIf="user.gender?.toLowerCase() === 'female'"
+              src="assets/img/femaleuser.png"
+            />
+          </div>
+
+          <h3 class="username">{{ user.username }}</h3>
+          <p class="email">{{ user.email }}</p>
+        </div>
+
+        <!-- PROFILE DETAILS -->
+
+        <div class="profile-details">
+          <div class="detail-row">
+            <i class="fa fa-phone"></i>
+            <span>{{ user.mobile }}</span>
+          </div>
+
+          <div class="detail-row">
+            <i class="fa fa-user"></i>
+            <span>{{ user.gender }}</span>
+          </div>
+
+          <div class="detail-row">
+            <i class="fa fa-calendar"></i>
+            <span>{{ user.age }} Years</span>
+          </div>
+        </div>
+
+        <!-- ACTION BUTTON -->
+
+        <div class="profile-actions">
+          <button class="edit-btn" (click)="editProfile()">
+            <i class="fa fa-edit"></i>
+            Edit Profile
+          </button>
+        </div>
+
+        <!-- SUCCESS MESSAGE -->
+
+        <div *ngIf="temp === true" class="success-msg">
+          Profile Updated Successfully!
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE UPDATE FORM -->
+
+    <div class="profile-container" id="profileform">
+      <h3 class="textual">Update User Profile</h3>
+
+      <form #Updateform="ngForm" (ngSubmit)="updateUserProfile()">
+        <small *ngIf="temp === false" class="info-msg">
+          Dear {{ loggedUser }}, update your profile here
+        </small>
+
+        <small *ngIf="temp === true" class="success-msg">
+          Profile Updated Successfully !!!
+        </small>
+
+        <!-- EMAIL -->
+        <div class="form-group">
+          <label>Email *</label>
+
+          <input
+            placeholder="enter your email.."
+            type="email"
+            class="form-control"
+            name="email"
+            [(ngModel)]="user.email"
+            required
+            pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
+            #email="ngModel"
+          />
+
+          <small
+            class="error-msg"
+            *ngIf="email.errors?.pattern && email.touched"
+          >
+            Invalid Email ID
+          </small>
+        </div>
+
+        <!-- USERNAME -->
+        <div class="form-group">
+          <label>User Name *</label>
+
+          <input
+            placeholder="enter your username.."
+            type="text"
+            class="form-control"
+            name="username"
+            [(ngModel)]="user.username"
+            required
+          />
+        </div>
+
+        <!-- GENDER -->
+        <div class="form-group">
+          <label>Gender *</label>
+
+          <select
+            class="form-control"
+            name="gender"
+            [(ngModel)]="user.gender"
+            required
+          >
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Others">Others</option>
+          </select>
+        </div>
+
+        <!-- AGE -->
+        <div class="form-group">
+          <label>Age *</label>
+
+          <input
+            placeholder="enter your age.."
+            type="number"
+            class="form-control"
+            name="age"
+            [(ngModel)]="user.age"
+            required
+          />
+        </div>
+
+        <!-- MOBILE -->
+        <div class="form-group">
+          <label>Mobile Number *</label>
+
+          <input
+            placeholder="contact no."
+            type="tel"
+            class="form-control"
+            name="mobile"
+            [(ngModel)]="user.mobile"
+            required
+          />
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="form-group">
+          <label>Password *</label>
+
+          <input
+            placeholder="********"
+            type="password"
+            class="form-control"
+            name="pwd"
+            [(ngModel)]="user.password"
+            required
+          />
+        </div>
+
+        <!-- SUBMIT BUTTON -->
+        <button
+          type="submit"
+          class="btn registerbtn"
+          [disabled]="Updateform.invalid"
+        >
+          Update Profile
+        </button>
+      </form>
+    </div>
+
+    <app-footer></app-footer>
+  </div>
+</div>

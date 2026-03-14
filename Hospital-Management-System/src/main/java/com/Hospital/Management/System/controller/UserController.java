@@ -1,7 +1,7 @@
 package com.Hospital.Management.System.controller;
 
 import com.Hospital.Management.System.entity.User;
-import com.Hospital.Management.System.service.UserService;
+import com.Hospital.Management.System.service.UserRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,7 @@ import java.util.Optional;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserRegistrationService userService;
 
     //(Signup / Register User)
     @PostMapping("/signup")

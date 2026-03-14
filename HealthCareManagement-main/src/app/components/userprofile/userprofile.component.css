@@ -1,0 +1,219 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap');
+
+
+/* PROFILE CARD ROW */
+
+.profile-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+}
+
+
+/* PROFILE CARD */
+
+.profile-card {
+  width: 420px;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  transition: 0.3s;
+}
+
+.profile-card:hover {
+  transform: translateY(-6px);
+}
+
+
+/* PROFILE HEADER */
+
+.profile-header {
+  background: linear-gradient(135deg, #13534e, #23ad9b);
+  padding: 30px;
+  text-align: center;
+  color: white;
+}
+
+
+/* PROFILE IMAGE */
+
+.avatar img {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  border: 4px solid white;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+
+/* USERNAME */
+
+.username {
+  margin: 5px 0;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.email {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+
+/* PROFILE DETAILS */
+
+.profile-details {
+  padding: 20px;
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+
+.detail-row i {
+  color: #13534e;
+  width: 20px;
+}
+
+
+/* BUTTON AREA */
+
+.profile-actions {
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+
+/* EDIT BUTTON */
+
+.edit-btn {
+  background: #13534e;
+  color: white;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.edit-btn:hover {
+  background: #0e3f3b;
+}
+
+
+/* SUCCESS MESSAGE */
+
+.success-msg {
+  text-align: center;
+  color: green;
+  font-weight: bold;
+  padding-bottom: 10px;
+}
+
+
+/* PROFILE FORM */
+
+.profile-container {
+  max-width: 600px;
+  padding: 40px;
+  margin: 40px auto;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+
+/* FORM HEADING */
+
+.textual {
+  text-align: center;
+  font-family: 'Oswald', sans-serif;
+  color: #40550f;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+
+/* FORM GROUP */
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  font-weight: bold;
+}
+
+
+/* INPUTS */
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-top: 5px;
+}
+
+.form-control:focus {
+  border-color: #13534e;
+  outline: none;
+  box-shadow: 0 0 5px rgba(19, 83, 78, 0.4);
+}
+
+
+/* UPDATE BUTTON */
+
+.registerbtn {
+  display: block;
+  margin: 20px auto;
+  padding: 8px 30px;
+  border-radius: 20px;
+  border: 1px solid black;
+  background: transparent;
+  transition: 0.3s;
+}
+
+.registerbtn:hover {
+  background: #174e4e;
+  color: white;
+  cursor: pointer;
+}
+
+
+/* FORM MESSAGES */
+
+.error-msg {
+  color: red;
+}
+
+.info-msg {
+  color: navy;
+}
+
+
+/* MOBILE RESPONSIVE */
+
+@media(max-width:768px) {
+
+  .profile-card {
+    width: 90%;
+  }
+
+  .profile-container {
+    margin: 20px;
+    padding: 25px;
+  }
+
+  .detail-row {
+    justify-content: center;
+  }
+
+}
