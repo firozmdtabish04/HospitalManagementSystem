@@ -1,134 +1,95 @@
 <app-header></app-header>
-<div class="menu">
-  <ul>
-    <li>
-      <div class="card" style="width: 200px; background-color: #23ad9b">
-        <div id="userimg" style="width: 150px">
-          <img
-            *ngIf="gender === 'male' || gender === 'Male'"
-            class="card-img-top"
-            [src]="'assets/img/maledoctor.png'"
-            alt="Card image"
-            style="width: 100%"
-          />
-          <img
-            *ngIf="gender === 'female' || gender === 'Female'"
-            class="card-img-top"
-            [src]="'assets/img/femaledoctor.png'"
-            alt="Card image"
-            style="width: 100%"
-          />
-        </div>
-        <div style="margin-left: auto; margin-right: auto" class="card-body">
-          <h4 style="font-weight: bold" class="card-title">
-            <b>{{ name }}</b>
-          </h4>
-        </div>
-      </div>
-    </li>
-    <li>
-      <a
-        ><i class="fa fa-edit" aria-hidden="true"></i
-        ><label [routerLink]="['/editdoctorprofile']" style="cursor: pointer"
-          >&nbsp; Edit Profile</label
-        ></a
-      >
-    </li>
-    <li>
-      <a
-        ><i class="fa fa-check" aria-hidden="true"></i
-        ><label [routerLink]="['/approvalstatus']" style="cursor: pointer"
-          >&nbsp; Approval status</label
-        ></a
-      >
-    </li>
-    <li>
-      <a
-        ><i class="fa fa-clock-o" aria-hidden="true"></i
-        ><label [routerLink]="['/scheduleslots']" style="cursor: pointer"
-          >&nbsp; Your schedule</label
-        ></a
-      >
-    </li>
-    <li>
-      <a
-        ><i class="fa fa-user-md" aria-hidden="true"></i
-        ><label [routerLink]="['/doctorlist']" style="cursor: pointer"
-          >&nbsp; Doctor List</label
-        ></a
-      >
-    </li>
-    <li>
-      <a
-        ><i class="fa fa-user-o" aria-hidden="true"></i
-        ><label [routerLink]="['/patientlist']" style="cursor: pointer"
-          >&nbsp; Patients</label
-        ></a
-      >
-    </li>
-    <!-- <li>
-      <a
-        ><i class="fa fa-calendar" aria-hidden="true"></i
-        ><label [routerLink]="['/appointments']" style="cursor: pointer"
-          >&nbsp; Appointments</label
-        ></a
-      >
-    </li> -->
-    <li>
-      <a
-        ><i class="fa fa-sticky-note-o" aria-hidden="true"></i
-        ><label [routerLink]="['/addprescription']" style="cursor: pointer"
-          >&nbsp; Add Prescriptions</label
-        ></a
-      >
-    </li>
-  </ul>
-</div>
 
-<div class="container">
-  <div class="row">
-    <div
-      style="
-        color: maroon;
-        font-weight: bolder;
-        font-family: aladin;
-        letter-spacing: 1px;
-        font-size: 40px;
-        margin: 0% 0% 1% 9%;
-      "
-    >
-      <b>Welcome to HealthCare Management System Doctor Dashboard</b>
+<div class="dashboard-container">
+  <div class="menu-sidebar">
+    <ul>
+      <li>
+        <div class="profile-card">
+          <div class="userimg-wrapper">
+            <img *ngIf="gender?.toLowerCase() === 'male'" class="profile-img" [src]="'assets/img/maledoctor.png'"
+              alt="Male Doctor" />
+            <img *ngIf="gender?.toLowerCase() === 'female'" class="profile-img" [src]="'assets/img/femaledoctor.png'"
+              alt="Female Doctor" />
+          </div>
+          <div class="profile-info">
+            <h4><b>{{ name }}</b></h4>
+            <span class="role-tag">Specialist</span>
+          </div>
+        </div>
+      </li>
+      <li>
+        <a [routerLink]="['/editdoctorprofile']" class="menu-link">
+          <i class="fa fa-edit"></i> <span>Edit Profile</span>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/approvalstatus']" class="menu-link">
+          <i class="fa fa-check"></i> <span>Approval status</span>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/scheduleslots']" class="menu-link">
+          <i class="fa fa-clock-o"></i> <span>Your schedule</span>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/doctorlist']" class="menu-link">
+          <i class="fa fa-user-md"></i> <span>Doctor List</span>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/patientlist']" class="menu-link">
+          <i class="fa fa-user-o"></i> <span>Patients</span>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/addprescription']" class="menu-link">
+          <i class="fa fa-sticky-note-o"></i> <span>Add Prescriptions</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="main-content">
+    <div class="welcome-banner">
+      <h2>Welcome to HealthCare Management System</h2>
+      <p>Doctor Dashboard Overview</p>
     </div>
-    <div class="dashboard-card">
-      <div class="circle"><i id="icons" class="fa fa-sticky-note"></i></div>
-      <div class="text">Prescriptions</div>
-      <div class="sub-text" *ngFor="let prescription of prescriptions | async">
-        {{ prescription }} medications
+
+    <div class="stats-grid">
+      <div class="stat-card prescription-card">
+        <div class="card-icon"><i class="fa fa-sticky-note"></i></div>
+        <div class="card-data">
+          <div class="text">Prescriptions</div>
+          <div class="sub-text" *ngFor="let p of prescriptions | async">{{ p }} medications</div>
+        </div>
       </div>
-    </div>
-    <div class="dashboard-card" style="background-color: rgb(26, 109, 74)">
-      <div class="circle"><i id="icons" class="fa fa-user"></i></div>
-      <div class="text">Total Doctors</div>
-      <div class="sub-text" *ngFor="let doctor of doctors | async">
-        {{ doctor }} doctors
+
+      <div class="stat-card doctor-card">
+        <div class="card-icon"><i class="fa fa-user-md"></i></div>
+        <div class="card-data">
+          <div class="text">Total Doctors</div>
+          <div class="sub-text" *ngFor="let d of doctors | async">{{ d }} doctors</div>
+        </div>
       </div>
-    </div>
-    <div class="dashboard-card" style="background-color: rgb(87, 92, 27)">
-      <div class="circle"><i id="icons" class="fa fa-user-o"></i></div>
-      <div class="text">Total Patients</div>
-      <div class="sub-text" *ngFor="let patient of patients | async">
-        {{ patient }} patients
+
+      <div class="stat-card patient-card">
+        <div class="card-icon"><i class="fa fa-user-o"></i></div>
+        <div class="card-data">
+          <div class="text">Total Patients</div>
+          <div class="sub-text" *ngFor="let pat of patients | async">{{ pat }} patients</div>
+        </div>
       </div>
-    </div>
-    <div class="dashboard-card" style="background-color: rgb(88, 45, 25)">
-      <div class="circle"><i id="icons" class="fa fa-calendar"></i></div>
-      <div class="text">Total Slots</div>
-      <div class="sub-text" *ngFor="let slot of slots | async">
-        {{ slot }} slots
+
+      <div class="stat-card slot-card">
+        <div class="card-icon"><i class="fa fa-calendar"></i></div>
+        <div class="card-data">
+          <div class="text">Total Slots</div>
+          <div class="sub-text" *ngFor="let s of slots | async">{{ s }} slots</div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<br /><br /><br /><br /><br /><br />
 <app-footer></app-footer>
