@@ -1,83 +1,188 @@
-@import url('https://fonts.googleapis.com/css2?family=Mate+SC&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
-.panel-body {
-  margin-left: 1%;
-  margin-right: 2%;
+:host {
+  display: block;
+  background: #f4f7f6;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  padding: 30px 0;
 }
 
-thead {
-  background-color: rgb(136, 96, 35);
+.main-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 15px;
 }
 
-table,
-td {
-  text-align: center;
-  align-items: center;
+/* Panel Styling */
+.list-panel {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  border: none;
+}
+
+.panel-header {
+  background: linear-gradient(135deg, #2c3e50, #4ca1af);
+  padding: 30px;
+  color: white;
+}
+
+.panel-header h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.panel-header p {
+  margin: 5px 0 0;
+  opacity: 0.8;
+  font-size: 14px;
+}
+
+/* Table Styling */
+.table-responsive {
+  padding: 20px;
+}
+
+.modern-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.modern-table th {
+  background: #f8fafc;
+  padding: 15px;
+  text-align: left;
+  font-size: 13px;
+  text-transform: uppercase;
+  color: #64748b;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.modern-table td {
+  padding: 18px 15px;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 14px;
+  color: #334155;
   vertical-align: middle;
 }
 
-table,
-td,
-tr {
-  border: 1px solid rgb(163, 161, 161);
-  font-family: serif;
-  font-weight: bold;
-  font-style: normal;
-  font-size: large;
+/* Avatars */
+.avatar-wrapper {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  overflow: hidden;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-th {
-  text-transform: uppercase;
-  color: rgb(170, 44, 44);
-  font-family: Helvetica;
+.user-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Badges & Text */
+.id-badge {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.patient-name {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.date-text {
+  color: #0f766e;
+  font-weight: 500;
+}
+
+.slot-time {
+  color: #7c3aed;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.problem-cell {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #64748b;
   font-style: italic;
-  font-size: normal;
 }
 
-td {
-  text-transform: none;
+/* Status Pills */
+.status-pill,
+.admission-pill {
+  padding: 6px 12px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+  text-transform: capitalize;
 }
 
-.accepted {
-  border: 1px solid black;
-  border-radius: 10px;
-  background-color: rgb(30, 116, 30);
-  padding: 5px 10px 5px 10px;
-  color: rgb(192, 23, 23);
-  font-weight: bolder;
+.accept {
+  background: #ecfdf5;
+  color: #059669;
 }
 
-.pending {
-  border: 1px solid black;
-  border-radius: 10px;
-  background-color: rgb(196, 137, 28);
-  padding: 5px 10px 5px 10px;
-  color: rgb(190, 26, 26);
-  font-weight: bolder;
+.false {
+  background: #fffbeb;
+  color: #d97706;
 }
 
-.rejected {
-  border: 1px solid black;
-  border-radius: 10px;
-  background-color: red;
-  padding: 5px 10px 5px 10px;
-  color: rgb(184, 26, 26);
-  font-weight: bolder;
+.reject {
+  background: #fef2f2;
+  color: #dc2626;
 }
 
-.date-cover {
-  border-radius: 10px;
-  background-color: rgb(10, 15, 68);
-  padding: 5px 10px 5px 10px;
-  color: rgb(148, 23, 23);
-  font-weight: bolder;
+/* Buttons */
+.btn-group {
+  display: flex;
+  gap: 5px;
 }
 
-.slotcover {
-  border-radius: 10px;
-  background-color: rgb(128, 44, 18);
-  padding: 5px 10px 5px 10px;
-  color: rgb(191, 29, 29);
-  font-weight: bolder;
+.btn-approve,
+.btn-reject {
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-approve {
+  background: #10b981;
+  color: white;
+}
+
+.btn-reject {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-approve:hover {
+  background: #059669;
+}
+
+.btn-reject:hover {
+  background: #dc2626;
+}
+
+/* Animation */
+tr:hover {
+  background-color: #f8fafc;
+  transition: 0.2s;
 }
