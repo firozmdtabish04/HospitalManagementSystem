@@ -57,33 +57,6 @@ export class HeaderComponent implements OnInit {
 
   }
 
-  navigateHome(): void {
 
-    if (this.loggedUser === 'admin@gmail.com')
-    {
-
-      this.router.navigate(['/admindashboard']);
-
-    }
-    else if (this.currRole === 'doctor')
-    {
-
-      this.router.navigate(['/doctordashboard']);
-
-    }
-    else if (this.currRole === 'user')
-    {
-
-      this.router.navigate(['/userdashboard']);
-
-    }
-    else
-    {
-
-      this.router.navigate(['/']);
-
-    }
-
-  }
 
 }

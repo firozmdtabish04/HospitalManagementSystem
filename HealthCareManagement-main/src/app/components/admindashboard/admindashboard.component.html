@@ -1,124 +1,72 @@
 <app-header></app-header>
-<div class="menu">
-  <ul>
-    <li>
-      <div class="card" style="width: 200px; background-color: #23ad9b">
-        <div id="userimg" style="width: 150px">
-          <img
-            [src]="'assets/img/admin.png'"
-            alt="Card image"
-            style="width: 100%"
-          />
-        </div>
-        <div style="margin-left: auto; margin-right: auto" class="card-body">
-          <h4 style="font-weight: bolder" class="card-title">
-            <b>{{ name }}</b>
-          </h4>
+
+<div class="dashboard-wrapper">
+  <aside class="sidebar" [class.sidebar-open]="isMenuOpen">
+    <div class="profile-card">
+      <div class="profile-image-box">
+        <img src="assets/img/admin.png" alt="Admin" class="profile-image" />
+      </div>
+
+      <div class="profile-info">
+        <h3>{{ name }}</h3>
+        <p>{{ currRole }}</p>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a
+        *ngFor="let item of menuItems; trackBy: trackByMenu"
+        [routerLink]="[item.route]"
+        routerLinkActive="active-link"
+        class="nav-item"
+      >
+        <i [class]="item.icon" aria-hidden="true"></i>
+        <span>{{ item.label }}</span>
+      </a>
+    </nav>
+  </aside>
+
+  <main class="dashboard-content">
+    <div class="topbar">
+      <button type="button" class="menu-toggle" (click)="toggleMenu()">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+      </button>
+
+      <div class="topbar-text">
+        <h1>Welcome to HealthCare Management System Admin Dashboard</h1>
+        <p>Manage doctors, users, appointments, prescriptions, and overall platform operations.</p>
+      </div>
+    </div>
+
+    <section class="welcome-card">
+      <div>
+        <h2>Welcome, {{ loggedUser }}</h2>
+        <p>
+          This dashboard gives you a centralized overview of your healthcare management system.
+        </p>
+      </div>
+    </section>
+
+    <section class="dashboard-grid">
+      <div
+        *ngFor="let card of dashboardCards; trackBy: trackByCard"
+        class="dashboard-card"
+        [ngClass]="card.cardClass"
+      >
+        <div class="card-header">
+          <div>
+            <p class="card-title">{{ card.title }}</p>
+            <h3 class="card-value">{{ card.count$ | async }}</h3>
+            <p class="card-subtext">{{ card.suffix }}</p>
+          </div>
+
+          <div class="card-icon">
+            <i [class]="card.icon" aria-hidden="true"></i>
+          </div>
         </div>
       </div>
-    </li>
-    <li>
-      <a
-        ><i class="fa fa-plus" aria-hidden="true"></i
-        ><label [routerLink]="['/addDoctor']" style="cursor: pointer"
-          >&nbsp; Add Doctor</label
-        ></a
-      >
-    </li>
-    <li>
-      <a
-        ><i class="fa fa-check" aria-hidden="true"></i
-        ><label [routerLink]="['/approvedoctors']" style="cursor: pointer"
-          >&nbsp; Approve Doctors</label
-        ></a
-      >
-    </li>
-    <li>
-      <a
-        ><i class="fa fa-user-md" aria-hidden="true"></i
-        ><label [routerLink]="['/doctorlist']" style="cursor: pointer"
-          >&nbsp; Doctor List</label
-        ></a
-      >
-    </li>
-    <li>
-      <a
-        ><i class="fa fa-user" aria-hidden="true"></i
-        ><label [routerLink]="['/userlist']" style="cursor: pointer"
-          >&nbsp; Users</label
-        ></a
-      >
-    </li>
-    <li>
-      <a
-        ><i class="fa fa-user-o" aria-hidden="true"></i
-        ><label [routerLink]="['/patientlist']" style="cursor: pointer"
-          >&nbsp; Patients</label
-        ></a
-      >
-    </li>
-  </ul>
+    </section>
+  </main>
 </div>
 
-<div class="container">
-  <div class="row">
-    <div
-      style="
-        color: maroon;
-        font-weight: bolder;
-        font-family: aladin;
-        letter-spacing: 1px;
-        font-size: 40px;
-        margin: 0% 0% 1% 9%;
-      "
-    >
-      <b>Welcome to HealthCare Management System Admin Dashboard</b>
-    </div>
-
-    <div class="dashboard-card">
-      <div class="circle"><i id="icons" class="fa fa-user-md"></i></div>
-      <div class="text">Total Users</div>
-      <div class="sub-text" *ngFor="let user of users | async">
-        {{ user }} users
-      </div>
-    </div>
-    <div class="dashboard-card" style="background-color: rgb(26, 109, 74)">
-      <div class="circle"><i id="icons" class="fa fa-user"></i></div>
-      <div class="text">Total Doctors</div>
-      <div class="sub-text" *ngFor="let doctor of doctors | async">
-        {{ doctor }} doctors
-      </div>
-    </div>
-    <div class="dashboard-card" style="background-color: rgb(88, 45, 25)">
-      <div class="circle"><i id="icons" class="fa fa-calendar"></i></div>
-      <div class="text">Total Slots</div>
-      <div class="sub-text" *ngFor="let slot of slots | async">
-        {{ slot }} slots available
-      </div>
-    </div>
-    <div class="dashboard-card" style="background-color: rgb(87, 92, 27)">
-      <div class="circle"><i id="icons" class="fa fa-user-o"></i></div>
-      <div class="text">Total Patients</div>
-      <div class="sub-text" *ngFor="let patient of patients | async">
-        {{ patient }} patients
-      </div>
-    </div>
-    <div class="dashboard-card" style="background-color: rgb(133, 134, 23)">
-      <div class="circle"><i id="icons" class="fa fa-sticky-note"></i></div>
-      <div class="text">Prescriptions</div>
-      <div class="sub-text" *ngFor="let prescription of prescriptions | async">
-        {{ prescription }} medications
-      </div>
-    </div>
-    <div class="dashboard-card" style="background-color: rgb(20, 21, 99)">
-      <div class="circle"><i id="icons" class="fa fa-check"></i></div>
-      <div class="text">Appointments</div>
-      <div class="sub-text" *ngFor="let appointment of appointments | async">
-        {{ appointment }} appointments
-      </div>
-    </div>
-  </div>
-</div>
-
-<br /><br /><br /><br /><br /><br />
 <app-footer></app-footer>
