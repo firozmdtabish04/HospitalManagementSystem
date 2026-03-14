@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map, shareReplay, startWith } from 'rxjs/operators';
 import { UserService } from 'src/app/services/user.service';
 
 interface MenuItem {
   label: string;
   icon: string;
   route: string;
+  exact?: boolean;
 }
 
 interface DashboardCard {
@@ -16,6 +17,28 @@ interface DashboardCard {
   count$: Observable<number>;
   cardClass: string;
   route: string;
+  description: string;
+}
+
+interface QuickAction {
+  label: string;
+  icon: string;
+  route: string;
+  buttonClass: string;
+}
+
+interface ActivityItem {
+  title: string;
+  subtitle: string;
+  icon: string;
+  badge: string;
+  badgeClass: string;
+}
+
+interface SystemStatusItem {
+  label: string;
+  value: string;
+  statusClass: string;
 }
 
 @Component({
@@ -28,7 +51,7 @@ export class AdmindashboardComponent implements OnInit {
   name = 'Admin';
   gender = '';
   loggedUser = '';
-  currRole = '';
+  currRole = 'Administrator';
 
   isMenuOpen = false;
 
@@ -39,8 +62,13 @@ export class AdmindashboardComponent implements OnInit {
   appointmentsCount$!: Observable<number>;
   prescriptionsCount$!: Observable<number>;
 
+  totalPlatformCount$!: Observable<number>;
+
   menuItems: MenuItem[] = [];
   dashboardCards: DashboardCard[] = [];
+  quickActions: QuickAction[] = [];
+  recentActivities: ActivityItem[] = [];
+  systemStatus: SystemStatusItem[] = [];
 
   constructor(private readonly userService: UserService) { }
 
@@ -49,10 +77,17 @@ export class AdmindashboardComponent implements OnInit {
     this.initializeCounts();
     this.initializeMenu();
     this.initializeDashboardCards();
+    this.initializeQuickActions();
+    this.initializeRecentActivity();
+    this.initializeSystemStatus();
   }
 
   toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  closeMenuOnMobile(): void {
+    this.isMenuOpen = false;
   }
 
   trackByMenu(index: number, item: MenuItem): string {
@@ -63,10 +98,22 @@ export class AdmindashboardComponent implements OnInit {
     return item.title;
   }
 
+  trackByAction(index: number, item: QuickAction): string {
+    return item.route;
+  }
+
+  trackByActivity(index: number, item: ActivityItem): string {
+    return item.title + item.subtitle;
+  }
+
+  trackByStatus(index: number, item: SystemStatusItem): string {
+    return item.label;
+  }
+
   private loadSessionValues(): void {
     this.name = this.getSessionValue('ROLE', 'Admin');
     this.gender = this.getSessionValue('gender');
-    this.loggedUser = this.getSessionValue('loggedUser', 'Admin');
+    this.loggedUser = this.getSessionValue('loggedUser', 'Admin User');
     this.currRole = this.getSessionValue('ROLE', 'Administrator');
   }
 
@@ -77,13 +124,85 @@ export class AdmindashboardComponent implements OnInit {
 
   private initializeMenu(): void {
     this.menuItems = [
-      { label: 'Add Doctor', icon: 'fa fa-plus', route: '/addDoctor' },
-      { label: 'Approve Doctors', icon: 'fa fa-check', route: '/approvedoctors' },
+      { label: 'Dashboard', icon: 'fa fa-th-large', route: '/admindashboard', exact: true },
+      { label: 'Add Doctor', icon: 'fa fa-plus-circle', route: '/addDoctor' },
+      { label: 'Approve Doctors', icon: 'fa fa-check-circle', route: '/approvedoctors' },
       { label: 'Doctor List', icon: 'fa fa-user-md', route: '/doctorlist' },
-      { label: 'Users', icon: 'fa fa-user', route: '/userlist' },
+      { label: 'Users', icon: 'fa fa-users', route: '/userlist' },
       { label: 'Patients', icon: 'fa fa-user-o', route: '/patientlist' },
       { label: 'About', icon: 'fa fa-info-circle', route: '/about' },
       { label: 'Services', icon: 'fa fa-cogs', route: '/services' }
+    ];
+  }
+
+  private initializeQuickActions(): void {
+    this.quickActions = [
+      {
+        label: 'Add New Doctor',
+        icon: 'fa fa-user-md',
+        route: '/addDoctor',
+        buttonClass: 'primary-action'
+      },
+      {
+        label: 'Approve Registrations',
+        icon: 'fa fa-check',
+        route: '/approvedoctors',
+        buttonClass: 'success-action'
+      },
+      {
+        label: 'View Users',
+        icon: 'fa fa-users',
+        route: '/userlist',
+        buttonClass: 'info-action'
+      },
+      {
+        label: 'Manage Patients',
+        icon: 'fa fa-heartbeat',
+        route: '/patientlist',
+        buttonClass: 'warning-action'
+      }
+    ];
+  }
+
+  private initializeRecentActivity(): void {
+    this.recentActivities = [
+      {
+        title: 'Doctor management module',
+        subtitle: 'You can add and approve doctors from the admin panel.',
+        icon: 'fa fa-user-md',
+        badge: 'Active',
+        badgeClass: 'badge-success'
+      },
+      {
+        title: 'Appointment operations',
+        subtitle: 'Appointment insights are available from dashboard metrics.',
+        icon: 'fa fa-calendar-check-o',
+        badge: 'Monitored',
+        badgeClass: 'badge-info'
+      },
+      {
+        title: 'Prescription analytics',
+        subtitle: 'Prescription totals are being tracked in real time.',
+        icon: 'fa fa-file-text-o',
+        badge: 'Healthy',
+        badgeClass: 'badge-warning'
+      },
+      {
+        title: 'User administration',
+        subtitle: 'User and patient records are accessible from quick navigation.',
+        icon: 'fa fa-users',
+        badge: 'Ready',
+        badgeClass: 'badge-primary'
+      }
+    ];
+  }
+
+  private initializeSystemStatus(): void {
+    this.systemStatus = [
+      { label: 'Admin Access', value: 'Enabled', statusClass: 'status-green' },
+      { label: 'Role Security', value: 'Protected', statusClass: 'status-blue' },
+      { label: 'Dashboard Sync', value: 'Live', statusClass: 'status-purple' },
+      { label: 'Platform Health', value: 'Stable', statusClass: 'status-orange' }
     ];
   }
 
@@ -94,25 +213,29 @@ export class AdmindashboardComponent implements OnInit {
     this.patientsCount$ = this.toCount(this.userService.getTotalPatients());
     this.appointmentsCount$ = this.toCount(this.userService.getTotalAppointments());
     this.prescriptionsCount$ = this.toCount(this.userService.getTotalPrescriptions());
+
+    this.totalPlatformCount$ = of(0);
   }
 
   private initializeDashboardCards(): void {
     this.dashboardCards = [
       {
         title: 'Total Users',
-        icon: 'fa fa-user',
-        suffix: 'users',
+        icon: 'fa fa-users',
+        suffix: 'registered users',
         count$: this.usersCount$,
         cardClass: 'users-card',
-        route: '/userlist'
+        route: '/userlist',
+        description: 'Manage all registered platform users'
       },
       {
         title: 'Total Doctors',
         icon: 'fa fa-user-md',
-        suffix: 'doctors',
+        suffix: 'approved doctors',
         count$: this.doctorsCount$,
         cardClass: 'doctors-card',
-        route: '/doctorlist'
+        route: '/doctorlist',
+        description: 'View doctor directory and profiles'
       },
       {
         title: 'Total Slots',
@@ -120,31 +243,35 @@ export class AdmindashboardComponent implements OnInit {
         suffix: 'slots available',
         count$: this.slotsCount$,
         cardClass: 'slots-card',
-        route: '/checkslots'
+        route: '/admindashboard',
+        description: 'Appointment time slot availability'
       },
       {
         title: 'Total Patients',
         icon: 'fa fa-user-o',
-        suffix: 'patients',
+        suffix: 'active patients',
         count$: this.patientsCount$,
         cardClass: 'patients-card',
-        route: '/patientlist'
+        route: '/patientlist',
+        description: 'Monitor patient records and activity'
       },
       {
         title: 'Prescriptions',
         icon: 'fa fa-sticky-note',
-        suffix: 'medications',
+        suffix: 'medical prescriptions',
         count$: this.prescriptionsCount$,
         cardClass: 'prescriptions-card',
-        route: '/prescriptionlist'
+        route: '/admindashboard',
+        description: 'Track prescribed medications and usage'
       },
       {
         title: 'Appointments',
-        icon: 'fa fa-check',
-        suffix: 'appointments',
+        icon: 'fa fa-check-square-o',
+        suffix: 'scheduled appointments',
         count$: this.appointmentsCount$,
         cardClass: 'appointments-card',
-        route: '/appointments'
+        route: '/admindashboard',
+        description: 'Overview of booking and appointment flow'
       }
     ];
   }
@@ -171,8 +298,15 @@ export class AdmindashboardComponent implements OnInit {
           return response.count;
         }
 
+        if (response && typeof response.total === 'number')
+        {
+          return response.total;
+        }
+
         return Number(response) || 0;
       }),
+      startWith(0),
+      catchError(() => of(0)),
       shareReplay(1)
     );
   }
