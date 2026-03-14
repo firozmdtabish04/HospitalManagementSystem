@@ -5,119 +5,180 @@
   <i class="fa fa-bars"></i>
 </button>
 
-<!-- Sidebar Menu -->
+<!-- Sidebar -->
 <div class="menu" [class.showMenu]="menuOpen">
-  <ul>
-    <li>
-      <div class="card user-card">
-        <div id="userimg">
-          <img [src]="'assets/img/admin.png'" alt="admin" />
-        </div>
 
-        <div class="card-body">
-          <h4 class="card-title">
-            <b>{{ name }}</b>
-          </h4>
-        </div>
-      </div>
-    </li>
+  <div class="profile">
 
-    <li>
-      <a routerLink="/addDoctor">
-        <i class="fa fa-plus"></i> Add Doctor
-      </a>
-    </li>
+    <img src="assets/img/admin.png">
 
-    <li>
-      <a routerLink="/approvedoctors">
-        <i class="fa fa-check"></i> Approve Doctors
-      </a>
-    </li>
-
-    <li>
-      <a routerLink="/doctorlist">
-        <i class="fa fa-user-md"></i> Doctor List
-      </a>
-    </li>
-
-    <li>
-      <a routerLink="/userlist">
-        <i class="fa fa-user"></i> Users
-      </a>
-    </li>
-
-    <li>
-      <a routerLink="/patientlist">
-        <i class="fa fa-user-o"></i> Patients
-      </a>
-    </li>
-  </ul>
-</div>
-
-<!-- Dashboard Content -->
-<div class="container dashboard-container">
-
-  <h2 class="welcome-title">
-    Welcome to HealthCare Management System Admin Dashboard
-  </h2>
-
-  <div class="row">
-
-    <!-- Users -->
-    <div class="dashboard-card">
-      <div class="circle"><i class="fa fa-user-md"></i></div>
-      <div class="text">Total Users</div>
-      <div class="sub-text" *ngFor="let user of users | async">
-        {{ user }} users
-      </div>
-    </div>
-
-    <!-- Doctors -->
-    <div class="dashboard-card green">
-      <div class="circle"><i class="fa fa-user"></i></div>
-      <div class="text">Total Doctors</div>
-      <div class="sub-text" *ngFor="let doctor of doctors | async">
-        {{ doctor }} doctors
-      </div>
-    </div>
-
-    <!-- Slots -->
-    <div class="dashboard-card brown">
-      <div class="circle"><i class="fa fa-calendar"></i></div>
-      <div class="text">Total Slots</div>
-      <div class="sub-text" *ngFor="let slot of slots | async">
-        {{ slot }} slots available
-      </div>
-    </div>
-
-    <!-- Patients -->
-    <div class="dashboard-card olive">
-      <div class="circle"><i class="fa fa-user-o"></i></div>
-      <div class="text">Total Patients</div>
-      <div class="sub-text" *ngFor="let patient of patients | async">
-        {{ patient }} patients
-      </div>
-    </div>
-
-    <!-- Prescriptions -->
-    <div class="dashboard-card yellow">
-      <div class="circle"><i class="fa fa-sticky-note"></i></div>
-      <div class="text">Prescriptions</div>
-      <div class="sub-text" *ngFor="let prescription of prescriptions | async">
-        {{ prescription }} medications
-      </div>
-    </div>
-
-    <!-- Appointments -->
-    <div class="dashboard-card blue">
-      <div class="circle"><i class="fa fa-check"></i></div>
-      <div class="text">Appointments</div>
-      <div class="sub-text" *ngFor="let appointment of appointments | async">
-        {{ appointment }} appointments
-      </div>
-    </div>
+    <h3>{{name}}</h3>
 
   </div>
+
+  <ul>
+
+    <li routerLink="/addDoctor">
+      <i class="fa fa-plus"></i>
+      <span>Add Doctor</span>
+    </li>
+
+    <li routerLink="/approvedoctors">
+      <i class="fa fa-check"></i>
+      <span>Approve Doctors</span>
+    </li>
+
+    <li routerLink="/doctorlist">
+      <i class="fa fa-user-md"></i>
+      <span>Doctor List</span>
+    </li>
+
+    <li routerLink="/userlist">
+      <i class="fa fa-users"></i>
+      <span>Users</span>
+    </li>
+
+    <li routerLink="/patientlist">
+      <i class="fa fa-user"></i>
+      <span>Patients</span>
+    </li>
+
+  </ul>
+
 </div>
+
+
+<!-- Dashboard -->
+
+<div class="dashboard">
+
+<h1 class="title">
+Admin Dashboard
+</h1>
+
+<div class="card-grid">
+
+<!-- USERS -->
+<div class="card">
+
+<div class="icon">
+<i class="fa fa-users"></i>
+</div>
+
+<div class="info">
+<h2>Total Users</h2>
+
+<p *ngFor="let user of users | async">
+{{user}}
+</p>
+
+</div>
+
+</div>
+
+
+<!-- DOCTORS -->
+
+<div class="card doctor">
+
+<div class="icon">
+<i class="fa fa-user-md"></i>
+</div>
+
+<div class="info">
+<h2>Total Doctors</h2>
+
+<p *ngFor="let doctor of doctors | async">
+{{doctor}}
+</p>
+
+</div>
+
+</div>
+
+
+<!-- PATIENTS -->
+
+<div class="card patient">
+
+<div class="icon">
+<i class="fa fa-user"></i>
+</div>
+
+<div class="info">
+<h2>Total Patients</h2>
+
+<p *ngFor="let patient of patients | async">
+{{patient}}
+</p>
+
+</div>
+
+</div>
+
+
+<!-- SLOTS -->
+
+<div class="card slot">
+
+<div class="icon">
+<i class="fa fa-calendar"></i>
+</div>
+
+<div class="info">
+<h2>Total Slots</h2>
+
+<p *ngFor="let slot of slots | async">
+{{slot}}
+</p>
+
+</div>
+
+</div>
+
+
+<!-- APPOINTMENTS -->
+
+<div class="card appointment">
+
+<div class="icon">
+<i class="fa fa-check"></i>
+</div>
+
+<div class="info">
+<h2>Appointments</h2>
+
+<p *ngFor="let appointment of appointments | async">
+{{appointment}}
+</p>
+
+</div>
+
+</div>
+
+
+<!-- PRESCRIPTIONS -->
+
+<div class="card prescription">
+
+<div class="icon">
+<i class="fa fa-sticky-note"></i>
+</div>
+
+<div class="info">
+<h2>Prescriptions</h2>
+
+<p *ngFor="let prescription of prescriptions | async">
+{{prescription}}
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 
 <app-footer></app-footer>
