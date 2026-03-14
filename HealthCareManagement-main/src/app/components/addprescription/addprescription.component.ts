@@ -5,7 +5,7 @@ import { Appointment } from 'src/app/models/appointment';
 import { Prescription } from 'src/app/models/prescription';
 import { DoctorService } from 'src/app/services/doctor.service';
 import { UserService } from 'src/app/services/user.service';
-
+import * as $ from 'jquery';
 @Component({
   selector: 'app-addprescription',
   templateUrl: './addprescription.component.html',

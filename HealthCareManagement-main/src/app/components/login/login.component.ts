@@ -10,114 +10,132 @@ import { LoginService } from 'src/app/services/login.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  email: string = '';
+  password: string = '';
+  msg: string = '';
+  loading: boolean = false;
+  showPassword: boolean = false;
+  rememberMe: boolean = false;
 
-  user = new User();
-  doctor = new Doctor();
-  msg = "";
-  adminEmail = "";
-  adminPassword = "";
-
-  constructor(private _service: LoginService, private _router: Router) { }
+  constructor(
+    private _service: LoginService,
+    private _router: Router
+  ) { }
 
   ngOnInit(): void {
-    $(".admin-login-form").hide();
-    $(".doctor-login-form").hide();
-    $("#userbtn").css("border", "0");
-    $("#doctorbtn").css("border-bottom", "1.5px solid rgb(6, 50, 53)").css("border-left", "1.5px solid rgb(6, 50, 53)").css("opacity", "0.3");;
-    $("#adminbtn").css("border-bottom", "1.5px solid rgb(6, 50, 53)").css("opacity", "0.3");
-
-    $(".userlogin").click(function () {
-      $(".user-login-form").hide();
-      $(".admin-login-form").show();
-    });
-
-    $("#userbtn").click(function () {
-      $(".user-login-form").show();
-      $(".admin-login-form").hide();
-      $(".doctor-login-form").hide();
-      $("#userbtn").css("border", "0").css("opacity", "1");
-      $("#adminbtn").css("border", "0").css("border-bottom", "1.5px solid rgb(6, 50, 53)").css("opacity", "1").css("opacity", "0.3");
-      $("#doctorbtn").css("border", "0").css("border-bottom", "1.5px solid rgb(6, 50, 53)").css("border-left", "1.5px solid rgb(6, 50, 53)").css("opacity", "1").css("opacity", "0.3");
-    });
-
-    $("#doctorbtn").click(function () {
-      $(".user-login-form").hide();
-      $(".admin-login-form").hide();
-      $(".doctor-login-form").show();
-      $("#userbtn").css("border", "0").css("border-right", "1.5px solid rgb(6, 50, 53)").css("border-bottom", "1.5px solid rgb(6, 50, 53)").css("opacity", "0.3");
-      $("#adminbtn").css("border", "0").css("border-left", "1.5px solid rgb(6, 50, 53)").css("border-bottom", "1.5px solid rgb(6, 50, 53)").css("opacity", "0.3");
-      $("#doctorbtn").css("border", "0").css("opacity", "1");
-    });
-
-    $("#adminbtn").click(function () {
-      $(".user-login-form").hide();
-      $(".admin-login-form").show();
-      $(".doctor-login-form").hide();
-      $("#userbtn").css("border", "0").css("border-bottom", "1.5px solid rgb(6, 50, 53)").css("opacity", "0.3");
-      $("#adminbtn").css("border", "0").css("opacity", "1");
-      $("#doctorbtn").css("border", "0").css("border-right", "1.5px solid rgb(6, 50, 53)").css("border-bottom", "1.5px solid rgb(6, 50, 53)").css("opacity", "0.3");;
-    });
-
-    $(".adminlogin").click(function () {
-      $(".user-login-form").show();
-      $(".admin-login-form").hide();
-    });
+    const rememberedEmail = localStorage.getItem('rememberedEmail');
+    if (rememberedEmail)
+    {
+      this.email = rememberedEmail;
+      this.rememberMe = true;
+    }
   }
 
-  loginUser() {
-    this._service.loginUserFromRemote(this.user).subscribe(
+  togglePassword(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  smartLogin(): void {
+    this.msg = '';
+
+    if (!this.email || !this.password)
+    {
+      this.msg = 'Please enter email and password.';
+      return;
+    }
+
+    this.loading = true;
+
+    const user = new User();
+    user.email = this.email;
+    user.password = this.password;
+
+    this._service.loginUserFromRemote(user).subscribe(
       (data: any) => {
-        console.log(data);
-        console.log("Response Received");
-        sessionStorage.setItem('loggedUser', this.user.email);
-        sessionStorage.setItem('USER', "user");
-        sessionStorage.setItem('ROLE', "user");
-        sessionStorage.setItem('name', this.user.email);
-        sessionStorage.setItem('gender', "male");
+        console.log('User login success', data);
+        sessionStorage.clear();
+        sessionStorage.setItem('loggedUser', this.email);
+        sessionStorage.setItem('USER', 'user');
+        sessionStorage.setItem('ROLE', 'user');
+        sessionStorage.setItem('name', this.email);
+        sessionStorage.setItem('gender', 'male');
+
+        if (this.rememberMe)
+        {
+          localStorage.setItem('rememberedEmail', this.email);
+        } else
+        {
+          localStorage.removeItem('rememberedEmail');
+        }
+
+        this.loading = false;
         this._router.navigate(['/userdashboard']);
       },
-      (error: { error: any; }) => {
-        console.log(error.error);
-        this.msg = "Bad credentials, please enter valid credentials !!!";
+      (error: any) => {
+        this.tryDoctorLogin();
       }
-    )
+    );
   }
 
-  loginDoctor() {
-    this._service.loginDoctorFromRemote(this.doctor).subscribe(
+  tryDoctorLogin(): void {
+    const doctor = new Doctor();
+    doctor.email = this.email;
+    doctor.password = this.password;
+
+    this._service.loginDoctorFromRemote(doctor).subscribe(
       (data: any) => {
-        console.log(data);
-        console.log("Response Received");
+        console.log('Doctor login success', data);
         sessionStorage.clear();
-        sessionStorage.setItem('loggedUser', this.doctor.email);
-        sessionStorage.setItem('USER', "doctor");
-        sessionStorage.setItem('ROLE', "doctor");
-        sessionStorage.setItem('doctorname', this.doctor.email);
-        sessionStorage.setItem('gender', "male");
+        sessionStorage.setItem('loggedUser', this.email);
+        sessionStorage.setItem('USER', 'doctor');
+        sessionStorage.setItem('ROLE', 'doctor');
+        sessionStorage.setItem('doctorname', this.email);
+        sessionStorage.setItem('gender', 'male');
+
+        if (this.rememberMe)
+        {
+          localStorage.setItem('rememberedEmail', this.email);
+        } else
+        {
+          localStorage.removeItem('rememberedEmail');
+        }
+
+        this.loading = false;
         this._router.navigate(['/doctordashboard']);
       },
-      (error: { error: any; }) => {
-        console.log(error.error);
-        this.msg = "Bad credentials, please enter valid credentials !!!";
+      (error: any) => {
+        this.tryAdminLogin();
       }
-    )
+    );
   }
 
-  adminLogin() {
-    if (this._service.adminLoginFromRemote(this.adminEmail, this.adminPassword))
+  tryAdminLogin(): void {
+    const isAdmin = this._service.adminLoginFromRemote(this.email, this.password);
+
+    if (isAdmin)
     {
-      sessionStorage.setItem('loggedUser', this.adminEmail);
-      sessionStorage.setItem('USER', "admin");
-      sessionStorage.setItem('ROLE', "admin");
-      sessionStorage.setItem('name', "admin");
-      sessionStorage.setItem('gender', "male");
+      console.log('Admin login success');
+      sessionStorage.clear();
+      sessionStorage.setItem('loggedUser', this.email);
+      sessionStorage.setItem('USER', 'admin');
+      sessionStorage.setItem('ROLE', 'admin');
+      sessionStorage.setItem('name', 'admin');
+      sessionStorage.setItem('gender', 'male');
+
+      if (this.rememberMe)
+      {
+        localStorage.setItem('rememberedEmail', this.email);
+      } else
+      {
+        localStorage.removeItem('rememberedEmail');
+      }
+
+      this.loading = false;
       this._router.navigate(['/admindashboard']);
-    }
-    else
+    } else
     {
-      console.log("Exception Occured");
-      this.msg = 'Bad admin credentials !!!'
+      this.loading = false;
+      this.msg = 'Invalid credentials. Please enter correct email and password.';
     }
   }
-
 }

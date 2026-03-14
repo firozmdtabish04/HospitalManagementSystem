@@ -5,7 +5,7 @@ import { Appointment } from 'src/app/models/appointment';
 import { Slots } from 'src/app/models/slots';
 import { DoctorService } from 'src/app/services/doctor.service';
 import { UserService } from 'src/app/services/user.service';
-
+import * as $ from 'jquery';
 @Component({
   selector: 'app-bookappointment',
   templateUrl: './bookappointment.component.html',
