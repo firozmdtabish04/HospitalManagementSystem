@@ -1,127 +1,202 @@
 @import url('https://fonts.googleapis.com/css2?family=Aladin&family=Merienda+One&family=Staatliches&display=swap');
 
+/* ---------------- HAMBURGER BUTTON ---------------- */
+
+.hamburger{
+  position: fixed;
+  top: 80px;
+  left: 10px;
+  font-size: 26px;
+  background: #192538;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  z-index: 1100;
+  border-radius: 4px;
+}
+
+.hamburger:hover{
+  background:#2a3950;
+}
+
+
+/* ---------------- SIDEBAR MENU ---------------- */
+
 .menu{
-    position:relative;
-    background-color:#2a3950;
-    width:0px;
-    height:100vh;
-    float:left;
-    transition:all 0.3s ease;
-    transform:translateX(-300px);
-  }
-.menuToggle{
-    font-size:20px;
-    position:relative;
-    display:inline-block;
-    padding:10px;
-    text-align:center;
-    background-color:#192538;
-    color:white;
-    width:50px;
-    height:50px;
-    transition:all 0.3s ease;
-  }
-  .menuToggle:hover{
-    text-decoration:none;
-    color:white;
-  }
-  .menuToggle_open{
-    margin:0px 0px;
-    transform:rotate(90deg);
-  }
-  .hideMenu{
-    transition:all 0.3s ease;
-    transform:translateX(0px);
-    width:200px;
-  }
-  
-  .menu ul{
-    list-style-type: none;
-    padding:0px;
-    transition:all 0.3s ease;
-  }
-  .menu ul ul{
-    padding-left:10px;
-    margin-left:0px;
-    background-color:#192539;
-  }
-  .menu ul li{
-    border-bottom: 1px solid transparent;
-    transition:all 0.3s ease;
-  }
-  .menu ul li:hover{
-    background-color: #192539;
-    border-bottom: 1px solid #4274c8;
-  }
-  .menu ul li:hover a{
-    color:white;
-  }
-  .menu ul li a{
-    padding:10px 10px;
-    display:block;
-    margin-top: 3%;
-    margin-left: auto;
-    margin-right: auto;
-    font-weight: bold;
-    font-size: 18px;
-    color:white;
-    transition: transform .2s;
-    -webkit-transition: background-color 1s ease-out;
-  -moz-transition: background-color 1s ease-out;
-  -o-transition: background-color 1s ease-out;
-  transition: background-color 1s ease-out;
-  }
-  .menu ul li a:hover{
-    text-decoration:none;
-  }
+  position: fixed;
+  top: 70px;
+  left: -230px;
+  width: 230px;
+  height: 100vh;
+  background-color:#2a3950;
+  transition: 0.3s ease;
+  z-index: 1000;
+  overflow-y:auto;
+}
+
+/* menu open state */
+
+.menu.showMenu{
+  left:0;
+}
+
+/* menu list */
+
+.menu ul{
+  list-style-type: none;
+  padding:0;
+  margin:0;
+}
+
+.menu ul li{
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+/* menu links */
+
+.menu ul li a{
+  padding:12px 20px;
+  display:block;
+  font-weight:bold;
+  font-size:18px;
+  color:white;
+  text-decoration:none;
+  transition:0.3s;
+}
+
+.menu ul li a i{
+  margin-right:10px;
+}
+
+/* hover */
+
+.menu ul li:hover{
+  background-color:#192539;
+}
+
+.menu ul li:hover a{
+  color:#ffd700;
+}
+
+
+/* ---------------- USER CARD ---------------- */
+
+.user-card{
+  width:180px;
+  margin:15px auto;
+  background:#23ad9b;
+  text-align:center;
+  border:none;
+}
 
 #userimg{
-    width: 100px;
-    height: 150px;
-    display: block;
-    margin-left: auto;
-    margin-top: 5%;
-    margin-right: auto;
+  width:100px;
+  height:120px;
+  display:block;
+  margin:auto;
+  margin-top:10px;
 }
-.container
-{
-  margin-left: 10%;
+
+#userimg img{
+  width:100%;
 }
-.dashboard-card
-{
-  background-color: rgb(21, 95, 95);
-  border-radius: 10px;
-  border: none;
-  width: 35%;
-  box-shadow: 5px 10px 18px #888888;
-  margin: 2% 5% 5.5% 5%;
-  padding: 3%;
+
+
+/* ---------------- DASHBOARD CONTENT ---------------- */
+
+.dashboard-container{
+  margin-left:40px;
+  margin-top:20px;
 }
+
+/* welcome title */
+
+.welcome-title{
+  font-family:'Staatliches';
+  letter-spacing:1px;
+  font-size:36px;
+  margin:20px;
+}
+
+
+/* ---------------- DASHBOARD CARDS ---------------- */
+
+.dashboard-card{
+  background-color:rgb(21,95,95);
+  border-radius:10px;
+  border:none;
+  width:35%;
+  box-shadow:5px 10px 18px #888888;
+  margin:2% 5% 5.5% 5%;
+  padding:3%;
+  display:inline-block;
+}
+
+/* icon circle */
+
 .circle{
-  border-radius: 50%;
-  width: 30%;
-  height: 80px;
-  float: right;
-  background-color: rgb(255, 255, 255);
+  border-radius:50%;
+  width:30%;
+  height:80px;
+  float:right;
+  background-color:white;
 }
-#icons
-{
-  margin-left: 26%;
-  margin-top: 12%;
-  font-size: 3.5em;
+
+/* icon */
+
+#icons{
+  margin-left:26%;
+  margin-top:12%;
+  font-size:3.5em;
 }
-.text
-{
-  font-family: 'aladin';
-  letter-spacing: 1px;
-  font-size: 35px;
-  font-weight: bolder;
-  color: white;
+
+
+/* card title */
+
+.text{
+  font-family:'Aladin';
+  letter-spacing:1px;
+  font-size:35px;
+  font-weight:bolder;
+  color:white;
 }
-.sub-text
-{
-  font-family: 'aladin';
-  letter-spacing: 1px;
-  font-size: 25px;
-  color: white;
+
+
+/* card subtext */
+
+.sub-text{
+  font-family:'Aladin';
+  letter-spacing:1px;
+  font-size:25px;
+  color:white;
+}
+
+
+/* ---------------- RESPONSIVE ---------------- */
+
+@media(max-width:992px){
+
+  .dashboard-card{
+    width:90%;
+    margin:auto;
+    margin-bottom:20px;
+  }
+
+  .circle{
+    width:80px;
+  }
+
+}
+
+@media(max-width:768px){
+
+  .dashboard-container{
+    margin-left:10px;
+  }
+
+  .menu{
+    width:200px;
+  }
+
 }
