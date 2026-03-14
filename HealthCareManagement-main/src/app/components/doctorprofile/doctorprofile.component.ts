@@ -54,12 +54,23 @@ export class DoctorprofileComponent implements OnInit {
 
 
   // Load profile details
+  // Is method ko replace karo apne puraane method se
   getProfileDetails(email: string): void {
-
+    // 1. Screen par dikhane ke liye (Observable)
     this.profileDetails = this._service.getProfileDetails(email);
 
-    console.log("Profile Loaded:", this.profileDetails);
-
+    // 2. Form ke inputs bharne ke liye (Subscription)
+    this._service.getProfileDetails(email).subscribe({
+      next: (data: any) => {
+        // Kyunki aapka API List<Doctor> bhej raha hai (backend code dekha maine)
+        // Isliye hum first element [0] lenge.
+        if (data && data.length > 0) {
+          this.doctor = data[0];
+          console.log("Form pre-filled with:", this.doctor);
+        }
+      },
+      error: (err) => console.log("Data load nahi hua", err)
+    });
   }
 
 
@@ -84,7 +95,7 @@ export class DoctorprofileComponent implements OnInit {
         // redirect after 6 seconds
         setTimeout(() => {
 
-          this._router.navigate(['/userdashboard']);
+          this._router.navigate(['/doctordashboard']);
 
         }, 6000);
 
