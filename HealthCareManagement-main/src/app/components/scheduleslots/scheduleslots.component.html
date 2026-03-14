@@ -1,211 +1,154 @@
 <app-header></app-header>
 
-<!-- SLOT PREVIEW -->
-<div class="panel" id="slot-preview">
-  <div class="panel-heading">
-    <h2>Hello Doctor, Your Patient Visiting Slots</h2>
-  </div>
-
-  <div class="panel-body">
-    <!-- Doctor Info Card -->
-    <div class="card" *ngFor="let slot of slots | async">
-      <div class="img-block">
-        <div class="circle">
-          <img
-            class="doc-img"
-            src="assets/img/maledoctor.png"
-            alt="Doctor Image"
-          />
-        </div>
-      </div>
-
-      <div class="card-block">
-        <div class="info">
-          <i class="fa fa-user"></i>
-          {{ slot.doctorname }}
-        </div>
-
-        <div class="info">
-          <i class="fa fa-envelope"></i>
-          {{ slot.email }}
-        </div>
-
-        <div class="info">
-          <i class="fa fa-medkit"></i>
-          {{ slot.specialization }}
-        </div>
-      </div>
+<div class="schedule-container">
+  <div class="welcome-banner">
+    <div class="banner-text">
+      <h2>Hello Doctor, Your Patient Visiting Slots</h2>
+      <p>Manage your availability and track booked appointments.</p>
     </div>
-
-    <!-- Add Slot Button -->
-    <button class="add-slot-btn"><i class="fa fa-plus"></i> Add Slots</button>
-
-    <!-- Slot Table -->
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>AM Slot</th>
-            <th>Noon Slot</th>
-            <th>PM Slot</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr *ngFor="let slot of slots | async">
-            <td>
-              <span class="date-cover">
-                {{ slot.date }}
-              </span>
-            </td>
-
-            <!-- AM Slot -->
-            <td>
-              <span *ngIf="slot.amslot === 'empty'" class="noslot">
-                No Slot
-              </span>
-
-              <span *ngIf="slot.amstatus === 'booked'" class="accepted">
-                Booked
-              </span>
-
-              <span
-                *ngIf="slot.amslot !== 'empty' && slot.amstatus === 'unbooked'"
-                class="pending"
-              >
-                {{ slot.amslot }}
-              </span>
-            </td>
-
-            <!-- Noon Slot -->
-            <td>
-              <span *ngIf="slot.noonslot === 'empty'" class="noslot">
-                No Slot
-              </span>
-
-              <span *ngIf="slot.noonstatus === 'booked'" class="accepted">
-                Booked
-              </span>
-
-              <span
-                *ngIf="
-                  slot.noonslot !== 'empty' && slot.noonstatus === 'unbooked'
-                "
-                class="pending"
-              >
-                {{ slot.noonslot }}
-              </span>
-            </td>
-
-            <!-- PM Slot -->
-            <td>
-              <span *ngIf="slot.pmslot === 'empty'" class="noslot">
-                No Slot
-              </span>
-
-              <span *ngIf="slot.pmstatus === 'booked'" class="accepted">
-                Booked
-              </span>
-
-              <span
-                *ngIf="slot.pmslot !== 'empty' && slot.pmstatus === 'unbooked'"
-                class="pending"
-              >
-                {{ slot.pmslot }}
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-<!-- ADD SLOT FORM -->
-<div class="container" id="slotform">
-  <h2>Add Your Available Slots</h2>
-
-  <form #addslotform="ngForm" (ngSubmit)="addSlot()">
-    <!-- Doctor Name -->
-    <label for="doctorname">Doctor Name</label>
-    <input
-      id="doctorname"
-      type="text"
-      name="doctorname"
-      placeholder="Enter Doctor Name"
-      [(ngModel)]="slot.doctorname"
-      required
-    />
-
-    <!-- Email -->
-    <label for="email">Email</label>
-    <input
-      id="email"
-      type="email"
-      name="email"
-      placeholder="Enter Email"
-      [(ngModel)]="slot.email"
-      required
-    />
-
-    <!-- Specialization -->
-    <label for="specialization">Specialization</label>
-    <input
-      id="specialization"
-      type="text"
-      name="specialization"
-      placeholder="Enter Specialization"
-      [(ngModel)]="slot.specialization"
-      required
-    />
-
-    <!-- AM Slot -->
-    <label for="amslot">Morning Slot</label>
-    <select id="amslot" name="amslot" [(ngModel)]="slot.amslot">
-      <option value="" disabled selected>Select Morning Slot</option>
-      <option value="9.00 AM - 11.00 AM">9.00 AM - 11.00 AM</option>
-      <option value="9.30 AM - 11.30 AM">9.30 AM - 11.30 AM</option>
-      <option value="10.00 AM - 12.00 PM">10.00 AM - 12.00 PM</option>
-    </select>
-
-    <!-- Noon Slot -->
-    <label for="noonslot">Noon Slot</label>
-    <select id="noonslot" name="noonslot" [(ngModel)]="slot.noonslot">
-      <option value="" disabled selected>Select Noon Slot</option>
-      <option value="1.00 PM - 3.00 PM">1.00 PM - 3.00 PM</option>
-      <option value="1.30 PM - 3.30 PM">1.30 PM - 3.30 PM</option>
-      <option value="2.00 PM - 4.00 PM">2.00 PM - 4.00 PM</option>
-    </select>
-
-    <!-- PM Slot -->
-    <label for="pmslot">Evening Slot</label>
-    <select id="pmslot" name="pmslot" [(ngModel)]="slot.pmslot">
-      <option value="" disabled selected>Select Evening Slot</option>
-      <option value="5.00 PM - 7.00 PM">5.00 PM - 7.00 PM</option>
-      <option value="5.30 PM - 7.30 PM">5.30 PM - 7.30 PM</option>
-      <option value="6.00 PM - 8.00 PM">6.00 PM - 8.00 PM</option>
-    </select>
-
-    <!-- Date -->
-    <label for="date">Select Date</label>
-    <input id="date" type="date" name="date" [(ngModel)]="slot.date" required />
-
-    <!-- Patient Type -->
-    <label for="patienttype">Patient Type</label>
-    <select id="patienttype" name="patienttype" [(ngModel)]="slot.patienttype">
-      <option value="" disabled selected>Select Patient Type</option>
-      <option value="IN Patients">IN Patients</option>
-      <option value="OUT Patients">OUT Patients</option>
-      <option value="Both IN & OUT Patients">Both IN & OUT Patients</option>
-      <option value="Emergency Operations">Emergency Operations</option>
-    </select>
-
-    <!-- Submit Button -->
-    <button type="submit" class="registerbtn" [disabled]="addslotform.invalid">
-      Add Slot
+    <button class="add-slot-btn" (click)="toggleForm()">
+      <i class="fa fa-plus-circle"></i> Create New Slot
     </button>
-  </form>
+  </div>
+
+  <div class="content-grid">
+    <div class="preview-section">
+      <div class="doctor-mini-card shadow-sm" *ngFor="let s of slots | async | slice:0:1">
+        <div class="doc-profile">
+          <img src="assets/img/maledoctor.png" alt="Doctor" class="doc-avatar">
+          <div class="doc-meta">
+            <h4>{{ s.doctorname }}</h4>
+            <span><i class="fa fa-stethoscope"></i> {{ s.specialization }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-responsive">
+          <table class="modern-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Morning (AM)</th>
+                <th>Noon</th>
+                <th>Evening (PM)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let slot of slots | async">
+                <td><span class="date-badge">{{ slot.date }}</span></td>
+
+                <td>
+                  <div class="slot-status"
+                    [ngClass]="{'booked': slot.amstatus === 'booked', 'empty': slot.amslot === 'empty', 'available': slot.amstatus === 'unbooked'}">
+                    {{ slot.amslot === 'empty' ? 'No Slot' : (slot.amstatus === 'booked' ? 'Booked' : slot.amslot) }}
+                  </div>
+                </td>
+
+                <td>
+                  <div class="slot-status"
+                    [ngClass]="{'booked': slot.noonstatus === 'booked', 'empty': slot.noonslot === 'empty', 'available': slot.noonstatus === 'unbooked'}">
+                    {{ slot.noonslot === 'empty' ? 'No Slot' : (slot.noonstatus === 'booked' ? 'Booked' : slot.noonslot)
+                    }}
+                  </div>
+                </td>
+
+                <td>
+                  <div class="slot-status"
+                    [ngClass]="{'booked': slot.pmstatus === 'booked', 'empty': slot.pmslot === 'empty', 'available': slot.pmstatus === 'unbooked'}">
+                    {{ slot.pmslot === 'empty' ? 'No Slot' : (slot.pmstatus === 'booked' ? 'Booked' : slot.pmslot) }}
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-card shadow-lg">
+        <div class="form-header">
+          <h3><i class="fa fa-calendar-plus-o"></i> Add Available Slots</h3>
+        </div>
+
+        <div *ngIf="successMsg" class="alert alert-success m-3"
+          style="color: #0f766e; font-weight: bold; text-align: center;">
+          <i class="fa fa-check-circle"></i> {{ successMsg }}
+        </div>
+
+        <form #addslotform="ngForm" (ngSubmit)="addSlot()" class="custom-form" *ngIf="!successMsg">
+
+          <div class="input-grid">
+            <div class="form-group">
+              <label>Doctor Name</label>
+              <input type="text" name="doctorname" [(ngModel)]="slot.doctorname" readonly class="form-control bg-light">
+            </div>
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" name="email" [(ngModel)]="slot.email" readonly class="form-control bg-light">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Specialization</label>
+            <input type="text" name="specialization" [(ngModel)]="slot.specialization" readonly
+              class="form-control bg-light">
+          </div>
+
+          <div class="slot-selectors"
+            style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;">
+            <div class="form-group">
+              <label><i class="fa fa-sun-o"></i> Morning (AM)</label>
+              <select name="amslot" [(ngModel)]="slot.amslot" class="form-control" required>
+                <option value="empty">No Slot</option>
+                <option value="9.00 AM - 11.00 AM">9:00 - 11:00 AM</option>
+                <option value="10.00 AM - 12.00 PM">10:00 - 12:00 PM</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label><i class="fa fa-clock-o"></i> Noon Slot</label>
+              <select name="noonslot" [(ngModel)]="slot.noonslot" class="form-control" required>
+                <option value="empty">No Slot</option>
+                <option value="1.00 PM - 3.00 PM">1:00 - 3:00 PM</option>
+                <option value="2.00 PM - 4.00 PM">2:00 - 4:00 PM</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label><i class="fa fa-moon-o"></i> Evening (PM)</label>
+              <select name="pmslot" [(ngModel)]="slot.pmslot" class="form-control" required>
+                <option value="empty">No Slot</option>
+                <option value="5.00 PM - 7.00 PM">5:00 - 7:00 PM</option>
+                <option value="6.00 PM - 8.00 PM">6:00 - 8:00 PM</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="input-grid">
+            <div class="form-group">
+              <label>Visit Date</label>
+              <input type="date" name="date" [(ngModel)]="slot.date" [min]="minDate" required class="form-control">
+            </div>
+            <div class="form-group">
+              <label>Patient Type</label>
+              <select name="patienttype" [(ngModel)]="slot.patienttype" required class="form-control">
+                <option value="Both IN & OUT Patients">Both IN & OUT</option>
+                <option value="Emergency Operations">Emergency Only</option>
+                <option value="Out Patients Only">Out Patients Only</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn" [disabled]="addslotform.invalid"
+            style="width: 100%; margin-top: 15px;">
+            <i class="fa fa-check"></i> Publish Available Slots
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 
 <app-footer></app-footer>
