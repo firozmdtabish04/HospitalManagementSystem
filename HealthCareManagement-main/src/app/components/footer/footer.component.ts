@@ -49,10 +49,10 @@ export class FooterComponent implements OnInit {
 
   socialLinks: FooterLink[] = [
     { label: 'Facebook', icon: 'fa fa-facebook', url: 'https://www.facebook.com/' },
-    { label: 'Twitter', icon: 'fa fa-twitter', url: 'https://twitter.com/' },
-    { label: 'LinkedIn', icon: 'fa fa-linkedin', url: 'https://www.linkedin.com/' },
+    { label: 'Twitter', icon: 'fa fa-twitter', url: 'https://x.com/mdtabishfiroz' },
+    { label: 'LinkedIn', icon: 'fa fa-linkedin', url: 'https://www.linkedin.com/in/tabish-firoz/' },
     { label: 'Instagram', icon: 'fa fa-instagram', url: 'https://www.instagram.com/' },
-    { label: 'GitHub', icon: 'fa fa-github', url: 'https://github.com/' }
+    { label: 'GitHub', icon: 'fa fa-github', url: 'https://github.com/firozmdtabish04' }
   ];
 
   constructor(private sanitizer: DomSanitizer) { }
