@@ -11,6 +11,7 @@ import { DoctorService } from 'src/app/services/doctor.service';
 export class AddingdoctorComponent implements OnInit {
 
   doctor: Doctor = new Doctor();
+  showPassword: boolean = false;
 
   constructor(
     private doctorService: DoctorService,
@@ -19,25 +20,19 @@ export class AddingdoctorComponent implements OnInit {
 
   ngOnInit(): void { }
 
-  addDoctor(): void {
-
-    this.doctorService.addDoctorFromRemote(this.doctor).subscribe({
-
-      next: () => {
-
-        console.log("Doctor added successfully");
-        this.router.navigate(['/admindashboard']);
-
-      },
-
-      error: (err) => {
-
-        console.error("Error adding doctor", err);
-
-      }
-
-    });
-
+  togglePassword(): void {
+    this.showPassword = !this.showPassword;
   }
 
+  addDoctor(): void {
+    this.doctorService.addDoctorFromRemote(this.doctor).subscribe({
+      next: () => {
+        console.log("Doctor added successfully");
+        this.router.navigate(['/admindashboard']);
+      },
+      error: (err) => {
+        console.error("Error adding doctor", err);
+      }
+    });
+  }
 }

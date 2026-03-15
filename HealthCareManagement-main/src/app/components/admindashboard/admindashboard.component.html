@@ -9,7 +9,7 @@
         </div>
         <div>
           <h2>HealthCare</h2>
-          <p>Admin Control Panel</p>
+          <p>Enterprise Admin Panel</p>
         </div>
       </div>
 
@@ -59,8 +59,8 @@
         <div class="topbar-text">
           <h1>Admin Dashboard</h1>
           <p>
-            Monitor users, doctors, patients, appointments, and platform
-            activity from one centralized workspace.
+            Monitor users, doctors, patients, appointments, prescriptions, and
+            platform activity from a centralized enterprise workspace.
           </p>
         </div>
       </div>
@@ -79,9 +79,8 @@
           <span class="hero-label">Enterprise Admin Workspace</span>
           <h2>Welcome back, {{ loggedUser }}</h2>
           <p>
-            Use this panel to manage doctor onboarding, user operations, patient
-            records, and healthcare service workflows with a clean and scalable
-            interface.
+            Manage doctor onboarding, users, patients, appointment workflows,
+            and platform operations through a scalable administrative dashboard.
           </p>
         </div>
 
@@ -97,6 +96,22 @@
           </a>
         </div>
       </div>
+
+      <div class="mini-stats-grid">
+        <div
+          class="mini-stat-card"
+          *ngFor="let stat of miniStats; trackBy: trackByMiniStat"
+          [ngClass]="stat.statClass"
+        >
+          <div class="mini-stat-icon">
+            <i [class]="stat.icon"></i>
+          </div>
+          <div class="mini-stat-content">
+            <span>{{ stat.label }}</span>
+            <strong>{{ stat.value$ | async }}</strong>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="dashboard-grid">
@@ -106,6 +121,11 @@
         class="dashboard-card"
         [ngClass]="card.cardClass"
       >
+        <div class="card-top-strip">
+          <span>{{ card.trend }}</span>
+          <i class="fa fa-arrow-up"></i>
+        </div>
+
         <div class="card-header">
           <div class="card-content">
             <p class="card-title">{{ card.title }}</p>
@@ -160,6 +180,65 @@
             <div class="status-pill" [ngClass]="status.statusClass">
               {{ status.value }}
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-grid second-grid">
+      <div class="panel-card">
+        <div class="section-header">
+          <div>
+            <h3>Platform Shortcuts</h3>
+            <p>Fast navigation to major administrative modules</p>
+          </div>
+        </div>
+
+        <div class="shortcuts-grid">
+          <a
+            *ngFor="let item of shortcuts; trackBy: trackByShortcut"
+            [routerLink]="item.route"
+            class="shortcut-card"
+          >
+            <div class="shortcut-icon">
+              <i [class]="item.icon"></i>
+            </div>
+            <div class="shortcut-content">
+              <h4>{{ item.label }}</h4>
+              <p>{{ item.subtitle }}</p>
+            </div>
+            <i class="fa fa-angle-right shortcut-arrow"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <div class="section-header">
+          <div>
+            <h3>Operational Highlights</h3>
+            <p>Key combined business indicators</p>
+          </div>
+        </div>
+
+        <div class="highlight-metrics">
+          <div class="highlight-item aqua">
+            <span>Platform Total</span>
+            <strong>{{ totalPlatformCount$ | async }}</strong>
+          </div>
+
+          <div class="highlight-item blue">
+            <span>Approval Queue</span>
+            <strong>{{ pendingApprovalsCount$ | async }}</strong>
+          </div>
+
+          <div class="highlight-item orange">
+            <span>Ops Load</span>
+            <strong>{{ operationalLoadCount$ | async }}</strong>
+          </div>
+
+          <div class="highlight-item purple">
+            <span>Resource Coverage</span>
+            <strong>{{ resourceCoverageCount$ | async }}</strong>
           </div>
         </div>
       </div>
