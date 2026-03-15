@@ -1,227 +1,324 @@
 <app-header></app-header>
 
-<div class="panel panel-primary">
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+/>
 
-  <div class="panel-heading">
-    <h2 class="heading-text">
-      Patient List
-    </h2>
-  </div>
+<div class="patient-page">
+  <div class="page-shell">
+    <!-- HERO SECTION -->
+    <section class="hero-card">
+      <div class="hero-content">
+        <p class="eyebrow">Patient Management Center</p>
+        <h1>Patient List Dashboard</h1>
+        <p>
+          View patient appointments, approval decisions, admission progress,
+          and booked consultation slots in a professional enterprise layout.
+        </p>
+      </div>
 
+      <div class="hero-badge">
+        <i class="fa fa-heartbeat"></i>
+        <span>{{ currRole | titlecase }} Access Panel</span>
+      </div>
+    </section>
 
-  <div class="panel-body">
+    <ng-container *ngIf="patients$ | async as patients; else loadingBlock">
+      <ng-container *ngIf="slots$ | async as slots">
+        <!-- FILTER CARD -->
+        <section class="filter-card">
+          <div class="card-head">
+            <h2>Search & Filters</h2>
+            <p>Refine the patient list by name, problem, date, and status.</p>
+          </div>
 
-    <table class="table table-bordered">
-
-      <thead>
-        <tr>
-          <th>Identity</th>
-          <th>Patient ID</th>
-          <th>Name</th>
-          <th>Age</th>
-          <th>Slot</th>
-          <th>Date</th>
-          <th>Problem</th>
-          <th>Approval</th>
-          <th>Admission</th>
-        </tr>
-      </thead>
-
-
-      <tbody>
-
-        <tr *ngFor="let patient of patients$ | async">
-
-          <!-- Identity -->
-          <td>
-
-            <img
-              *ngIf="patient.gender?.toLowerCase() === 'male'"
-              class="user-img"
-              src="assets/img/maleuser.png"
-              width="80"
-              height="80"
-              alt="Male Patient"
-            />
-
-            <img
-              *ngIf="patient.gender?.toLowerCase() === 'female'"
-              class="user-img"
-              src="assets/img/femaleuser.png"
-              width="80"
-              height="80"
-              alt="Female Patient"
-            />
-
-          </td>
-
-
-          <!-- Patient ID -->
-          <td>
-            <div class="date-cover">
-              {{ patient.patientid }}
+          <div class="filter-grid">
+            <div class="form-group search-wide">
+              <label for="searchText">Search</label>
+              <div class="input-wrap">
+                <i class="fa fa-search"></i>
+                <input
+                  id="searchText"
+                  type="text"
+                  class="form-control"
+                  placeholder="Search by patient name, ID, date, problem, or slot"
+                  [(ngModel)]="searchText"
+                />
+              </div>
             </div>
-          </td>
 
+            <div class="form-group">
+              <label for="statusFilter">Approval Status</label>
+              <select
+                id="statusFilter"
+                class="form-control select-control"
+                [(ngModel)]="statusFilter"
+              >
+                <option value="all">All</option>
+                <option value="accept">Accepted</option>
+                <option value="false">Pending</option>
+                <option value="reject">Rejected</option>
+              </select>
+            </div>
 
-          <!-- Name -->
-          <td>
-            {{ patient.patientname }}
-          </td>
+            <div class="form-group">
+              <label for="admissionFilter">Admission Status</label>
+              <select
+                id="admissionFilter"
+                class="form-control select-control"
+                [(ngModel)]="admissionFilter"
+              >
+                <option value="all">All</option>
+                <option value="accept">Admitted</option>
+                <option value="false">Pending</option>
+                <option value="reject">Not Admitted</option>
+              </select>
+            </div>
 
+            <div class="form-group">
+              <label for="selectedDate">Appointment Date</label>
+              <input
+                id="selectedDate"
+                type="date"
+                class="form-control"
+                [(ngModel)]="selectedDate"
+              />
+            </div>
+          </div>
 
-          <!-- Age -->
-          <td>
-            {{ patient.age }} years
-          </td>
+          <div class="action-row">
+            <button type="button" class="secondary-btn" (click)="clearFilters()">
+              <i class="fa fa-refresh"></i>
+              Clear Filters
+            </button>
 
+            <button type="button" class="registerbtn" (click)="toggleSortDirection()">
+              <i class="fa" [ngClass]="sortDirection === 'asc' ? 'fa-sort-amount-asc' : 'fa-sort-amount-desc'"></i>
+              Sort by Date: {{ sortDirection === 'asc' ? 'Oldest First' : 'Newest First' }}
+            </button>
+          </div>
+        </section>
 
-          <!-- Slot -->
-          <td>
+        <!-- STATS -->
+        <section class="stats-grid">
+          <article class="stat-card">
+            <div class="stat-icon blue">
+              <i class="fa fa-users"></i>
+            </div>
+            <div>
+              <p>Total Patients</p>
+              <h3>{{ getTotalPatients(patients) }}</h3>
+            </div>
+          </article>
 
-            <ng-container *ngIf="slots$ | async as slots">
+          <article class="stat-card">
+            <div class="stat-icon green">
+              <i class="fa fa-check-circle"></i>
+            </div>
+            <div>
+              <p>Accepted</p>
+              <h3>{{ getAcceptedPatients(patients) }}</h3>
+            </div>
+          </article>
 
-              <ng-container *ngFor="let slot of slots">
+          <article class="stat-card">
+            <div class="stat-icon orange">
+              <i class="fa fa-clock-o"></i>
+            </div>
+            <div>
+              <p>Pending</p>
+              <h3>{{ getPendingPatients(patients) }}</h3>
+            </div>
+          </article>
 
-                <div *ngIf="
-                    patient.slot === 'AM slot'
-                    && slot.amstatus === 'booked'
-                    && patient.date === slot.date">
+          <article class="stat-card">
+            <div class="stat-icon red">
+              <i class="fa fa-hospital-o"></i>
+            </div>
+            <div>
+              <p>Admitted</p>
+              <h3>{{ getAdmittedPatients(patients) }}</h3>
+            </div>
+          </article>
+        </section>
 
-                  {{ slot.amslot }}
+        <!-- MAIN PANEL -->
+        <section class="panel enterprise-panel">
+          <div class="panel-heading enterprise-heading">
+            <div>
+              <h2>Patient Appointment Records</h2>
+              <p>
+                Centralized patient data with appointment slot mapping, approval
+                actions, and admission tracking.
+              </p>
+            </div>
 
-                </div>
+            <div class="record-badge">
+              <i class="fa fa-database"></i>
+              {{ getFilteredPatients(patients).length }} record(s)
+            </div>
+          </div>
 
+          <div class="panel-body">
+            <div
+              class="table-wrapper"
+              *ngIf="getFilteredPatients(patients).length > 0; else emptyState"
+            >
+              <table>
+                <thead>
+                  <tr>
+                    <th>Identity</th>
+                    <th>Patient ID</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Slot</th>
+                    <th>Date</th>
+                    <th>Problem</th>
+                    <th>Approval</th>
+                    <th>Admission</th>
+                  </tr>
+                </thead>
 
-                <div *ngIf="
-                    patient.slot === 'Noon slot'
-                    && slot.noonstatus === 'booked'
-                    && patient.date === slot.date">
+                <tbody>
+                  <tr
+                    *ngFor="let patient of getFilteredPatients(patients); trackBy: trackByPatient"
+                  >
+                    <td>
+                      <img
+                        class="user-img"
+                        [src]="getPatientImage(patient.gender)"
+                        alt="Patient Image"
+                      />
+                    </td>
 
-                  {{ slot.noonslot }}
+                    <td>
+                      <span class="pill pill-id">
+                        {{ patient.patientid }}
+                      </span>
+                    </td>
 
-                </div>
+                    <td>
+                      <div class="primary-text">{{ patient.patientname }}</div>
+                    </td>
 
+                    <td>
+                      <span class="subtle-text">{{ patient.age }} years</span>
+                    </td>
 
-                <div *ngIf="
-                    patient.slot === 'PM slot'
-                    && slot.pmstatus === 'booked'
-                    && patient.date === slot.date">
+                    <td>
+                      <span class="pill pill-slot">
+                        {{ getSlotDisplay(patient, slots) }}
+                      </span>
+                    </td>
 
-                  {{ slot.pmslot }}
+                    <td>
+                      <span class="pill pill-date">
+                        {{ patient.date }}
+                      </span>
+                    </td>
 
-                </div>
+                    <td class="problem-cell">
+                      {{ patient.problem }}
+                    </td>
 
-              </ng-container>
+                    <td>
+                      <!-- ADMIN VIEW -->
+                      <ng-container *ngIf="currRole.toLowerCase() === 'admin'">
+                        <span
+                          class="status-pill"
+                          [ngClass]="getStatusClass(patient.appointmentstatus)"
+                        >
+                          {{ getAppointmentStatusLabel(patient.appointmentstatus) }}
+                        </span>
+                      </ng-container>
 
-            </ng-container>
+                      <!-- DOCTOR VIEW -->
+                      <ng-container *ngIf="currRole.toLowerCase() === 'doctor'">
+                        <div
+                          class="action-buttons"
+                          *ngIf="canDoctorTakeAction(patient); else doctorStatusBlock"
+                        >
+                          <button
+                            class="action-btn approve-btn"
+                            (click)="acceptRequest(patient.slot)"
+                            [disabled]="isActionLoading(patient.slot)"
+                          >
+                            <i class="fa fa-check"></i>
+                            {{ isActionLoading(patient.slot) ? 'Processing...' : 'Accept' }}
+                          </button>
 
-          </td>
+                          <button
+                            class="action-btn reject-btn"
+                            (click)="rejectRequest(patient.slot)"
+                            [disabled]="isActionLoading(patient.slot)"
+                          >
+                            <i class="fa fa-times"></i>
+                            {{ isActionLoading(patient.slot) ? 'Processing...' : 'Reject' }}
+                          </button>
+                        </div>
 
+                        <ng-template #doctorStatusBlock>
+                          <span
+                            class="status-pill"
+                            [ngClass]="getStatusClass(patient.appointmentstatus)"
+                          >
+                            {{ getAppointmentStatusLabel(patient.appointmentstatus) }}
+                          </span>
+                        </ng-template>
+                      </ng-container>
 
-          <!-- Date -->
-          <td>
-            {{ patient.date }}
-          </td>
+                      <!-- USER VIEW -->
+                      <ng-container *ngIf="currRole.toLowerCase() === 'user'">
+                        <span
+                          class="status-pill"
+                          [ngClass]="getStatusClass(patient.appointmentstatus)"
+                        >
+                          {{ getAppointmentStatusLabel(patient.appointmentstatus) }}
+                        </span>
+                      </ng-container>
+                    </td>
 
+                    <td>
+                      <span
+                        class="status-pill"
+                        [ngClass]="getStatusClass(patient.admissionstatus)"
+                      >
+                        {{ getAdmissionStatusLabel(patient.admissionstatus) }}
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
 
-          <!-- Problem -->
-          <td>
-            {{ patient.problem }}
-          </td>
+            <ng-template #emptyState>
+              <div class="empty-state">
+                <i class="fa fa-folder-open-o"></i>
+                <h3>No patient records found</h3>
+                <p>
+                  No records match your current filters. Try clearing the filters
+                  or search with another keyword.
+                </p>
+              </div>
+            </ng-template>
+          </div>
+        </section>
+      </ng-container>
+    </ng-container>
 
-
-          <!-- Approval -->
-          <td>
-
-            <!-- Admin View -->
-            <ng-container *ngIf="currRole.toLowerCase() === 'admin'">
-
-              <span class="accepted"
-                *ngIf="patient.appointmentstatus === 'accept'">
-                Accepted
-              </span>
-
-              <span class="pending"
-                *ngIf="patient.appointmentstatus === 'false'">
-                Pending
-              </span>
-
-              <span class="rejected"
-                *ngIf="patient.appointmentstatus === 'reject'">
-                Rejected
-              </span>
-
-            </ng-container>
-
-
-            <!-- Doctor View -->
-            <ng-container *ngIf="currRole.toLowerCase() === 'doctor'">
-
-              <button
-                *ngIf="patient.appointmentstatus === 'false'"
-                (click)="acceptRequest(patient.slot)"
-                class="accepted">
-
-                Accept
-
-              </button>
-
-
-              <button
-                *ngIf="patient.appointmentstatus === 'false'"
-                (click)="rejectRequest(patient.slot)"
-                class="rejected">
-
-                Reject
-
-              </button>
-
-
-              <span class="accepted"
-                *ngIf="patient.appointmentstatus === 'accept'">
-                Accepted
-              </span>
-
-
-              <span class="rejected"
-                *ngIf="patient.appointmentstatus === 'reject'">
-                Rejected
-              </span>
-
-            </ng-container>
-
-          </td>
-
-
-          <!-- Admission -->
-          <td>
-
-            <span class="accepted"
-              *ngIf="patient.admissionstatus === 'accept'">
-              Admitted
-            </span>
-
-            <span class="pending"
-              *ngIf="patient.admissionstatus === 'false'">
-              Pending
-            </span>
-
-            <span class="rejected"
-              *ngIf="patient.admissionstatus === 'reject'">
-              Not Admitted
-            </span>
-
-          </td>
-
-        </tr>
-
-      </tbody>
-
-    </table>
-
+    <ng-template #loadingBlock>
+      <section class="panel enterprise-panel">
+        <div class="panel-body">
+          <div class="empty-state">
+            <i class="fa fa-spinner fa-spin"></i>
+            <h3>Loading patient records...</h3>
+            <p>Please wait while the data is being prepared.</p>
+          </div>
+        </div>
+      </section>
+    </ng-template>
   </div>
-
 </div>
 
 <app-footer></app-footer>

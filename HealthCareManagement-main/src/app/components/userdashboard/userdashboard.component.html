@@ -5,165 +5,262 @@
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
 />
 
-<div class="dashboard-wrapper">
-  <!-- SIDEBAR -->
+<div class="dashboard-layout">
+  <aside class="sidebar" [class.collapsed]="isCollapsed">
+    <div class="sidebar-top">
+      <button class="menu-toggle" type="button" (click)="toggleSidebar()">
+        <i class="fa fa-bars"></i>
+      </button>
 
-  <div class="sidebar" [class.collapsed]="isCollapsed">
-    <div class="hamburger" (click)="toggleSidebar()">
-      <i class="fa fa-bars"></i>
-    </div>
-
-    <div class="profile-card">
-      <img
-        *ngIf="gender === 'male' || gender === 'Male'"
-        src="assets/img/maleuser.png"
-      />
-
-      <img
-        *ngIf="gender === 'female' || gender === 'Female'"
-        src="assets/img/femaleuser.png"
-      />
-
-
-      <p *ngIf="!isCollapsed">User Panel</p>
-    </div>
-
-    <ul class="menu-list">
-      <li routerLink="/edituserprofile">
-        <i class="fa fa-edit"></i>
-        <span *ngIf="!isCollapsed">Edit Profile</span>
-      </li>
-
-      <li routerLink="/doctorlist">
-        <i class="fa fa-user-md"></i>
-        <span *ngIf="!isCollapsed">Doctor List</span>
-      </li>
-
-      <li routerLink="/checkslots">
-        <i class="fa fa-clock-o"></i>
-        <span *ngIf="!isCollapsed">Check Slots</span>
-      </li>
-
-      <li routerLink="/bookappointment">
-        <i class="fa fa-calendar"></i>
-        <span *ngIf="!isCollapsed">New Appointment</span>
-      </li>
-
-      <li routerLink="/approvalstatus">
-        <i class="fa fa-check"></i>
-        <span *ngIf="!isCollapsed">Approval Status</span>
-      </li>
-
-      <li routerLink="/prescriptionlist">
-        <i class="fa fa-sticky-note-o"></i>
-        <span *ngIf="!isCollapsed">Prescription</span>
-      </li>
-    </ul>
-  </div>
-
-  <!-- MAIN CONTENT -->
-
-  <div class="dashboard-content">
-    <h1 class="dashboard-title">Welcome back, {{ name }}</h1>
-
-    <p class="dashboard-subtitle">
-      Manage your healthcare activities from your dashboard
-    </p>
-
-    <div class="cards-grid">
-      <!-- DOCTORS -->
-
-      <div class="stat-card blue" routerLink="/doctorlist">
-        <div class="icon-circle">
-          <i class="fa fa-user-md"></i>
-        </div>
-
-        <h3>Total Doctors</h3>
-
-        <p *ngFor="let doctor of doctors | async">
-          {{ doctor }}
-        </p>
-      </div>
-
-      <!-- USERS -->
-
-      <div class="stat-card orange" routerLink="/userlist">
-        <div class="icon-circle">
-          <i class="fa fa-users"></i>
-        </div>
-
-        <h3>Total Users</h3>
-
-        <p *ngFor="let user of users | async">
-          {{ user }}
-        </p>
-      </div>
-
-      <!-- PATIENTS -->
-
-      <div class="stat-card red" routerLink="/patientlist">
-        <div class="icon-circle">
-          <i class="fa fa-user"></i>
-        </div>
-
-        <h3>Total Patients</h3>
-
-        <p *ngFor="let patient of patients | async">
-          {{ patient }}
-        </p>
-      </div>
-
-      <!-- SLOTS -->
-
-      <div class="stat-card green" routerLink="/checkslots">
-        <div class="icon-circle">
-          <i class="fa fa-calendar"></i>
-        </div>
-
-        <h3>Available Slots</h3>
-
-        <p *ngFor="let slot of slots | async">
-          {{ slot }}
-        </p>
-      </div>
-
-      <!-- APPOINTMENTS -->
-
-      <div class="stat-card purple" routerLink="/bookappointment">
-        <div class="icon-circle">
-          <i class="fa fa-calendar-check-o"></i>
-        </div>
-
-        <h3>Book Appointments</h3>
-
-        <p>Manage your appointments</p>
-      </div>
-
-      <!-- PRESCRIPTIONS -->
-
-      <div class="stat-card teal" routerLink="/prescriptionlist">
-        <div class="icon-circle">
-          <i class="fa fa-sticky-note"></i>
-        </div>
-
-        <h3>Prescriptions</h3>
-
-        <p>View medical prescriptions</p>
-      </div>
-
-      <!-- SERVICES -->
-
-      <div class="stat-card dark" routerLink="/services">
-        <div class="icon-circle">
-          <i class="fa fa-hospital-o"></i>
-        </div>
-
-        <h3>Hospital Services</h3>
-
-        <p>Explore available services</p>
+      <div class="brand" *ngIf="!isCollapsed">
+        <h2>HealthCare</h2>
+        <p>User Portal</p>
       </div>
     </div>
-  </div>
+
+    <div class="profile-section">
+      <div class="avatar-wrap">
+        <img
+          *ngIf="gender === 'male' || gender === 'Male'"
+          src="assets/img/maleuser.png"
+          alt="Male User"
+        />
+        <img
+          *ngIf="gender === 'female' || gender === 'Female'"
+          src="assets/img/femaleuser.png"
+          alt="Female User"
+        />
+      </div>
+
+      <div class="profile-text" *ngIf="!isCollapsed">
+        <h3>{{ name }}</h3>
+        <p>{{ currRole || 'User' }}</p>
+      </div>
+    </div>
+
+    <div class="sidebar-section" *ngIf="!isCollapsed">
+      <p class="section-label">Quick Menu</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <ul class="menu-list">
+        <li
+          *ngFor="let link of quickLinks"
+          [routerLink]="link.route"
+          routerLinkActive="active-link"
+        >
+          <i [class]="link.icon"></i>
+          <span *ngIf="!isCollapsed">{{ link.label }}</span>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer" *ngIf="!isCollapsed">
+      <div class="support-card">
+        <div class="support-icon">
+          <i class="fa fa-heartbeat"></i>
+        </div>
+        <div>
+          <h4>Health Support</h4>
+          <p>Access your services quickly and securely.</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="dashboard-main">
+    <section class="dashboard-hero">
+      <div class="hero-left">
+        <p class="eyebrow">Dashboard Overview</p>
+        <h1>Welcome back, {{ name }}</h1>
+        <p class="hero-subtitle">
+          Manage your healthcare activities, appointments, and services from one place.
+        </p>
+
+        <div class="hero-actions">
+          <button class="hero-btn primary-btn" routerLink="/bookappointment">
+            <i class="fa fa-calendar-check-o"></i>
+            Book Appointment
+          </button>
+
+          <button class="hero-btn secondary-btn" routerLink="/doctorlist">
+            <i class="fa fa-user-md"></i>
+            Find Doctor
+          </button>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="hero-mini-card">
+          <span class="mini-label">Role</span>
+          <strong>{{ currRole || 'User' }}</strong>
+        </div>
+
+        <div class="hero-mini-card">
+          <span class="mini-label">Profile</span>
+          <strong>Active</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="summary-strip">
+      <div class="summary-box">
+        <div class="summary-icon">
+          <i class="fa fa-stethoscope"></i>
+        </div>
+        <div>
+          <h4>Smart Access</h4>
+          <p>Find doctors, slots, and prescriptions faster.</p>
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <div class="summary-icon">
+          <i class="fa fa-shield"></i>
+        </div>
+        <div>
+          <h4>Secure Dashboard</h4>
+          <p>Your healthcare information stays protected.</p>
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <div class="summary-icon">
+          <i class="fa fa-bolt"></i>
+        </div>
+        <div>
+          <h4>Quick Actions</h4>
+          <p>Complete daily healthcare tasks in fewer clicks.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats-grid">
+      <article
+        class="stat-card"
+        *ngFor="let stat of stats"
+        [ngClass]="stat.theme"
+        [routerLink]="stat.route"
+      >
+        <div class="card-glow"></div>
+
+        <div class="card-top">
+          <div class="icon-circle">
+            <i [class]="stat.icon"></i>
+          </div>
+
+          <div class="card-badge">
+            <i class="fa fa-arrow-up"></i>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <h3>{{ stat.title }}</h3>
+
+          <h2 class="stat-value" *ngIf="stat.value$; else cardSubtitleOnly">
+            {{ stat.value$ | async }}
+          </h2>
+
+          <ng-template #cardSubtitleOnly>
+            <p class="card-subtitle">{{ stat.subtitle }}</p>
+          </ng-template>
+
+          <p class="card-subtitle" *ngIf="stat.value$">
+            {{ stat.subtitle }}
+          </p>
+
+          <div class="card-footer">
+            <span>Open Module</span>
+            <i class="fa fa-arrow-right"></i>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="dashboard-bottom">
+      <div class="info-panel">
+        <div class="panel-header">
+          <h3>Quick Access</h3>
+          <p>Frequently used healthcare actions</p>
+        </div>
+
+        <div class="quick-actions-grid">
+          <div class="quick-action-card" routerLink="/edituserprofile">
+            <div class="quick-action-icon bg-blue">
+              <i class="fa fa-user"></i>
+            </div>
+            <h4>Edit Profile</h4>
+            <p>Update your personal and account details.</p>
+          </div>
+
+          <div class="quick-action-card" routerLink="/bookappointment">
+            <div class="quick-action-icon bg-purple">
+              <i class="fa fa-calendar-check-o"></i>
+            </div>
+            <h4>Book Appointment</h4>
+            <p>Schedule a consultation with a doctor.</p>
+          </div>
+
+          <div class="quick-action-card" routerLink="/approvalstatus">
+            <div class="quick-action-icon bg-green">
+              <i class="fa fa-check-circle"></i>
+            </div>
+            <h4>Approval Status</h4>
+            <p>Track your appointment approvals easily.</p>
+          </div>
+
+          <div class="quick-action-card" routerLink="/prescriptionlist">
+            <div class="quick-action-icon bg-teal">
+              <i class="fa fa-file-text-o"></i>
+            </div>
+            <h4>Prescriptions</h4>
+            <p>Check medical prescriptions and history.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="activity-panel">
+        <div class="panel-header">
+          <h3>User Highlights</h3>
+          <p>Helpful insights for your healthcare journey</p>
+        </div>
+
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="activity-dot blue-dot"></div>
+            <div>
+              <h4>Doctor Availability</h4>
+              <p>Browse specialists and check available slots instantly.</p>
+            </div>
+          </div>
+
+          <div class="activity-item">
+            <div class="activity-dot green-dot"></div>
+            <div>
+              <h4>Appointment Management</h4>
+              <p>Book and manage appointments from a single dashboard.</p>
+            </div>
+          </div>
+
+          <div class="activity-item">
+            <div class="activity-dot orange-dot"></div>
+            <div>
+              <h4>Prescription Access</h4>
+              <p>Review prescriptions whenever you need them.</p>
+            </div>
+          </div>
+
+          <div class="activity-item">
+            <div class="activity-dot purple-dot"></div>
+            <div>
+              <h4>Healthcare Services</h4>
+              <p>Explore hospital services and patient support modules.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 </div>
 
 <app-footer></app-footer>

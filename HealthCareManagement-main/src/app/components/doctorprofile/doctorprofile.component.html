@@ -1,212 +1,427 @@
 <app-header></app-header>
-
-<!-- PROFILE CARD -->
-<div class="profile-wrapper" id="profilecard">
-  <div *ngFor="let doctor of profileDetails | async" class="profile-card">
-    <!-- Header -->
-    <div class="profile-header">
-      <img
-        *ngIf="doctor.gender === 'Male' || doctor.gender === 'male'"
-        src="assets/img/maledoctor.png"
-        class="profile-img"
-        alt="Male Doctor"
-      />
-
-      <img
-        *ngIf="doctor.gender === 'Female' || doctor.gender === 'female'"
-        src="assets/img/femaledoctor.png"
-        class="profile-img"
-        alt="Female Doctor"
-      />
-
-      <h2>Dr. {{ doctor.doctorname }}</h2>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+/>
+<div class="profile-page">
+  <div class="page-topbar">
+    <div class="page-title-block">
+      <span class="page-badge">Doctor Workspace</span>
+      <h1>Doctor Profile</h1>
+      <p>Manage professional details, contact information, and account settings.</p>
     </div>
 
-    <!-- Body -->
-    <div class="profile-body">
-      <div class="profile-row">
-        <span>Email:</span>
-        <span>{{ doctor.email }}</span>
-      </div>
-
-      <div class="profile-row">
-        <span>Mobile:</span>
-        <span>{{ doctor.mobile }}</span>
-      </div>
-
-      <div class="profile-row">
-        <span>Gender:</span>
-        <span>{{ doctor.gender }}</span>
-      </div>
-
-      <div class="profile-row">
-        <span>Experience:</span>
-        <span>{{ doctor.experience }} years</span>
-      </div>
-
-      <div class="profile-row">
-        <span>Specialization:</span>
-        <span>{{ doctor.specialization }}</span>
-      </div>
-
-      <div class="profile-row">
-        <span>Hospital:</span>
-        <span>{{ doctor.previoushospital }}</span>
-      </div>
-    </div>
-
-    <!-- Button -->
-    <div class="profile-footer">
-      <button class="edit-btn" (click)="editProfile()">Edit Profile</button>
-
-      <small *ngIf="temp" class="success-msg">
-        Profile Updated Successfully!
-      </small>
-    </div>
-  </div>
-</div>
-
-<!-- EDIT FORM -->
-<div class="form-wrapper" id="profileform">
-  <div class="form-card">
-    <h3>Edit Doctor Profile</h3>
-
-    <form #Updateform="ngForm" (ngSubmit)="updateDoctorProfile()">
-      <!-- Email -->
-      <div class="form-group">
-        <label for="email">Email</label>
-
-        <input
-          id="email"
-          type="email"
-          name="email"
-          [(ngModel)]="doctor.email"
-          class="form-control"
-          required
-        />
-      </div>
-
-      <!-- Name -->
-      <div class="form-group">
-        <label for="doctorname">Doctor Name</label>
-
-        <input
-          id="doctorname"
-          type="text"
-          name="doctorname"
-          [(ngModel)]="doctor.doctorname"
-          class="form-control"
-          required
-        />
-      </div>
-
-      <!-- Gender -->
-      <div class="form-group">
-        <label for="gender">Gender</label>
-
-        <select
-          id="gender"
-          name="gender"
-          [(ngModel)]="doctor.gender"
-          class="form-control"
-          required
-        >
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-          <option value="Others">Others</option>
-        </select>
-      </div>
-
-      <!-- Mobile -->
-      <div class="form-group">
-        <label for="mobile">Mobile Number</label>
-
-        <input
-          id="mobile"
-          type="text"
-          name="mobile"
-          [(ngModel)]="doctor.mobile"
-          class="form-control"
-          required
-        />
-      </div>
-
-      <!-- Experience -->
-      <div class="form-group">
-        <label for="experience">Experience</label>
-
-        <input
-          id="experience"
-          type="text"
-          name="experience"
-          [(ngModel)]="doctor.experience"
-          class="form-control"
-          required
-        />
-      </div>
-
-      <!-- Specialization -->
-      <div class="form-group">
-        <label for="specialization">Specialization</label>
-
-        <input
-          id="specialization"
-          type="text"
-          name="specialization"
-          [(ngModel)]="doctor.specialization"
-          class="form-control"
-          required
-        />
-      </div>
-
-      <!-- Hospital -->
-      <div class="form-group">
-        <label for="hospital">Previous Hospital</label>
-
-        <input
-          id="hospital"
-          type="text"
-          name="previoushospital"
-          [(ngModel)]="doctor.previoushospital"
-          class="form-control"
-          required
-        />
-      </div>
-
-      <!-- Address -->
-      <div class="form-group">
-        <label for="address">Address</label>
-
-        <input
-          id="address"
-          type="text"
-          name="address"
-          [(ngModel)]="doctor.address"
-          class="form-control"
-          required
-        />
-      </div>
-
-      <!-- Password -->
-      <div class="form-group">
-        <label for="password">Password</label>
-
-        <input
-          id="password"
-          type="password"
-          name="password"
-          [(ngModel)]="doctor.password"
-          class="form-control"
-          required
-        />
-      </div>
-
-      <!-- Button -->
-      <button type="submit" [disabled]="Updateform.invalid" class="update-btn">
-        Update Profile
+    <div class="page-actions">
+      <div class="version-pill">{{ profileVersion }}</div>
+      <button class="primary-btn" *ngIf="!isEditMode" (click)="editProfile()">
+        <i class="fa fa-edit"></i>
+        Edit Your Profile
       </button>
-    </form>
+      <button class="secondary-btn" *ngIf="isEditMode" (click)="cancelEdit()">
+        <i class="fa fa-times"></i>
+        Cancel
+      </button>
+    </div>
   </div>
+
+  <div class="alert success-alert" *ngIf="updateSuccess">
+    <i class="fa fa-check-circle"></i>
+    <span>{{ msg }}</span>
+  </div>
+
+  <div class="alert error-alert" *ngIf="errorMsg">
+    <i class="fa fa-exclamation-triangle"></i>
+    <span>{{ errorMsg }}</span>
+  </div>
+
+  <!-- VIEW MODE -->
+  <ng-container *ngIf="!isEditMode">
+    <div *ngFor="let item of profileDetails | async" class="profile-grid">
+      <!-- Left Profile Summary -->
+      <section class="profile-summary-card">
+        <div class="cover-strip"></div>
+
+        <div class="profile-summary-content">
+          <div class="avatar-wrap">
+            <img
+              [src]="getProfileImage(item.gender)"
+              alt="Doctor"
+              class="profile-avatar"
+            />
+          </div>
+
+          <h2>Dr. {{ item.doctorname }}</h2>
+          <p class="role-text">{{ currRole }}</p>
+
+          <div class="status-row">
+            <span class="status-badge online">Active</span>
+            <span class="status-badge verified">Verified</span>
+          </div>
+
+          <div class="summary-mini-stats">
+            <div class="mini-stat">
+              <strong>{{ item.experience || 0 }}+</strong>
+              <span>Years Experience</span>
+            </div>
+            <div class="mini-stat">
+              <strong>{{ item.specialization || 'N/A' }}</strong>
+              <span>Specialization</span>
+            </div>
+          </div>
+
+          <div class="summary-actions">
+            <button class="primary-btn full-btn" (click)="editProfile()">
+              <i class="fa fa-pencil"></i>
+              Update Profile
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Information -->
+      <section class="profile-details-area">
+        <div class="stats-grid">
+          <div class="stat-card teal">
+            <div class="stat-icon"><i class="fa fa-user-md"></i></div>
+            <div>
+              <h3>{{ item.experience || 0 }}</h3>
+              <p>Years Experience</p>
+            </div>
+          </div>
+
+          <div class="stat-card blue">
+            <div class="stat-icon"><i class="fa fa-stethoscope"></i></div>
+            <div>
+              <h3>{{ item.specialization || 'N/A' }}</h3>
+              <p>Specialization</p>
+            </div>
+          </div>
+
+          <div class="stat-card green">
+            <div class="stat-icon"><i class="fa fa-shield"></i></div>
+            <div>
+              <h3>Secure</h3>
+              <p>Profile Status</p>
+            </div>
+          </div>
+
+          <div class="stat-card orange">
+            <div class="stat-icon"><i class="fa fa-briefcase"></i></div>
+            <div>
+              <h3>{{ getExperienceLabel(item.experience) }}</h3>
+              <p>Professional Level</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="section-header">
+              <h3>Personal Information</h3>
+              <p>Basic doctor identity details</p>
+            </div>
+
+            <div class="info-list">
+              <div class="info-row">
+                <span>Doctor Name</span>
+                <strong>Dr. {{ item.doctorname }}</strong>
+              </div>
+              <div class="info-row">
+                <span>Gender</span>
+                <strong>{{ item.gender }}</strong>
+              </div>
+              <div class="info-row">
+                <span>Role</span>
+                <strong>{{ currRole }}</strong>
+              </div>
+              <div class="info-row">
+                <span>Professional Level</span>
+                <strong>{{ getExperienceLabel(item.experience) }}</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <div class="section-header">
+              <h3>Contact Information</h3>
+              <p>Communication and location details</p>
+            </div>
+
+            <div class="info-list">
+              <div class="info-row">
+                <span>Email Address</span>
+                <strong>{{ item.email }}</strong>
+              </div>
+              <div class="info-row">
+                <span>Mobile Number</span>
+                <strong>{{ item.mobile }}</strong>
+              </div>
+              <div class="info-row">
+                <span>Address</span>
+                <strong>{{ item.address || 'Not Available' }}</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <div class="section-header">
+              <h3>Professional Information</h3>
+              <p>Work history and specialization details</p>
+            </div>
+
+            <div class="info-list">
+              <div class="info-row">
+                <span>Specialization</span>
+                <strong>{{ item.specialization }}</strong>
+              </div>
+              <div class="info-row">
+                <span>Experience</span>
+                <strong>{{ item.experience }} years</strong>
+              </div>
+              <div class="info-row">
+                <span>Previous Hospital</span>
+                <strong>{{ item.previoushospital }}</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <div class="section-header">
+              <h3>Account & Security</h3>
+              <p>Profile access and security overview</p>
+            </div>
+
+            <div class="security-box">
+              <div class="security-item">
+                <i class="fa fa-check-circle"></i>
+                <div>
+                  <strong>Verified Account</strong>
+                  <p>Your profile is active and visible in the system.</p>
+                </div>
+              </div>
+
+              <div class="security-item">
+                <i class="fa fa-lock"></i>
+                <div>
+                  <strong>Password Protected</strong>
+                  <p>Your account is secured with login credentials.</p>
+                </div>
+              </div>
+
+              <div class="security-item">
+                <i class="fa fa-database"></i>
+                <div>
+                  <strong>Profile Version</strong>
+                  <p>{{ profileVersion }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </ng-container>
+
+  <!-- EDIT MODE -->
+  <ng-container *ngIf="isEditMode">
+    <div class="edit-layout">
+      <section class="edit-sidebar-card">
+        <div class="edit-avatar-circle">
+          {{ getInitials(doctor.doctorname) }}
+        </div>
+        <h3>{{ doctor.doctorname || 'Doctor Name' }}</h3>
+        <p>{{ doctor.email || 'doctor@hospital.com' }}</p>
+
+        <div class="edit-side-list">
+          <div class="edit-side-item">
+            <span>Version</span>
+            <strong>{{ profileVersion }}</strong>
+          </div>
+          <div class="edit-side-item">
+            <span>Role</span>
+            <strong>{{ currRole }}</strong>
+          </div>
+          <div class="edit-side-item">
+            <span>Status</span>
+            <strong class="green-text">Editable</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="edit-form-card">
+        <div class="section-header">
+          <h3>Edit Doctor Profile</h3>
+          <p>Update personal, contact, and professional information.</p>
+        </div>
+
+        <form #Updateform="ngForm" (ngSubmit)="updateDoctorProfile()" novalidate>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input
+                id="email"
+                type="email"
+                name="email"
+                [(ngModel)]="doctor.email"
+                class="form-control"
+                #emailCtrl="ngModel"
+                required
+                email
+              />
+              <small class="error-text" *ngIf="emailCtrl.invalid && emailCtrl.touched">
+                Enter a valid email address.
+              </small>
+            </div>
+
+            <div class="form-group">
+              <label for="doctorname">Doctor Name</label>
+              <input
+                id="doctorname"
+                type="text"
+                name="doctorname"
+                [(ngModel)]="doctor.doctorname"
+                class="form-control"
+                #doctornameCtrl="ngModel"
+                required
+              />
+              <small class="error-text" *ngIf="doctornameCtrl.invalid && doctornameCtrl.touched">
+                Doctor name is required.
+              </small>
+            </div>
+
+            <div class="form-group">
+              <label for="gender">Gender</label>
+              <select
+                id="gender"
+                name="gender"
+                [(ngModel)]="doctor.gender"
+                class="form-control"
+                #genderCtrl="ngModel"
+                required
+              >
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Others">Others</option>
+              </select>
+              <small class="error-text" *ngIf="genderCtrl.invalid && genderCtrl.touched">
+                Gender is required.
+              </small>
+            </div>
+
+            <div class="form-group">
+              <label for="mobile">Mobile Number</label>
+              <input
+                id="mobile"
+                type="text"
+                name="mobile"
+                [(ngModel)]="doctor.mobile"
+                class="form-control"
+                #mobileCtrl="ngModel"
+                required
+                minlength="10"
+              />
+              <small class="error-text" *ngIf="mobileCtrl.invalid && mobileCtrl.touched">
+                Enter a valid mobile number.
+              </small>
+            </div>
+
+            <div class="form-group">
+              <label for="experience">Experience</label>
+              <input
+                id="experience"
+                type="number"
+                name="experience"
+                [(ngModel)]="doctor.experience"
+                class="form-control"
+                #experienceCtrl="ngModel"
+                required
+                min="0"
+              />
+              <small class="error-text" *ngIf="experienceCtrl.invalid && experienceCtrl.touched">
+                Experience is required.
+              </small>
+            </div>
+
+            <div class="form-group">
+              <label for="specialization">Specialization</label>
+              <input
+                id="specialization"
+                type="text"
+                name="specialization"
+                [(ngModel)]="doctor.specialization"
+                class="form-control"
+                #specializationCtrl="ngModel"
+                required
+              />
+              <small class="error-text" *ngIf="specializationCtrl.invalid && specializationCtrl.touched">
+                Specialization is required.
+              </small>
+            </div>
+
+            <div class="form-group">
+              <label for="hospital">Previous Hospital</label>
+              <input
+                id="hospital"
+                type="text"
+                name="previoushospital"
+                [(ngModel)]="doctor.previoushospital"
+                class="form-control"
+                #hospitalCtrl="ngModel"
+                required
+              />
+              <small class="error-text" *ngIf="hospitalCtrl.invalid && hospitalCtrl.touched">
+                Previous hospital is required.
+              </small>
+            </div>
+
+            <div class="form-group">
+              <label for="address">Address</label>
+              <input
+                id="address"
+                type="text"
+                name="address"
+                [(ngModel)]="doctor.address"
+                class="form-control"
+                #addressCtrl="ngModel"
+                required
+              />
+              <small class="error-text" *ngIf="addressCtrl.invalid && addressCtrl.touched">
+                Address is required.
+              </small>
+            </div>
+
+            <div class="form-group full-width">
+              <label for="password">Password</label>
+              <input
+                id="password"
+                type="password"
+                name="password"
+                [(ngModel)]="doctor.password"
+                class="form-control"
+                #passwordCtrl="ngModel"
+                required
+                minlength="4"
+              />
+              <small class="error-text" *ngIf="passwordCtrl.invalid && passwordCtrl.touched">
+                Password must be valid.
+              </small>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="secondary-btn" (click)="cancelEdit()">
+              Cancel
+            </button>
+            <button type="submit" class="primary-btn" [disabled]="Updateform.invalid">
+              <i class="fa fa-save"></i>
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </ng-container>
 </div>
 
 <app-footer></app-footer>

@@ -19,13 +19,11 @@ export class UserlistComponent implements OnInit {
     this.loadUsers();
   }
 
-  loadUsers() {
+  loadUsers(): void {
     this.users = this._service.getAllUsers();
   }
 
-  // ⭐ Search Filter
   filterUser(user: User): boolean {
-
     if (!this.searchText) return true;
 
     const search = this.searchText.toLowerCase();
@@ -37,4 +35,18 @@ export class UserlistComponent implements OnInit {
     );
   }
 
+  getUserImage(user: User): string {
+    return user.gender?.toLowerCase() === 'female'
+      ? 'assets/img/femaleuser.png'
+      : 'assets/img/maleuser.png';
+  }
+
+  getUserThemeClass(gender?: string): string {
+    if (!gender) return 'theme-neutral';
+    return gender.toLowerCase() === 'female' ? 'theme-female' : 'theme-male';
+  }
+
+  trackByUser(index: number, user: User): string {
+    return user.email || index.toString();
+  }
 }

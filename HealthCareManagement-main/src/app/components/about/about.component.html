@@ -1,99 +1,223 @@
 <app-header></app-header>
 
-<section class="about-wrapper">
-  <div class="about-container">
-
-    <!-- Title Section -->
-    <div class="about-header text-center">
-      <h1>About {{ hospitalName }}</h1>
-      <p>
-        Caring for our community for
-        <span class="highlight">{{ yearsOfService }}</span> years
-      </p>
-    </div>
-
-    <!-- Main Content -->
-    <div class="about-content">
-
-      <!-- Left Image -->
-      <div class="about-image">
-        <img
-          src="https://plus.unsplash.com/premium_vector-1724672970461-cfb0822a2209?q=80&w=1160&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="Hospital"
-        />
-      </div>
-
-      <!-- Right Text -->
-      <div class="about-text">
-
-        <h2>Who We Are</h2>
-
-        <p>
-          {{ hospitalName }} has been committed to providing top-quality
-          healthcare since {{ establishedYear }}. We combine advanced medical
-          technology, experienced professionals, and a patient-first approach.
+<div class="about-page">
+  <section class="about-hero">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <span class="hero-badge">{{ heroBadge }}</span>
+        <h1>About {{ hospitalName }}</h1>
+        <p class="hero-text">
+          For <span class="highlight">{{ yearsOfService }}+ years</span>,
+          {{ hospitalName }} has been committed to delivering reliable,
+          compassionate, and technology-enabled healthcare for individuals,
+          families, and communities.
         </p>
 
-        <!-- Core Values -->
-        <div class="values">
-          <h3>Our Core Values</h3>
-
-          <div class="value-card" *ngFor="let value of coreValues">
-            <i class="fa fa-heart"></i>
-            <span>{{ value }}</span>
+        <div class="hero-meta">
+          <div class="hero-meta-item">
+            <i class="fa fa-map-marker"></i>
+            <span>{{ location }}</span>
           </div>
 
+          <div class="hero-meta-item">
+            <i class="fa fa-clock-o"></i>
+            <span>{{ supportAvailability }}</span>
+          </div>
         </div>
 
-        <!-- Stats -->
-        <div class="stats">
+        <div class="hero-actions">
+          <a routerLink="/services" class="hero-btn primary-btn">
+            <i class="fa fa-stethoscope"></i>
+            Explore Services
+          </a>
 
-          <div class="stat-box">
-            <i class="fa fa-user-md"></i>
-            <h4>{{ teamSize }}+</h4>
-            <p>Medical Experts</p>
-          </div>
-
-          <div class="stat-box">
-            <i class="fa fa-hospital-o"></i>
-            <h4>{{ yearsOfService }}</h4>
-            <p>Years Experience</p>
-          </div>
-
-          <div class="stat-box">
-            <i class="fa fa-users"></i>
-            <h4>50K+</h4>
-            <p>Patients Served</p>
-          </div>
-
+          <a routerLink="/bookappointment" class="hero-btn secondary-btn">
+            <i class="fa fa-calendar-check-o"></i>
+            Book Appointment
+          </a>
         </div>
+      </div>
 
+      <div class="hero-visual">
+        <div class="hero-image-card">
+          <img src="assets/img/hospital.png" alt="Hospital Building" />
+          <div class="hero-floating-card">
+            <i class="fa fa-heartbeat"></i>
+            <div>
+              <h3>Patient-First Care</h3>
+              <p>Modern care systems with trusted specialists</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+  </section>
 
-    <!-- Mission -->
-    <div class="mission-box">
+  <section class="stats-section container">
+    <div class="stats-grid">
+      <div class="stat-card" *ngFor="let item of highlights">
+        <div class="stat-icon">
+          <i [class]="item.icon"></i>
+        </div>
 
-      <i class="fa fa-stethoscope mission-icon"></i>
+        <div class="stat-content">
+          <h3>{{ item.value }}</h3>
+          <h4>{{ item.label }}</h4>
+          <p>{{ item.description }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-      <h3>Our Mission</h3>
+  <section class="overview-section container">
+    <div class="overview-grid">
+      <div class="overview-left card-panel">
+        <div class="section-tag">Who We Are</div>
+        <h2>Committed to better outcomes and better patient experiences</h2>
+        <p>
+          {{ hospitalName }} has been providing high-quality healthcare since
+          {{ establishedYear }}. We combine experienced professionals, modern
+          systems, patient safety standards, and coordinated treatment pathways
+          to deliver dependable medical care.
+        </p>
+        <p>
+          Our institution focuses on clinical excellence, transparent care,
+          service efficiency, and a healing environment that supports both
+          patients and their families.
+        </p>
 
+        <div class="quality-list">
+          <div class="quality-item" *ngFor="let quality of qualityIndicators">
+            <div class="quality-icon">
+              <i [class]="quality.icon"></i>
+            </div>
+            <div class="quality-text">
+              <h4>{{ quality.title }}</h4>
+              <p>{{ quality.status }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="overview-right">
+        <div class="card-panel mission-vision-card">
+          <div class="mini-section">
+            <div class="icon-circle">
+              <i class="fa fa-bullseye"></i>
+            </div>
+            <div>
+              <h3>Our Mission</h3>
+              <p>{{ mission }}</p>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="mini-section">
+            <div class="icon-circle vision-circle">
+              <i class="fa fa-eye"></i>
+            </div>
+            <div>
+              <h3>Our Vision</h3>
+              <p>{{ vision }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="values-section container">
+    <div class="section-heading">
+      <h2>Our Core Values</h2>
       <p>
-        To provide compassionate, high-quality healthcare and improve lives
-        through innovation, education, and empathy.
+        The principles that guide every patient interaction and medical
+        decision.
       </p>
-
     </div>
 
-    <!-- Button -->
-    <div class="text-center">
-      <button routerLink="/" class="home-btn">
-        <i class="fa fa-arrow-left"></i>
-        Back to Home
-      </button>
+    <div class="values-grid">
+      <div class="value-card" *ngFor="let value of coreValues">
+        <div class="value-icon">
+          <i [class]="value.icon"></i>
+        </div>
+        <h3>{{ value.title }}</h3>
+        <p>{{ value.description }}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="timeline-section container">
+    <div class="section-heading">
+      <h2>Our Growth Journey</h2>
+      <p>A brief look at important milestones in our healthcare journey.</p>
     </div>
 
+    <div class="timeline-list">
+      <div class="timeline-item" *ngFor="let item of timeline">
+        <div class="timeline-year">{{ item.year }}</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.description }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="leadership-section container">
+    <div class="section-heading">
+      <h2>Leadership Team</h2>
+      <p>
+        Experienced professionals guiding operational excellence and patient
+        care.
+      </p>
+    </div>
+
+    <div class="leadership-grid">
+      <div class="leader-card" *ngFor="let leader of leadershipTeam">
+        <img [src]="leader.image" [alt]="leader.name" class="leader-image" />
+        <h3>{{ leader.name }}</h3>
+        <p>{{ leader.role }}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section container">
+    <div class="cta-card">
+      <div class="cta-left">
+        <span class="section-tag light-tag">Healthcare You Can Trust</span>
+        <h2>Ready to connect with our care team?</h2>
+        <p>
+          Explore services, book consultations, and experience a modern,
+          patient-centered healthcare journey with {{ hospitalName }}.
+        </p>
+      </div>
+
+      <div class="cta-actions">
+        <a routerLink="/bookappointment" class="cta-btn primary-cta-btn">
+          <i class="fa fa-calendar-plus-o"></i>
+          Book Appointment
+        </a>
+
+        <a routerLink="/services" class="cta-btn secondary-cta-btn">
+          <i class="fa fa-arrow-right"></i>
+          View Services
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="bottom-action container">
+    <button routerLink="/" class="home-btn">
+      <i class="fa fa-arrow-left"></i>
+      Back to Home
+    </button>
   </div>
-</section>
+
+  <button type="button" class="scroll-top-btn" (click)="scrollToTop()">
+    <i class="fa fa-chevron-up"></i>
+  </button>
+</div>
 
 <app-footer></app-footer>

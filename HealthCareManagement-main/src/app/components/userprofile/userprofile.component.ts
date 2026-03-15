@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserService } from 'src/app/services/user.service';
+<<<<<<< HEAD
 interface DashboardStat {
   title: string;
   value$?: Observable<number>;
@@ -17,18 +18,29 @@ interface DashboardStat {
     | 'dark';
   subtitle: string;
 }
+=======
+import * as $ from 'jquery';
+>>>>>>> tabish_hms
 
 @Component({
   selector: 'app-userdashboard',
   templateUrl: './userdashboard.component.html',
   styleUrls: ['./userdashboard.component.css']
 })
+<<<<<<< HEAD
 export class UserdashboardComponent implements OnInit {
   name = '';
   gender = '';
+=======
+export class UserprofileComponent implements OnInit {
+  profileDetails: Observable<User[]> | undefined;
+  user: User = new User();
+  msg = ' ';
+>>>>>>> tabish_hms
   currRole = '';
   isCollapsed = false;
 
+<<<<<<< HEAD
   totalPatients$!: Observable<number>;
   totalUsers$!: Observable<number>;
   totalDoctors$!: Observable<number>;
@@ -70,6 +82,13 @@ export class UserdashboardComponent implements OnInit {
   ];
 
   constructor(private userService: UserService) {}
+=======
+  constructor(
+    private _service: UserService,
+    private activatedRoute: ActivatedRoute,
+    private _router: Router
+  ) { }
+>>>>>>> tabish_hms
 
   ngOnInit(): void {
     this.name = sessionStorage.getItem('loggedUser') || 'User';
@@ -80,6 +99,7 @@ export class UserdashboardComponent implements OnInit {
       .getTotalPatients()
       .pipe(map((res: any[]) => this.extractCount(res)));
 
+<<<<<<< HEAD
     this.totalUsers$ = this.userService
       .getTotalUsers()
       .pipe(map((res: any[]) => this.extractCount(res)));
@@ -87,11 +107,23 @@ export class UserdashboardComponent implements OnInit {
     this.totalDoctors$ = this.userService
       .getTotalDoctors()
       .pipe(map((res: any[]) => this.extractCount(res)));
+=======
+    $('#profilecard').show();
+    $('#profileform').hide();
+    this.getProfileDetails(this.loggedUser);
+  }
+
+  editProfile() {
+    $('#profilecard').hide();
+    $('#profileform').show();
+  }
+>>>>>>> tabish_hms
 
     this.totalSlots$ = this.userService
       .getTotalSlots()
       .pipe(map((res: any[]) => this.extractCount(res)));
 
+<<<<<<< HEAD
     this.stats = [
       {
         title: 'Total Doctors',
@@ -167,4 +199,27 @@ export class UserdashboardComponent implements OnInit {
 
     return 0;
   }
+=======
+  updateUserProfile() {
+    this._service.UpdateUserProfile(this.user).subscribe(
+      data => {
+        console.log('UserProfile Updated succesfully');
+        this.msg = 'Profile Updated Successfully !!!';
+        $('.editbtn').hide();
+        $('#message').show();
+        this.temp = true;
+        $('#profilecard').show();
+        $('#profileform').hide();
+        setTimeout(() => {
+          this._router.navigate(['/userdashboard']);
+        }, 6000);
+      },
+      error => {
+        console.log('Profile Updation Failed');
+        console.log(error.error);
+        this.msg = 'Profile Updation Failed !!!';
+      }
+    );
+  }
+>>>>>>> tabish_hms
 }
