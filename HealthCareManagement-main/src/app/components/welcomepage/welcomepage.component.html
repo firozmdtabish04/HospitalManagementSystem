@@ -2,163 +2,265 @@
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
 />
-<div class="homepage">
-  <!-- NAVBAR -->
 
+<div class="homepage">
+  <!-- ===================== NAVBAR ===================== -->
   <nav class="navbar">
-    <div class="logo">
-      <i class="fa fa-heartbeat"></i> Health<span>Care</span>
+    <div class="nav-left">
+      <div class="logo" (click)="scrollToSection('home')">
+        <i class="fa fa-heartbeat"></i>
+        <span class="logo-text">Health<span class="accent">Care</span></span>
+      </div>
     </div>
 
-    <div class="menu">
-      <button routerLink="/" class="nav-btn">
+    <button class="mobile-menu-btn" (click)="toggleMenu()">
+      <i class="fa" [ngClass]="isMenuOpen ? 'fa-times' : 'fa-bars'"></i>
+    </button>
+
+    <div class="nav-right" [class.open]="isMenuOpen">
+      <button class="nav-btn" (click)="scrollToSection('home')">
         <i class="fa fa-home"></i> Home
       </button>
 
-      <button routerLink="/services" class="nav-btn">
-        <i class="fa fa-cog"></i> Services
+      <button class="nav-btn" (click)="scrollToSection('portals')">
+        <i class="fa fa-th-large"></i> Portals
       </button>
 
-      <button routerLink="/about" class="nav-btn">
+      <button class="nav-btn" (click)="scrollToSection('services')">
+        <i class="fa fa-stethoscope"></i> Services
+      </button>
+
+      <button class="nav-btn" routerLink="/about">
         <i class="fa fa-info-circle"></i> About
       </button>
 
-      <button routerLink="/login" class="nav-btn">
+      <button class="nav-btn" routerLink="/login">
         <i class="fa fa-sign-in"></i> Login
       </button>
 
-      <button routerLink="/registration" class="register-btn">
+      <button class="register-btn" routerLink="/registration">
         Create Account
       </button>
     </div>
   </nav>
 
-  <!-- HERO SECTION -->
+  <!-- ===================== HERO ===================== -->
+  <section class="hero-section" id="home">
+    <div class="hero-overlay"></div>
 
-  <section class="hero">
-    <div class="hero-left">
-      <span class="tag">Trusted Healthcare Provider</span>
+    <div class="hero-content">
+      <div class="hero-left">
+        <span class="hero-tag">
+          <i class="fa fa-shield"></i> Trusted Digital Healthcare Platform
+        </span>
 
-      <h1>
-        Modern Hospital <br />
-        Management System
-      </h1>
+        <h1>
+           Hospital
+          <span>Management System</span>
+        </h1>
 
-      <p>
-        Manage doctors, patients, appointments and hospital operations with a
-        modern healthcare management platform.
-      </p>
+        <p>
+          A modern, scalable and secure healthcare platform to manage patients,
+          doctors, appointments, departments, billing and hospital operations
+          efficiently.
+        </p>
 
-      <div class="hero-buttons">
-        <button routerLink="/bookappointment" class="btn-primary">
-          Schedule Appointment
-        </button>
+        <div class="hero-actions">
+          <button class="btn-primary" routerLink="/bookappointment">
+            <i class="fa fa-calendar"></i> Schedule Appointment
+          </button>
 
-        <button routerLink="/services" class="btn-secondary">
-          Explore Services
-        </button>
+          <button class="btn-secondary" (click)="scrollToSection('services')">
+            <i class="fa fa-arrow-down"></i> Explore Services
+          </button>
+        </div>
+
+        <div class="hero-highlights">
+          <div class="highlight-pill">
+            <i class="fa fa-check-circle"></i> Secure Access
+          </div>
+          <div class="highlight-pill">
+            <i class="fa fa-check-circle"></i> Smart Scheduling
+          </div>
+          <div class="highlight-pill">
+            <i class="fa fa-check-circle"></i> Real-time Monitoring
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="hero-right">
-      <img src="assets/img/hospital.png" />
+      <div class="hero-right">
+        <div class="hero-image-wrapper">
+          <img src="assets/img/hospital.png" alt="Hospital Management" />
 
-      <div class="hero-card card1">
-        <i class="fa fa-heartbeat"></i>
-        <span>Advanced Care</span>
-      </div>
+          <div class="floating-card card-top-left">
+            <i class="fa fa-heartbeat"></i>
+            <div>
+              <h4>Advanced Care</h4>
+              <p>Modern medical support</p>
+            </div>
+          </div>
 
-      <div class="hero-card card2">
-        <i class="fa fa-user-md"></i>
-        <span>Expert Doctors</span>
-      </div>
+          <div class="floating-card card-bottom-left">
+            <i class="fa fa-user-md"></i>
+            <div>
+              <h4>Expert Doctors</h4>
+              <p>Specialist consultation</p>
+            </div>
+          </div>
 
-      <div class="hero-card card3">
-        <i class="fa fa-ambulance"></i>
-        <span>24/7 Emergency</span>
+          <div class="floating-card card-right">
+            <i class="fa fa-ambulance"></i>
+            <div>
+              <h4>Emergency 24/7</h4>
+              <p>Rapid healthcare access</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- PORTAL SECTION -->
+  <!-- ===================== STATS ===================== -->
+  <section class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-card" *ngFor="let stat of stats">
+        <h2>{{ stat.value }}</h2>
+        <p>{{ stat.label }}</p>
+      </div>
+    </div>
+  </section>
 
-  <section class="portal-section">
-    <h2>Select Your Portal</h2>
+  <!-- ===================== PORTALS ===================== -->
+  <section class="portal-section" id="portals">
+    <div class="section-header">
+      <span class="section-badge">Access Portals</span>
+      <h2>Select Your Workspace</h2>
+      <p>
+        Choose the right portal based on your role and manage healthcare
+        workflows efficiently.
+      </p>
+    </div>
 
     <div class="portal-container">
-      <div class="portal-card admin" (click)="navigate()">
-        <img src="assets/img/admin.png" />
-        <h3>Admin Portal</h3>
-        <p>Manage hospital operations</p>
-      </div>
+      <div
+        class="portal-card"
+        *ngFor="let portal of portals"
+        (click)="navigateTo(portal.route)"
+      >
+        <div class="portal-badge">{{ portal.badge }}</div>
 
-      <div class="portal-card doctor" (click)="navigate()">
-        <img src="assets/img/maledoctor.png" />
-        <h3>Doctor Portal</h3>
-        <p>Manage patients and reports</p>
-      </div>
+        <div class="portal-icon">
+          <i [class]="portal.icon"></i>
+        </div>
 
-      <div class="portal-card user" (click)="navigate()">
-        <img src="assets/img/maleuser.png" />
-        <h3>User Portal</h3>
-        <p>Book appointments online</p>
-      </div>
-    </div>
-  </section>
+        <img [src]="portal.image" [alt]="portal.title" />
 
-  <!-- SERVICES -->
+        <h3>{{ portal.title }}</h3>
+        <h4>{{ portal.subtitle }}</h4>
+        <p>{{ portal.description }}</p>
 
-  <section class="services">
-    <h2>Our Medical Services</h2>
-
-    <div class="services-grid" routerLink="/services">
-      <div class="service-card">
-        <i class="fa fa-heartbeat"></i>
-        <h3>Cardiology</h3>
-        <p>Advanced heart care with modern technology.</p>
-      </div>
-
-      <div class="service-card">
-        <i class="fa fa-user-md"></i>
-        <h3>Expert Doctors</h3>
-        <p>Highly qualified specialists.</p>
-      </div>
-
-      <div class="service-card">
-        <i class="fa fa-hospital-o"></i>
-        <h3>Modern Facility</h3>
-        <p>State-of-the-art hospital infrastructure.</p>
-      </div>
-
-      <div class="service-card">
-        <i class="fa fa-ambulance"></i>
-        <h3>Emergency Care</h3>
-        <p>24/7 emergency medical support.</p>
+        <button class="portal-action">
+          Access Portal <i class="fa fa-arrow-right"></i>
+        </button>
       </div>
     </div>
   </section>
 
-  <!-- STATS -->
-
-  <section class="stats">
-    <div class="stat">
-      <h2>25K+</h2>
-      <p>Patients Treated</p>
+  <!-- ===================== FEATURES ===================== -->
+  <section class="services-section" id="services">
+    <div class="section-header">
+      <span class="section-badge">Core Capabilities</span>
+      <h2>Our Medical & Digital Services</h2>
+      <p>
+        Designed for hospitals, clinics and healthcare teams to deliver better,
+        faster and more organized care.
+      </p>
     </div>
 
-    <div class="stat">
-      <h2>150+</h2>
-      <p>Medical Experts</p>
+    <div class="services-grid">
+      <div class="service-card" *ngFor="let feature of features">
+        <div class="service-icon">
+          <i [class]="feature.icon"></i>
+        </div>
+        <h3>{{ feature.title }}</h3>
+        <p>{{ feature.description }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== WHY US ===================== -->
+  <section class="why-us-section">
+    <div class="why-left">
+      <span class="section-badge">Why Choose Us</span>
+      <h2>Built for Modern Healthcare Institutions</h2>
+      <p>
+        This platform supports operational excellence by combining digital
+        convenience, process automation and patient-centric care into one
+        unified solution.
+      </p>
+
+      <div class="why-list">
+        <div class="why-item">
+          <i class="fa fa-check-circle"></i>
+          <span>Centralized patient and doctor management</span>
+        </div>
+        <div class="why-item">
+          <i class="fa fa-check-circle"></i>
+          <span>Responsive design for desktop and tablet workflows</span>
+        </div>
+        <div class="why-item">
+          <i class="fa fa-check-circle"></i>
+          <span>Easy navigation for admin, doctor and patient roles</span>
+        </div>
+        <div class="why-item">
+          <i class="fa fa-check-circle"></i>
+          <span>Scalable structure for enterprise-level growth</span>
+        </div>
+      </div>
     </div>
 
-    <div class="stat">
-      <h2>35+</h2>
-      <p>Years Experience</p>
-    </div>
+    <div class="why-right">
+      <div class="why-card">
+        <div class="why-card-header">
+          <i class="fa fa-hospital-o"></i>
+          <h3>Operational Excellence</h3>
+        </div>
+        <p>
+          Improve coordination across appointments, billing, medical records and
+          departmental workflows.
+        </p>
+      </div>
 
-    <div class="stat">
-      <h2>24/7</h2>
-      <p>Emergency Support</p>
+      <div class="why-card">
+        <div class="why-card-header">
+          <i class="fa fa-lock"></i>
+          <h3>Security Focused</h3>
+        </div>
+        <p>
+          Support protected access and structured control for sensitive
+          healthcare data and operations.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CTA ===================== -->
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2>Start Your Digital Healthcare Journey Today</h2>
+      <p>
+        Simplify administration, improve patient experience and empower medical
+        professionals with one robust platform.
+      </p>
+
+      <div class="cta-actions">
+        <button class="btn-primary" routerLink="/registration">
+          <i class="fa fa-user-plus"></i> Create your Account
+        </button>
+        <button class="btn-secondary light" routerLink="/login">
+          <i class="fa fa-sign-in"></i> Login Now
+        </button>
+      </div>
     </div>
   </section>
 
