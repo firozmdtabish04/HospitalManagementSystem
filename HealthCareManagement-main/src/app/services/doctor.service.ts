@@ -20,7 +20,7 @@ export class DoctorService {
   constructor(private _http: HttpClient) { }
 
   addDoctorFromRemote(doctor: Doctor): Observable<any> {
-    return this._http.post<any>(`${NAV_URL}/addDoctor`, doctor)
+    return this._http.post<any>(`${NAV_URL}/addDoctor`, doctor);
   }
 
   getDoctorList(): Observable<any> {
@@ -64,16 +64,16 @@ export class DoctorService {
   }
 
   public acceptRequestForDoctorApproval(email: string): Observable<any> {
-    console.log("accepted");
+    console.log('accepted');
     return this._http.get<any>(`${NAV_URL}/acceptstatus/` + email);
   }
 
   public rejectRequestForDoctorApproval(email: string): Observable<any> {
-    return this._http.get<any>(`${NAV_URL}/rejectstatus/` + email)
+    return this._http.get<any>(`${NAV_URL}/rejectstatus/` + email);
   }
 
   public acceptRequestForPatientApproval(slot: string): Observable<any> {
-    console.log("accepted");
+    console.log('accepted');
     return this._http.get<any>(`${NAV_URL}/acceptpatient/` + slot);
   }
 
@@ -86,7 +86,7 @@ export class DoctorService {
   }
 
   public addPrescriptions(prescription: Prescription): Observable<any> {
-    return this._http.post<any>(`${NAV_URL}/addPrescription`, prescription)
+    return this._http.post<any>(`${NAV_URL}/addPrescription`, prescription);
   }
 
   public getProfileDetails(loggedUser: string): Observable<any> {
@@ -94,7 +94,13 @@ export class DoctorService {
   }
 
   public UpdateDoctorProfile(user: any): Observable<any> {
-    return this._http.put<any>(`${NAV_URL}/updatedoctor`, user)
+    return this._http.put<any>(`${NAV_URL}/updatedoctor`, user);
   }
 
+  public deleteDoctor(email: string): Observable<any> {
+    const role = sessionStorage.getItem('ROLE') || '';
+    return this._http.delete<any>(`${NAV_URL}/deletedoctor/` + email + '/' + role, {
+      responseType: 'text' as 'json'
+    });
+  }
 }
