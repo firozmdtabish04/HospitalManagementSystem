@@ -1,53 +1,72 @@
 <nav class="navbar navbar-expand-lg navbar-custom">
   <div class="container-fluid">
-    <!-- Logo / Title -->
-    <a class="navbar-brand">
-      <i class="fa fa-hospital-o"></i>
-      {{ title }}
+    <!-- Brand -->
+    <a class="navbar-brand" [routerLink]="homeRoute">
+      <i class="fa fa-hospital-o brand-icon" aria-hidden="true"></i>
+      <span>{{ title }}</span>
     </a>
 
-    <!-- Mobile Toggle -->
+    <!-- Toggler -->
     <button
       class="navbar-toggler"
       type="button"
       data-bs-toggle="collapse"
       data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <!-- Menu -->
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto align-items-center">
-        <!-- Home -->
+      <ul class="navbar-nav ms-auto align-items-lg-center align-items-start nav-menu">
         <li class="nav-item">
-          <a class="nav-link"> <i class="fa fa-home"></i> Home </a>
-        </li>
-
-        <!-- About -->
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/about">
-            <i class="fa fa-info-circle"></i> About
+          <a
+            class="nav-link"
+            [routerLink]="homeRoute"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <i class="fa fa-home" aria-hidden="true"></i>
+            <span>Home</span>
           </a>
         </li>
 
-        <!-- Services -->
         <li class="nav-item">
-          <a class="nav-link" routerLink="/services">
-            <i class="fa fa-stethoscope"></i> Services
+          <a
+            class="nav-link"
+            routerLink="/about"
+            routerLinkActive="active"
+          >
+            <i class="fa fa-info-circle" aria-hidden="true"></i>
+            <span>About</span>
           </a>
         </li>
 
-        <!-- Logged User -->
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            routerLink="/services"
+            routerLinkActive="active"
+          >
+            <i class="fa fa-stethoscope" aria-hidden="true"></i>
+            <span>Services</span>
+          </a>
+        </li>
+
         <li class="nav-item user-info" *ngIf="loggedUser">
-          <i class="fa fa-user-circle"></i>
-          {{ loggedUser }}
+          <div class="user-chip" title="{{ loggedUser }}">
+            <i class="fa fa-user-circle" aria-hidden="true"></i>
+            <span>{{ loggedUser }}</span>
+          </div>
         </li>
 
-        <!-- Logout -->
         <li class="nav-item">
-          <button class="logout-btn" (click)="logout()">
-            <i class="fa fa-sign-out"></i> Logout
+          <button type="button" class="logout-btn" (click)="logout()">
+            <i class="fa fa-sign-out" aria-hidden="true"></i>
+            <span>Logout</span>
           </button>
         </li>
       </ul>
