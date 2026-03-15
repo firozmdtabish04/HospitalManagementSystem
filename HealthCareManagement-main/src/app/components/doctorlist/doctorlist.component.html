@@ -1,70 +1,164 @@
 <app-header></app-header>
 
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+/>
+
 <div class="page-container">
-  <!-- BACK BUTTON -->
-  <div class="top-bar">
-    <button class="back-btn" routerLink="/userdashboard">← Back</button>
-  </div>
+  <section class="page-hero">
+    <div class="hero-left">
+      <button class="back-btn" routerLink="/userdashboard">
+        <i class="fa fa-arrow-left"></i>
+        <span>Back to Dashboard</span>
+      </button>
 
-  <!-- PAGE TITLE -->
-  <h1 class="heading-text">Doctors List</h1>
+      <p class="page-tag">Healthcare Directory</p>
+      <h1 class="heading-text">Doctors List</h1>
+      <p class="subheading-text">
+        Browse approved and registered doctors, review their specialization,
+        experience, and contact details in one place.
+      </p>
+    </div>
 
-  <p class="subheading-text">
-    Only approved doctors are suggested by the management
-  </p>
-
-  <!-- SEARCH -->
-  <div class="search-container">
-    <input
-      type="text"
-      placeholder="Search doctor by name, email, specialization..."
-      [(ngModel)]="searchText"
-      class="search-box"
-    />
-  </div>
-
-  <!-- DOCTOR GRID -->
-
-  <div class="doctor-container">
-    <div
-      *ngFor="let doctor of doctors | async"
-      class="doctor-card"
-      [hidden]="!filterDoctor(doctor)"
-    >
-      <!-- IMAGE -->
-      <div class="doctor-image">
-        <img
-          [src]="
-            doctor.gender?.toLowerCase() === 'female'
-              ? 'assets/img/femaledoctor.png'
-              : 'assets/img/maledoctor.png'
-          "
-          alt="Doctor"
-        />
-      </div>
-
-      <!-- DETAILS -->
-
-      <div class="doctor-details">
-        <h3>{{ doctor.doctorname }}</h3>
-
-        <p class="email">{{ doctor.email }}</p>
-
-        <p>📱 {{ doctor.mobile }}</p>
-
-        <p>🩺 {{ doctor.specialization }}</p>
-
-        <p>📊 {{ doctor.experience }} yrs experience</p>
-
-        <p>👤 {{ doctor.gender }}</p>
-
-        <!-- STATUS -->
-
-        <span class="status" [ngClass]="getStatusClass(doctor.status)">
-          {{ getDoctorStatus(doctor.status) }}
-        </span>
+    <div class="hero-right">
+      <div class="summary-card">
+        <span class="summary-label">Search & Access</span>
+        <strong>Doctor Directory</strong>
+        <p>Quickly find a doctor by name, email, specialization, or gender.</p>
       </div>
     </div>
+  </section>
+
+  <section class="toolbar-section">
+    <div class="search-container">
+      <div class="search-input-wrap">
+        <i class="fa fa-search"></i>
+        <input
+          type="text"
+          placeholder="Search doctor by name, email, specialization..."
+          [(ngModel)]="searchText"
+          class="search-box"
+        />
+      </div>
+    </div>
+
+    <div class="info-banner">
+      <i class="fa fa-info-circle"></i>
+      <span>Only approved doctors are suggested by the management.</span>
+    </div>
+  </section>
+
+  <section class="feature-strip">
+    <div class="feature-card">
+      <i class="fa fa-user-md"></i>
+      <div>
+        <h4>Professional Doctors</h4>
+        <p>View registered doctors with verified profile details.</p>
+      </div>
+    </div>
+
+    <div class="feature-card">
+      <i class="fa fa-stethoscope"></i>
+      <div>
+        <h4>Specialization Search</h4>
+        <p>Find doctors by relevant department and expertise.</p>
+      </div>
+    </div>
+
+    <div class="feature-card">
+      <i class="fa fa-check-circle"></i>
+      <div>
+        <h4>Status Visibility</h4>
+        <p>Clearly view approval status for each doctor profile.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="doctor-container">
+    <ng-container *ngIf="doctors | async as doctorList">
+      <ng-container *ngIf="doctorList.length > 0; else noDoctors">
+        <div
+          *ngFor="let doctor of doctorList"
+          class="doctor-card"
+          [hidden]="!filterDoctor(doctor)"
+        >
+          <div class="card-top">
+            <div class="doctor-image">
+              <img
+                [src]="
+                  doctor.gender?.toLowerCase() === 'female'
+                    ? 'assets/img/femaledoctor.png'
+                    : 'assets/img/maledoctor.png'
+                "
+                alt="Doctor"
+              />
+            </div>
+
+            <div class="doctor-main">
+              <div class="title-row">
+                <div>
+                  <h3>{{ doctor.doctorname }}</h3>
+                  <p class="email">{{ doctor.email }}</p>
+                </div>
+
+                <span class="status" [ngClass]="getStatusClass(doctor.status)">
+                  {{ getDoctorStatus(doctor.status) }}
+                </span>
+              </div>
+
+              <div class="doctor-meta">
+                <div class="meta-item">
+                  <i class="fa fa-phone"></i>
+                  <span>{{ doctor.mobile }}</span>
+                </div>
+
+                <div class="meta-item">
+                  <i class="fa fa-user"></i>
+                  <span>{{ doctor.gender }}</span>
+                </div>
+
+                <div class="meta-item">
+                  <i class="fa fa-briefcase"></i>
+                  <span>{{ doctor.experience }} yrs experience</span>
+                </div>
+              </div>
+
+              <div class="specialization-chip">
+                <i class="fa fa-stethoscope"></i>
+                <span>{{ doctor.specialization }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <div class="footer-badge">
+              <i class="fa fa-hospital-o"></i>
+              <span>Healthcare Specialist</span>
+            </div>
+
+            <div class="action-group">
+              <button
+                class="action-btn primary-btn"
+                type="button"
+                routerLink="/bookappointment"
+              >
+                <i class="fa fa-calendar"></i>
+                Book Now
+              </button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <ng-template #noDoctors>
+      <div class="empty-state">
+        <i class="fa fa-user-md"></i>
+        <h3>No doctors found</h3>
+        <p>There are currently no doctor records available to display.</p>
+      </div>
+    </ng-template>
   </div>
 </div>
 
