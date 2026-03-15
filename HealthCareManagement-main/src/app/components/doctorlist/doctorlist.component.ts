@@ -9,12 +9,10 @@ import { DoctorService } from 'src/app/services/doctor.service';
   styleUrls: ['./doctorlist.component.css']
 })
 export class DoctorlistComponent implements OnInit {
-
   doctors!: Observable<Doctor[]>;
-
   searchText: string = '';
 
-  constructor(private _service: DoctorService) { }
+  constructor(private _service: DoctorService) {}
 
   ngOnInit(): void {
     this.loadDoctors();
@@ -25,7 +23,6 @@ export class DoctorlistComponent implements OnInit {
   }
 
   filterDoctor(doctor: Doctor): boolean {
-
     if (!this.searchText.trim()) return true;
 
     const search = this.searchText.toLowerCase();
@@ -39,27 +36,28 @@ export class DoctorlistComponent implements OnInit {
   }
 
   getDoctorStatus(status?: string): string {
-
-    switch (status)
-    {
-      case 'accept': return 'Approved Doctor';
-      case 'false': return 'Approval Pending';
-      case 'reject': return 'Not Approved';
-      default: return 'Unknown';
+    switch (status) {
+      case 'accept':
+        return 'Approved Doctor';
+      case 'false':
+        return 'Approval Pending';
+      case 'reject':
+        return 'Not Approved';
+      default:
+        return 'Unknown';
     }
-
   }
 
   getStatusClass(status?: string): string {
-
-    switch (status)
-    {
-      case 'accept': return 'approved';
-      case 'false': return 'pending';
-      case 'reject': return 'rejected';
-      default: return '';
+    switch (status) {
+      case 'accept':
+        return 'approved';
+      case 'false':
+        return 'pending';
+      case 'reject':
+        return 'rejected';
+      default:
+        return '';
     }
-
   }
-
 }

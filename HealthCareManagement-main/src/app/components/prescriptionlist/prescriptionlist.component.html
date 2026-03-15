@@ -1,161 +1,235 @@
 <app-header></app-header>
 
-<div class="heading">
-  <h1>Your Prescription</h1>
-</div>
-
-<!-- Search Card -->
-<div class="message" id="messagecard">
-  <form #tempform="ngForm" (ngSubmit)="searchPrescription()">
-    <div class="form-group">
-      <label>
-        Patient Name :
-        <b class="text-danger">*</b>
-      </label>
-
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Enter patient name"
-        name="patientname"
-        [(ngModel)]="name"
-        required
-        #patientname="ngModel"
-        [class.is-invalid]="patientname.invalid && patientname.touched"
-      />
-
-      <small
-        class="text-danger"
-        [class.d-none]="patientname.valid || patientname.untouched"
-      >
-        Required field
-      </small>
-    </div>
-
-    <button
-      type="submit"
-      [disabled]="tempform.form.invalid"
-      class="registerbtn"
-    >
-      Search Prescription
-    </button>
-  </form>
-</div>
-
-<!-- Prescription Pages -->
-<div *ngFor="let patient of prescriptionlist | async" id="prescriptionpages">
-  <button id="printbtn" (click)="onPrint()" class="print-btn">Print</button>
-
-  <div class="prescription-card">
-    <!-- Header -->
-    <div class="header-flag">
-      <div class="header-left">
-        <h3>Healthcare Management System</h3>
-        <h5>[developed by Tabish Firoz]</h5>
+<div class="prescription-page">
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+/>
+  <div class="page-shell">
+    <!-- Hero -->
+    <section class="hero-card">
+      <div class="hero-content">
+        <p class="hero-badge-text">Digital Patient Records</p>
+        <h1>Your Prescription Center</h1>
+        <p>
+          Search and view prescription records in a secure, printable, and
+          enterprise-grade layout.
+        </p>
       </div>
 
-      <!-- Patient Image -->
-      <div class="header-right">
-        <img
-          *ngIf="patient.gender === 'Male' || patient.gender === 'male'"
-          class="user-img"
-          src="assets/img/maleuser.png"
-          alt="Male Patient"
-        />
-
-        <img
-          *ngIf="patient.gender === 'Female' || patient.gender === 'female'"
-          class="user-img"
-          src="assets/img/femaleuser.png"
-          alt="Female Patient"
-        />
+      <div class="hero-side-badge">
+        <span><i class="fa fa-file-text-o"></i> Verified Medical Document</span>
       </div>
-    </div>
+    </section>
 
-    <!-- Body -->
-    <div class="prescription-body">
-      <hr />
+    <!-- Search Card -->
+    <section class="search-card" *ngIf="showSearchCard">
+      <div class="card-header-block">
+        <h2>Search Prescription</h2>
+        <p>Enter the patient name to fetch prescription details.</p>
+      </div>
 
-      <div class="doctor-name">Dr. {{ patient.doctorname }} MBBS, MS, PhD</div>
+      <form #tempform="ngForm" (ngSubmit)="searchPrescription()" class="search-form">
+        <div class="form-group">
+          <label for="patientname">
+            Patient Name
+            <span class="required">*</span>
+          </label>
 
-      <div class="info-row">
-        <div>
-          PatientID :
-          <span class="highlight">{{ patient.patientid }}</span>
+          <div class="input-wrap">
+            <i class="fa fa-user"></i>
+            <input
+              id="patientname"
+              type="text"
+              class="form-control"
+              placeholder="Enter patient name"
+              name="patientname"
+              [(ngModel)]="name"
+              required
+              #patientname="ngModel"
+              [class.is-invalid]="patientname.invalid && patientname.touched"
+            />
+          </div>
+
+          <small
+            class="text-danger"
+            [class.d-none]="patientname.valid || patientname.untouched"
+          >
+            Required field
+          </small>
         </div>
 
-        <div>
-          Date :
-          <span class="highlight">{{ patient.date }}</span>
+        <div class="action-row">
+          <button
+            type="submit"
+            [disabled]="tempform.form.invalid"
+            class="primary-btn"
+          >
+            <i class="fa fa-search"></i>
+            Search Prescription
+          </button>
+
+          <button type="button" class="secondary-btn" (click)="clearSearch()">
+            <i class="fa fa-refresh"></i>
+            Reset
+          </button>
+        </div>
+      </form>
+
+      <!-- NEW QUICK INFO -->
+      <div class="quick-info-grid">
+        <div class="quick-info-card">
+          <div class="quick-icon"><i class="fa fa-lock"></i></div>
+          <div>
+            <h4>Secure Search</h4>
+            <p>Access patient prescription records safely.</p>
+          </div>
+        </div>
+
+        <div class="quick-info-card">
+          <div class="quick-icon"><i class="fa fa-print"></i></div>
+          <div>
+            <h4>Print Ready</h4>
+            <p>Generate a clean printable prescription view.</p>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="info-row">
-        <div>
-          Age :
-          <span class="highlight">{{ patient.age }}</span>
+    <!-- Results -->
+    <ng-container *ngIf="showPrescriptionPages">
+      <ng-container *ngIf="prescriptionlist | async as prescriptions">
+        <section class="toolbar-card">
+          <div class="toolbar-left">
+            <h3>Prescription Results</h3>
+            <p>{{ prescriptions.length }} record(s) found</p>
+          </div>
+
+          <div class="toolbar-right">
+            <button
+              *ngIf="prescriptions.length > 0"
+              id="printbtn"
+              (click)="onPrint()"
+              class="print-btn"
+            >
+              <i class="fa fa-print"></i>
+              Print
+            </button>
+
+            <button class="secondary-btn" (click)="clearSearch()">
+              <i class="fa fa-arrow-left"></i>
+              Back to Search
+            </button>
+          </div>
+        </section>
+
+        <section class="empty-state-card" *ngIf="prescriptions.length === 0">
+          <div class="empty-icon">
+            <i class="fa fa-folder-open-o"></i>
+          </div>
+          <h3>No prescription found</h3>
+          <p>No patient prescription records matched the entered name.</p>
+        </section>
+
+        <div class="prescription-list" *ngIf="prescriptions.length > 0">
+          <article
+            class="prescription-card"
+            *ngFor="let patient of prescriptions; trackBy: trackByPrescription"
+          >
+            <div class="card-top">
+              <div class="hospital-brand">
+                <h3>Healthcare Management System</h3>
+                <p>Digital Prescription Document</p>
+              </div>
+
+              <div class="patient-profile">
+                <img
+                  class="user-img"
+                  [src]="getPatientImage(patient.gender)"
+                  alt="Patient"
+                />
+              </div>
+            </div>
+
+            <div class="card-strip">
+              <div class="doctor-block">
+                <p class="meta-label">Consulting Doctor</p>
+                <h4>Dr. {{ patient.doctorname }} MBBS, MS, PhD</h4>
+              </div>
+
+              <div class="status-block">
+                <span
+                  class="status"
+                  [ngClass]="getAdmissionStatusClass(patient.admissionstatus)"
+                >
+                  {{ getAdmissionStatusLabel(patient.admissionstatus) }}
+                </span>
+              </div>
+            </div>
+
+            <div class="prescription-body">
+              <div class="info-grid">
+                <div class="info-card">
+                  <span class="label">Patient ID</span>
+                  <strong>{{ patient.patientid }}</strong>
+                </div>
+
+                <div class="info-card">
+                  <span class="label">Date</span>
+                  <strong>{{ patient.date }}</strong>
+                </div>
+
+                <div class="info-card">
+                  <span class="label">Age</span>
+                  <strong>{{ patient.age }}</strong>
+                </div>
+
+                <div class="info-card">
+                  <span class="label">Gender</span>
+                  <strong>{{ patient.gender }}</strong>
+                </div>
+              </div>
+
+              <div class="detail-section">
+                <div class="detail-row">
+                  <span class="detail-title">Patient Name</span>
+                  <span class="detail-value">{{ patient.patientname }}</span>
+                </div>
+
+                <div class="detail-row">
+                  <span class="detail-title">Disease</span>
+                  <span class="detail-value">{{ patient.disease }}</span>
+                </div>
+
+                <div class="detail-row prescription-row">
+                  <span class="detail-title">Prescription</span>
+                  <span class="detail-value prescription-text">
+                    {{ patient.prescription }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="wellness-note">
+                Follow the prescribed medication and doctor instructions properly.
+                Wishing you a speedy recovery.
+              </div>
+            </div>
+
+            <div class="card-footer">
+              <div class="footer-item">
+                <i class="fa fa-phone"></i>
+                <span>Phone: 9698382306 / 8610254674</span>
+              </div>
+
+              <div class="footer-item">
+                <i class="fa fa-envelope"></i>
+                <span>Email: mdtabishfiroz04@gmail.com</span>
+              </div>
+            </div>
+          </article>
         </div>
-      </div>
-
-      <hr />
-
-      <div class="data-row">
-        Patient Name :
-        <span>{{ patient.patientname }}</span>
-      </div>
-
-      <div class="data-row">
-        Gender :
-        <span>{{ patient.gender }}</span>
-      </div>
-
-      <div class="data-row">
-        Disease :
-        <span>{{ patient.disease }}</span>
-      </div>
-
-      <div class="data-row">
-        Prescription :
-        <span>{{ patient.prescription }}</span>
-      </div>
-
-      <!-- Admission Status -->
-      <div class="data-row">
-        Admission Status :
-
-        <span
-          *ngIf="patient.admissionstatus === 'false'"
-          class="status pending"
-        >
-          Admission Pending
-        </span>
-
-        <span
-          *ngIf="patient.admissionstatus === 'accept'"
-          class="status accepted"
-        >
-          Admitted
-        </span>
-
-        <span
-          *ngIf="patient.admissionstatus === 'reject'"
-          class="status rejected"
-        >
-          Rejected
-        </span>
-      </div>
-
-      <div class="footer-message">
-        Follow prescriptions properly. Get Well Soon!
-      </div>
-    </div>
-
-    <!-- Footer -->
-    <div class="footer-flag">
-      <div>Phone : 9698382306 / 8610254674</div>
-
-      <div>Email : mdtabishfiroz04@gmail.com</div>
-    </div>
+      </ng-container>
+    </ng-container>
   </div>
 </div>
 

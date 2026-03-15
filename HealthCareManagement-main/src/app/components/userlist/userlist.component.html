@@ -1,53 +1,121 @@
 <app-header></app-header>
 
-<div class="heading-text">User List</div>
+<div class="page-shell">
+  <div class="bg-shape shape-one"></div>
+  <div class="bg-shape shape-two"></div>
 
-<!-- Search -->
-<div class="search-container">
-  <input
-    type="text"
-    placeholder="Search users..."
-    [(ngModel)]="searchText"
-    class="search-box"
-  />
-</div>
+  <div class="page-wrapper">
+    <div class="hero-card">
+      <div class="hero-left">
+        <div class="hero-badge">
+          <i class="fa fa-users"></i>
+          User Management
+        </div>
 
-<div class="user-container">
-  <div
-    *ngFor="let user of users | async"
-    class="user-card"
-    [hidden]="!filterUser(user)"
-  >
-    <!-- Image -->
-    <div class="img-block">
-      <div class="circle">
-        <img
-          *ngIf="user.gender?.toLowerCase() === 'male'"
-          src="assets/img/maleuser.png"
-          class="user-img"
-          alt="Male User"
-        />
+        <h1 class="heading-text">User Directory</h1>
 
-        <img
-          *ngIf="user.gender?.toLowerCase() === 'female'"
-          src="assets/img/femaleuser.png"
-          class="user-img"
-          alt="Female User"
+        <p class="hero-subtitle">
+          Browse all registered users in a clean enterprise dashboard with fast search
+          and compact profile cards.
+        </p>
+      </div>
+
+      <div class="hero-right">
+        <div class="hero-stat-card">
+          <div class="hero-stat-icon">
+            <i class="fa fa-address-book"></i>
+          </div>
+          <div>
+            <span class="hero-stat-label">Directory View</span>
+            <strong class="hero-stat-value">Registered Users</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toolbar-card">
+      <div class="toolbar-left">
+        <h2>
+          <i class="fa fa-search"></i>
+          Search Users
+        </h2>
+        <p>Find users by username, email, or mobile number.</p>
+      </div>
+
+      <div class="search-container">
+        <i class="fa fa-search search-icon"></i>
+        <input
+          type="text"
+          placeholder="Search users..."
+          [(ngModel)]="searchText"
+          class="search-box"
         />
       </div>
     </div>
 
-    <!-- User Info -->
-    <div class="card-details">
-      <p class="text">{{ user.username }}</p>
+    <div class="user-container">
+      <div
+        *ngFor="let user of users | async; trackBy: trackByUser"
+        class="user-card"
+        [hidden]="!filterUser(user)"
+      >
+        <div class="img-block" [ngClass]="getUserThemeClass(user.gender)">
+          <div class="image-overlay"></div>
 
-      <p class="text">{{ user.email }}</p>
+          <div class="circle">
+            <img
+              [src]="getUserImage(user)"
+              class="user-img"
+              alt="User Image"
+            />
+          </div>
+        </div>
 
-      <p class="text">{{ user.age }} years</p>
+        <div class="card-details">
+          <div class="card-top">
+            <div class="card-title-wrap">
+              <h3 class="user-name">{{ user.username }}</h3>
+              <span class="user-role-chip">Registered User</span>
+            </div>
+          </div>
 
-      <p class="text">{{ user.gender }}</p>
+          <div class="detail-grid">
+            <div class="detail-item full">
+              <span class="label">
+                <i class="fa fa-envelope"></i>
+                Email
+              </span>
+              <span class="value">{{ user.email }}</span>
+            </div>
 
-      <p class="text">{{ user.mobile }}</p>
+            <div class="detail-row">
+              <div class="detail-item half">
+                <span class="label">
+                  <i class="fa fa-birthday-cake"></i>
+                  Age
+                </span>
+                <span class="value">{{ user.age }} years</span>
+              </div>
+
+              <div class="detail-item half">
+                <span class="label">
+                  <i class="fa fa-venus-mars"></i>
+                  Gender
+                </span>
+                <span class="value">{{ user.gender }}</span>
+              </div>
+            </div>
+
+            <div class="detail-item full">
+              <span class="label">
+                <i class="fa fa-phone"></i>
+                Mobile
+              </span>
+              <span class="value">{{ user.mobile }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

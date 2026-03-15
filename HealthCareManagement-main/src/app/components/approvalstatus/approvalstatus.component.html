@@ -1,314 +1,440 @@
 <app-header></app-header>
 
-<!-- SEARCH -->
-<div class="message" id="messagecard">
-  <form #tempform="ngForm" (ngSubmit)="searchPatient()">
+<div class="approval-page">
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+/>
+  <div class="approval-shell">
+    <!-- HERO -->
+    <section class="hero-card">
+      <div class="hero-content">
+        <p class="eyebrow">Approval & Verification Center</p>
+        <h1>Approval Status Dashboard</h1>
+        <p>
+          Manage doctor verification, patient appointment approvals, and admission
+          workflow in a structured enterprise interface with clear status insights.
+        </p>
 
-    <div class="form-group">
-      <label>
-        Patient Email Address:
-        <b class="text-danger">*</b>
-      </label>
+        <div class="hero-meta-row">
+          <span class="hero-chip">
+            <i class="fa fa-briefcase"></i>
+            {{ getRoleTitle() }}
+          </span>
 
-      <input
-        type="text"
-        class="form-control"
-        placeholder="enter patient email"
-        name="patientname"
-        [(ngModel)]="mail"
-        required
-        #patientname="ngModel"
-      />
+          <span class="hero-chip light">
+            <i class="fa fa-calendar"></i>
+            {{ lastUpdated | date:'dd MMM yyyy, hh:mm a' }}
+          </span>
+        </div>
+      </div>
 
-      <small
-        class="text-danger"
-        *ngIf="patientname.invalid && patientname.touched"
-      >
-        required field
-      </small>
+      <div class="hero-side">
+        <div class="hero-badge">
+          <i class="fa fa-shield"></i>
+          <span>Secure Status Monitoring</span>
+        </div>
 
+        <div class="version-box">
+          <span>Version</span>
+          <strong>{{ pageVersion }}</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- INFO / ERROR -->
+    <div class="message-row" *ngIf="infoMessage || errorMessage">
+      <div class="info-banner" *ngIf="infoMessage">
+        <i class="fa fa-info-circle"></i>
+        <span>{{ infoMessage }}</span>
+      </div>
+
+      <div class="error-banner" *ngIf="errorMessage">
+        <i class="fa fa-exclamation-triangle"></i>
+        <span>{{ errorMessage }}</span>
+      </div>
     </div>
 
-    <button
-      class="registerbtn"
-      [disabled]="tempform.form.invalid"
-      type="submit"
-    >
-      search Prescription
-    </button>
-
-  </form>
-</div>
-
-
-<!-- DOCTOR APPROVAL -->
-<div class="panel panel-primary" id="doctorapproval">
-
-  <div class="panel-heading">
-    <h2>Your approval status</h2>
-
-    <div *ngFor="let doctor of approval | async">
-
-      <div *ngIf="doctor.status === 'accept'">
-        <small style="color: green">(Verified & Accepted)</small>
+    <!-- STATUS LEGEND -->
+    <section class="legend-card">
+      <div class="legend-title">
+        <h2>Status Legend</h2>
+        <p>Quick interpretation of approval and admission states.</p>
       </div>
 
-      <div *ngIf="doctor.status === 'false'">
-        <small style="color: orange">(Not yet Verified)</small>
+      <div class="legend-items">
+        <div class="legend-item">
+          <span class="status-pill accepted">Accepted</span>
+          <small>Approved and verified</small>
+        </div>
+        <div class="legend-item">
+          <span class="status-pill pending">Pending</span>
+          <small>Awaiting review</small>
+        </div>
+        <div class="legend-item">
+          <span class="status-pill rejected">Rejected</span>
+          <small>Review not approved</small>
+        </div>
+        <div class="legend-item">
+          <span class="status-pill unknown">Unknown</span>
+          <small>Status unavailable</small>
+        </div>
+      </div>
+    </section>
+
+    <!-- USER SEARCH -->
+    <section class="search-card" *ngIf="showMessageCard">
+      <div class="card-head">
+        <h2>Search Patient Approval</h2>
+        <p>Enter a patient email address to view appointment and admission details.</p>
       </div>
 
-      <div *ngIf="doctor.status === 'reject'">
-        <small style="color: red">(Verified & Rejected)</small>
-      </div>
+      <form #tempform="ngForm" (ngSubmit)="searchPatient()" class="search-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="mail">
+              Patient Email Address
+              <span class="required">*</span>
+            </label>
 
-    </div>
-
-  </div>
-
-
-  <div class="panel-body">
-
-    <table>
-
-      <thead>
-        <tr>
-          <th>Identity</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Gender</th>
-          <th>Experience</th>
-          <th>Specialization</th>
-          <th>Worked at</th>
-          <th>Mobile</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-
-
-      <tbody>
-
-        <tr *ngFor="let doctor of approval | async">
-
-          <!-- FIXED TD -->
-          <td>
-            <img
-              [src]="
-                doctor.gender &&
-                doctor.gender.toLowerCase().trim() === 'female'
-                  ? 'assets/img/femaledoctor.png'
-                  : 'assets/img/maledoctor.png'
-              "
-              class="doc-img"
-              alt="Doctor Image"
-            />
-          </td>
-
-
-          <td>{{ doctor.doctorname }}</td>
-
-          <td>{{ doctor.email }}</td>
-
-          <td>{{ doctor.gender }}</td>
-
-          <td>{{ doctor.experience }} years</td>
-
-          <td>{{ doctor.specialization }}</td>
-
-          <td>{{ doctor.previoushospital }}</td>
-
-          <td>{{ doctor.mobile }}</td>
-
-
-          <td>
-
-            <div
-              *ngIf="
-                currRole === 'doctor' ||
-                (currRole === 'DOCTOR' && doctor.email === loggedUser)
-              "
-            >
-
-              <div
-                *ngIf="doctor.status === 'accept'"
-                class="accepted"
-              >
-                Accepted
-              </div>
-
-              <div
-                *ngIf="doctor.status === 'false'"
-                class="pending"
-              >
-                Pending
-              </div>
-
-              <div
-                *ngIf="doctor.status === 'reject'"
-                class="rejected"
-              >
-                Rejected
-              </div>
-
+            <div class="input-wrap">
+              <i class="fa fa-envelope"></i>
+              <input
+                id="mail"
+                type="email"
+                class="form-control"
+                placeholder="Enter patient email"
+                name="patientname"
+                [(ngModel)]="mail"
+                required
+                email
+                #patientname="ngModel"
+                [class.invalid-input]="patientname.invalid && patientname.touched"
+              />
             </div>
 
-          </td>
+            <small
+              class="text-danger"
+              *ngIf="patientname.invalid && patientname.touched"
+            >
+              Please enter a valid email address.
+            </small>
+          </div>
 
-        </tr>
+          <div class="search-summary-card" *ngIf="hasSearchedPatient">
+            <span class="summary-label">Current Search</span>
+            <h3>{{ getSearchSummary() }}</h3>
+            <p>Patient approval lookup is active.</p>
+          </div>
+        </div>
 
-      </tbody>
+        <div class="action-row">
+          <button
+            class="primary-btn"
+            [disabled]="tempform.form.invalid"
+            type="submit"
+          >
+            <i class="fa fa-search"></i>
+            Search Patient
+          </button>
 
-    </table>
+          <button type="button" class="secondary-btn" (click)="clearSearch()">
+            <i class="fa fa-refresh"></i>
+            Clear
+          </button>
+        </div>
+      </form>
+    </section>
 
+    <!-- DOCTOR APPROVAL -->
+    <ng-container *ngIf="showDoctorApproval">
+      <ng-container *ngIf="approval | async as doctors">
+        <section class="stats-grid" *ngIf="doctors.length > 0">
+          <article class="stat-card">
+            <div class="stat-icon blue">
+              <i class="fa fa-user-md"></i>
+            </div>
+            <div>
+              <p>Total Records</p>
+              <h3>{{ doctors.length }}</h3>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon green">
+              <i class="fa fa-check-circle"></i>
+            </div>
+            <div>
+              <p>Accepted</p>
+              <h3>{{ getAcceptedDoctors(doctors) }}</h3>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon orange">
+              <i class="fa fa-clock-o"></i>
+            </div>
+            <div>
+              <p>Pending</p>
+              <h3>{{ getPendingDoctors(doctors) }}</h3>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon red">
+              <i class="fa fa-times-circle"></i>
+            </div>
+            <div>
+              <p>Rejected</p>
+              <h3>{{ getRejectedDoctors(doctors) }}</h3>
+            </div>
+          </article>
+        </section>
+
+        <section class="enterprise-panel">
+          <div class="enterprise-heading">
+            <div>
+              <h2>Doctor Approval Status</h2>
+              <p>Your doctor profile verification and review information.</p>
+            </div>
+
+            <div class="heading-actions">
+              <span
+                class="status-pill"
+                [ngClass]="getDoctorPrimaryStatusClass(doctors)"
+              >
+                {{ getDoctorPrimaryStatus(doctors) }}
+              </span>
+
+              <button class="ghost-btn" type="button" (click)="refreshDoctorData()">
+                <i class="fa fa-refresh"></i>
+                Refresh
+              </button>
+            </div>
+          </div>
+
+          <div class="panel-body">
+            <div class="table-meta">
+              <span class="record-count">
+                <i class="fa fa-database"></i>
+                {{ doctors.length }} record(s)
+              </span>
+            </div>
+
+            <div class="table-wrapper" *ngIf="doctors.length > 0; else noDoctorData">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Identity</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Gender</th>
+                    <th>Experience</th>
+                    <th>Specialization</th>
+                    <th>Worked At</th>
+                    <th>Mobile</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let doctor of doctors; trackBy: trackByDoctor">
+                    <td>
+                      <img
+                        [src]="
+                          doctor.gender &&
+                          doctor.gender.toLowerCase().trim() === 'female'
+                            ? 'assets/img/femaledoctor.png'
+                            : 'assets/img/maledoctor.png'
+                        "
+                        class="profile-img"
+                        alt="Doctor Image"
+                      />
+                    </td>
+                    <td>{{ doctor.doctorname }}</td>
+                    <td>{{ doctor.email }}</td>
+                    <td>{{ doctor.gender }}</td>
+                    <td>{{ doctor.experience }} years</td>
+                    <td>
+                      <span class="special-badge">{{ doctor.specialization }}</span>
+                    </td>
+                    <td>{{ doctor.previoushospital }}</td>
+                    <td>{{ doctor.mobile }}</td>
+                    <td>
+                      <span
+                        class="status-pill"
+                        [ngClass]="getDoctorStatusClass(doctor.status)"
+                      >
+                        {{ getDoctorStatusLabel(doctor.status) }}
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <ng-template #noDoctorData>
+              <div class="empty-state">
+                <i class="fa fa-folder-open-o"></i>
+                <h3>No doctor approval data found</h3>
+                <p>Your verification record is not available right now.</p>
+              </div>
+            </ng-template>
+          </div>
+        </section>
+      </ng-container>
+    </ng-container>
+
+    <!-- PATIENT APPROVAL -->
+    <ng-container *ngIf="showPatientApproval">
+      <ng-container *ngIf="appointment | async as patients">
+        <section class="stats-grid" *ngIf="hasSearchedPatient">
+          <article class="stat-card">
+            <div class="stat-icon blue">
+              <i class="fa fa-users"></i>
+            </div>
+            <div>
+              <p>Total Records</p>
+              <h3>{{ getTotalAppointments(patients) }}</h3>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon green">
+              <i class="fa fa-check-circle"></i>
+            </div>
+            <div>
+              <p>Accepted</p>
+              <h3>{{ getAcceptedAppointments(patients) }}</h3>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon orange">
+              <i class="fa fa-clock-o"></i>
+            </div>
+            <div>
+              <p>Pending</p>
+              <h3>{{ getPendingAppointments(patients) }}</h3>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon red">
+              <i class="fa fa-hospital-o"></i>
+            </div>
+            <div>
+              <p>Admitted</p>
+              <h3>{{ getAdmittedPatients(patients) }}</h3>
+            </div>
+          </article>
+        </section>
+
+        <section class="enterprise-panel">
+          <div class="enterprise-heading">
+            <div>
+              <h2>Patient Approval Status</h2>
+              <p>Appointment approval, slot details, and admission status overview.</p>
+            </div>
+
+            <div class="heading-actions">
+              <span class="status-info-chip">
+                <i class="fa fa-envelope"></i>
+                {{ getSearchSummary() }}
+              </span>
+            </div>
+          </div>
+
+          <div class="panel-body">
+            <div class="table-meta">
+              <span class="record-count">
+                <i class="fa fa-database"></i>
+                {{ getTotalAppointments(patients) }} record(s)
+              </span>
+            </div>
+
+            <div class="table-wrapper" *ngIf="patients.length > 0; else noPatientData">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Identity</th>
+                    <th>Patient ID</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Slot</th>
+                    <th>Date</th>
+                    <th>Problem</th>
+                    <th>Approval</th>
+                    <th>Admission</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let patient of patients; trackBy: trackByPatient">
+                    <td>
+                      <img
+                        [src]="
+                          patient.gender &&
+                          patient.gender.toLowerCase().trim() === 'female'
+                            ? 'assets/img/femaleuser.png'
+                            : 'assets/img/maleuser.png'
+                        "
+                        class="profile-img"
+                        alt="Patient Image"
+                      />
+                    </td>
+
+                    <td>
+                      <div class="tag tag-blue">{{ patient.patientid }}</div>
+                    </td>
+
+                    <td>{{ patient.patientname }}</td>
+                    <td>{{ patient.age }}</td>
+
+                    <td>
+                      <div class="tag tag-purple">{{ patient.slot }}</div>
+                    </td>
+
+                    <td>
+                      <div class="tag tag-cyan">{{ patient.date }}</div>
+                    </td>
+
+                    <td class="problem-cell">{{ patient.problem }}</td>
+
+                    <td>
+                      <span
+                        class="status-pill"
+                        [ngClass]="getDoctorStatusClass(patient.appointmentstatus)"
+                      >
+                        {{ getAppointmentStatusLabel(patient.appointmentstatus) }}
+                      </span>
+                    </td>
+
+                    <td>
+                      <span
+                        class="status-pill"
+                        [ngClass]="getDoctorStatusClass(patient.admissionstatus)"
+                      >
+                        {{ getAdmissionStatusLabel(patient.admissionstatus) }}
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <ng-template #noPatientData>
+              <div class="empty-state">
+                <i class="fa fa-search"></i>
+                <h3>No patient records found</h3>
+                <p>No approval or admission data is available for this email.</p>
+              </div>
+            </ng-template>
+          </div>
+        </section>
+      </ng-container>
+    </ng-container>
   </div>
-
 </div>
-
-
-
-<!-- PATIENT APPROVAL -->
-<div class="panel panel-primary" id="patientapproval">
-
-  <div class="panel-heading">
-    <h2>Your approval status</h2>
-  </div>
-
-
-  <div class="panel-body">
-
-    <table>
-
-      <thead>
-        <tr>
-          <th>Identity</th>
-          <th>Patient ID</th>
-          <th>Name</th>
-          <th>Age</th>
-          <th>Slot</th>
-          <th>Date</th>
-          <th>Problem</th>
-          <th>Approval</th>
-          <th>Admission</th>
-        </tr>
-      </thead>
-
-
-      <tbody>
-
-        <tr *ngFor="let patient of appointment | async">
-
-          <!-- FIXED TD -->
-          <td>
-            <img
-              [src]="
-                patient.gender &&
-                patient.gender.toLowerCase().trim() === 'female'
-                  ? 'assets/img/femaleuser.png'
-                  : 'assets/img/maleuser.png'
-              "
-              class="doc-img"
-              alt="Patient Image"
-            />
-          </td>
-
-
-          <td>
-            <div class="date-cover">
-              {{ patient.patientid }}
-            </div>
-          </td>
-
-
-          <td>{{ patient.patientname }}</td>
-
-          <td>{{ patient.age }}</td>
-
-
-          <td>
-            <div class="slotcover">
-              {{ patient.slot }}
-            </div>
-          </td>
-
-
-          <td>
-            <div class="date-cover">
-              {{ patient.date }}
-            </div>
-          </td>
-
-
-          <td>{{ patient.problem }}</td>
-
-
-          <td>
-
-            <div
-              *ngIf="
-                currRole === 'user' ||
-                (currRole === 'USER' && patient.email === loggedUser)
-              "
-            >
-
-              <div
-                *ngIf="patient.appointmentstatus === 'accept'"
-                class="accepted"
-              >
-                Accepted
-              </div>
-
-              <div
-                *ngIf="patient.appointmentstatus === 'false'"
-                class="pending"
-              >
-                Pending
-              </div>
-
-              <div
-                *ngIf="patient.appointmentstatus === 'reject'"
-                class="rejected"
-              >
-                Rejected
-              </div>
-
-            </div>
-
-          </td>
-
-
-          <td>
-
-            <div
-              *ngIf="patient.admissionstatus === 'accept'"
-              class="accepted"
-            >
-              Admitted
-            </div>
-
-            <div
-              *ngIf="patient.admissionstatus === 'false'"
-              class="pending"
-            >
-              Pending
-            </div>
-
-            <div
-              *ngIf="patient.admissionstatus === 'reject'"
-              class="rejected"
-            >
-              Not Admitted
-            </div>
-
-          </td>
-
-        </tr>
-
-      </tbody>
-
-    </table>
-
-  </div>
-
-</div>
-
 
 <app-footer></app-footer>
