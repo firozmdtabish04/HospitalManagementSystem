@@ -1,25 +1,84 @@
 <app-header></app-header>
 
-<link
+<div class="approval-page">
+  <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
 />
-
-<div class="approval-page">
   <div class="approval-shell">
+    <!-- HERO -->
     <section class="hero-card">
       <div class="hero-content">
         <p class="eyebrow">Approval & Verification Center</p>
         <h1>Approval Status Dashboard</h1>
         <p>
-          Track doctor verification status and patient appointment approvals in a
-          structured and professional interface.
+          Manage doctor verification, patient appointment approvals, and admission
+          workflow in a structured enterprise interface with clear status insights.
         </p>
+
+        <div class="hero-meta-row">
+          <span class="hero-chip">
+            <i class="fa fa-briefcase"></i>
+            {{ getRoleTitle() }}
+          </span>
+
+          <span class="hero-chip light">
+            <i class="fa fa-calendar"></i>
+            {{ lastUpdated | date:'dd MMM yyyy, hh:mm a' }}
+          </span>
+        </div>
       </div>
 
-      <div class="hero-badge">
-        <i class="fa fa-shield"></i>
-        <span>Secure Status Monitoring</span>
+      <div class="hero-side">
+        <div class="hero-badge">
+          <i class="fa fa-shield"></i>
+          <span>Secure Status Monitoring</span>
+        </div>
+
+        <div class="version-box">
+          <span>Version</span>
+          <strong>{{ pageVersion }}</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- INFO / ERROR -->
+    <div class="message-row" *ngIf="infoMessage || errorMessage">
+      <div class="info-banner" *ngIf="infoMessage">
+        <i class="fa fa-info-circle"></i>
+        <span>{{ infoMessage }}</span>
+      </div>
+
+      <div class="error-banner" *ngIf="errorMessage">
+        <i class="fa fa-exclamation-triangle"></i>
+        <span>{{ errorMessage }}</span>
+      </div>
+    </div>
+
+    <!-- STATUS LEGEND -->
+    <section class="legend-card">
+      <div class="legend-title">
+        <h2>Status Legend</h2>
+        <p>Quick interpretation of approval and admission states.</p>
+      </div>
+
+      <div class="legend-items">
+        <div class="legend-item">
+          <span class="status-pill accepted">Accepted</span>
+          <small>Approved and verified</small>
+        </div>
+        <div class="legend-item">
+          <span class="status-pill pending">Pending</span>
+          <small>Awaiting review</small>
+        </div>
+        <div class="legend-item">
+          <span class="status-pill rejected">Rejected</span>
+          <small>Review not approved</small>
+        </div>
+        <div class="legend-item">
+          <span class="status-pill unknown">Unknown</span>
+          <small>Status unavailable</small>
+        </div>
       </div>
     </section>
 
@@ -27,43 +86,51 @@
     <section class="search-card" *ngIf="showMessageCard">
       <div class="card-head">
         <h2>Search Patient Approval</h2>
-        <p>Enter patient email to view approval and admission details.</p>
+        <p>Enter a patient email address to view appointment and admission details.</p>
       </div>
 
       <form #tempform="ngForm" (ngSubmit)="searchPatient()" class="search-form">
-        <div class="form-group">
-          <label for="mail">
-            Patient Email Address
-            <span class="required">*</span>
-          </label>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="mail">
+              Patient Email Address
+              <span class="required">*</span>
+            </label>
 
-          <div class="input-wrap">
-            <i class="fa fa-envelope"></i>
-            <input
-              id="mail"
-              type="email"
-              class="form-control"
-              placeholder="Enter patient email"
-              name="patientname"
-              [(ngModel)]="mail"
-              required
-              email
-              #patientname="ngModel"
-              [class.invalid-input]="patientname.invalid && patientname.touched"
-            />
+            <div class="input-wrap">
+              <i class="fa fa-envelope"></i>
+              <input
+                id="mail"
+                type="email"
+                class="form-control"
+                placeholder="Enter patient email"
+                name="patientname"
+                [(ngModel)]="mail"
+                required
+                email
+                #patientname="ngModel"
+                [class.invalid-input]="patientname.invalid && patientname.touched"
+              />
+            </div>
+
+            <small
+              class="text-danger"
+              *ngIf="patientname.invalid && patientname.touched"
+            >
+              Please enter a valid email address.
+            </small>
           </div>
 
-          <small
-            class="text-danger"
-            *ngIf="patientname.invalid && patientname.touched"
-          >
-            Please enter a valid email address
-          </small>
+          <div class="search-summary-card" *ngIf="hasSearchedPatient">
+            <span class="summary-label">Current Search</span>
+            <h3>{{ getSearchSummary() }}</h3>
+            <p>Patient approval lookup is active.</p>
+          </div>
         </div>
 
         <div class="action-row">
           <button
-            class="registerbtn"
+            class="primary-btn"
             [disabled]="tempform.form.invalid"
             type="submit"
           >
@@ -124,20 +191,25 @@
           </article>
         </section>
 
-        <section class="panel enterprise-panel">
-          <div class="panel-heading enterprise-heading">
+        <section class="enterprise-panel">
+          <div class="enterprise-heading">
             <div>
               <h2>Doctor Approval Status</h2>
-              <p>Your doctor profile verification and review details.</p>
+              <p>Your doctor profile verification and review information.</p>
             </div>
 
-            <div class="status-summary" *ngIf="doctors.length > 0">
+            <div class="heading-actions">
               <span
                 class="status-pill"
-                [ngClass]="getDoctorStatusClass(doctors[0].status)"
+                [ngClass]="getDoctorPrimaryStatusClass(doctors)"
               >
-                {{ getDoctorStatusLabel(doctors[0].status) }}
+                {{ getDoctorPrimaryStatus(doctors) }}
               </span>
+
+              <button class="ghost-btn" type="button" (click)="refreshDoctorData()">
+                <i class="fa fa-refresh"></i>
+                Refresh
+              </button>
             </div>
           </div>
 
@@ -175,11 +247,10 @@
                             ? 'assets/img/femaledoctor.png'
                             : 'assets/img/maledoctor.png'
                         "
-                        class="doc-img"
+                        class="profile-img"
                         alt="Doctor Image"
                       />
                     </td>
-
                     <td>{{ doctor.doctorname }}</td>
                     <td>{{ doctor.email }}</td>
                     <td>{{ doctor.gender }}</td>
@@ -259,11 +330,18 @@
           </article>
         </section>
 
-        <section class="panel enterprise-panel">
-          <div class="panel-heading enterprise-heading">
+        <section class="enterprise-panel">
+          <div class="enterprise-heading">
             <div>
               <h2>Patient Approval Status</h2>
               <p>Appointment approval, slot details, and admission status overview.</p>
+            </div>
+
+            <div class="heading-actions">
+              <span class="status-info-chip">
+                <i class="fa fa-envelope"></i>
+                {{ getSearchSummary() }}
+              </span>
             </div>
           </div>
 
@@ -301,24 +379,24 @@
                             ? 'assets/img/femaleuser.png'
                             : 'assets/img/maleuser.png'
                         "
-                        class="doc-img"
+                        class="profile-img"
                         alt="Patient Image"
                       />
                     </td>
 
                     <td>
-                      <div class="date-cover">{{ patient.patientid }}</div>
+                      <div class="tag tag-blue">{{ patient.patientid }}</div>
                     </td>
 
                     <td>{{ patient.patientname }}</td>
                     <td>{{ patient.age }}</td>
 
                     <td>
-                      <div class="slotcover">{{ patient.slot }}</div>
+                      <div class="tag tag-purple">{{ patient.slot }}</div>
                     </td>
 
                     <td>
-                      <div class="date-cover">{{ patient.date }}</div>
+                      <div class="tag tag-cyan">{{ patient.date }}</div>
                     </td>
 
                     <td class="problem-cell">{{ patient.problem }}</td>
