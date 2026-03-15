@@ -4,3 +4,4 @@ $env:NODE_OPTIONS = "--openssl-legacy-provider"; ng s -o
 npm install -g @angular/cli
 npm install
 ng serve -o
+$env:NODE_OPTIONS="--openssl-legacy-provider"

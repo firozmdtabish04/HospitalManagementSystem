@@ -1,186 +1,327 @@
 <app-header></app-header>
 
-<!-- PROFILE CARD -->
-<div class="profile-row" *ngIf="profileDetails | async as users">
-  <div *ngFor="let user of users" class="blood-card">
-    <!-- PROFILE IMAGE -->
-    <div class="profile-row" *ngIf="users">
-      <div *ngFor="let user of users" class="profile-card">
-        <!-- PROFILE HEADER -->
-        <div class="profile-header">
-          <div class="avatar">
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+/>
+
+<div class="profile-page">
+  <div class="profile-shell" *ngIf="profileDetails | async as users">
+    <div *ngFor="let profile of users" class="profile-grid">
+      <!-- LEFT PROFILE PANEL -->
+      <section class="profile-card-panel" id="profilecard">
+        <div class="profile-cover">
+          <div class="cover-pattern"></div>
+        </div>
+
+        <div class="profile-card">
+          <div class="profile-avatar-wrap">
             <img
-              *ngIf="user.gender?.toLowerCase() === 'male'"
+              *ngIf="profile.gender?.toLowerCase() === 'male'"
               src="assets/img/maleuser.png"
+              alt="Male User"
+              class="profile-avatar"
             />
-
             <img
-              *ngIf="user.gender?.toLowerCase() === 'female'"
+              *ngIf="profile.gender?.toLowerCase() === 'female'"
               src="assets/img/femaleuser.png"
+              alt="Female User"
+              class="profile-avatar"
+            />
+            <img
+              *ngIf="profile.gender?.toLowerCase() !== 'male' && profile.gender?.toLowerCase() !== 'female'"
+              src="assets/img/maleuser.png"
+              alt="User"
+              class="profile-avatar"
             />
           </div>
 
-          <h3 class="username">{{ user.username }}</h3>
-          <p class="email">{{ user.email }}</p>
-        </div>
-
-        <!-- PROFILE DETAILS -->
-
-        <div class="profile-details">
-          <div class="detail-row">
-            <i class="fa fa-phone"></i>
-            <span>{{ user.mobile }}</span>
+          <div class="profile-main-info">
+            <h2>{{ profile.username }}</h2>
+            <p class="profile-email">{{ profile.email }}</p>
+            <span class="role-badge">{{ currRole || 'User' }}</span>
           </div>
 
-          <div class="detail-row">
-            <i class="fa fa-user"></i>
-            <span>{{ user.gender }}</span>
+          <div class="profile-progress">
+            <div class="progress-head">
+              <span>Profile Completion</span>
+              <strong>85%</strong>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill"></div>
+            </div>
           </div>
 
-          <div class="detail-row">
-            <i class="fa fa-calendar"></i>
-            <span>{{ user.age }} Years</span>
+          <div class="profile-meta-grid">
+            <div class="meta-box">
+              <i class="fa fa-phone"></i>
+              <div>
+                <span>Mobile</span>
+                <strong>{{ user.mobile || profile.mobile }}</strong>
+              </div>
+            </div>
+
+            <div class="meta-box">
+              <i class="fa fa-user"></i>
+              <div>
+                <span>Gender</span>
+                <strong>{{ user.gender || profile.gender }}</strong>
+              </div>
+            </div>
+
+            <div class="meta-box">
+              <i class="fa fa-calendar"></i>
+              <div>
+                <span>Age</span>
+                <strong>{{ user.age || profile.age }} Years</strong>
+              </div>
+            </div>
+
+            <div class="meta-box">
+              <i class="fa fa-shield"></i>
+              <div>
+                <span>Status</span>
+                <strong>Active</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-highlights">
+            <div class="highlight-chip">
+              <i class="fa fa-check-circle"></i>
+              Verified
+            </div>
+            <div class="highlight-chip">
+              <i class="fa fa-lock"></i>
+              Secure
+            </div>
+            <div class="highlight-chip">
+              <i class="fa fa-heartbeat"></i>
+              Health Access
+            </div>
+          </div>
+
+          <div class="profile-actions">
+            <button class="primary-btn" (click)="editProfile()">
+              <i class="fa fa-edit"></i>
+              Edit Profile
+            </button>
+          </div>
+
+          <div *ngIf="temp === true" class="success-banner">
+            <i class="fa fa-check-circle"></i>
+            Profile Updated Successfully!
           </div>
         </div>
+      </section>
 
-        <!-- ACTION BUTTON -->
+      <!-- RIGHT FORM PANEL -->
+      <section class="profile-form-panel" id="profileform">
+        <div class="form-card">
+          <div class="form-header">
+            <div>
+              <p class="eyebrow">Profile Settings</p>
+              <h3>Update User Profile</h3>
+              <p class="form-subtitle">
+                Keep your information accurate and up to date for a better healthcare experience.
+              </p>
+            </div>
 
-        <div class="profile-actions">
-          <button class="edit-btn" (click)="editProfile()">
-            <i class="fa fa-edit"></i>
-            Edit Profile
-          </button>
+            <div class="header-badge">
+              <i class="fa fa-user-circle"></i>
+              <span>{{ currRole || 'User' }}</span>
+            </div>
+          </div>
+
+          <div class="top-info-grid">
+            <div class="mini-info-card">
+              <i class="fa fa-envelope"></i>
+              <div>
+                <span>Account Email</span>
+                <strong>{{ profile.email }}</strong>
+              </div>
+            </div>
+
+            <div class="mini-info-card">
+              <i class="fa fa-user-md"></i>
+              <div>
+                <span>Portal Access</span>
+                <strong>Healthcare User</strong>
+              </div>
+            </div>
+
+            <div class="mini-info-card">
+              <i class="fa fa-check-circle"></i>
+              <div>
+                <span>Profile State</span>
+                <strong>Ready to Update</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-strip" *ngIf="temp === false">
+            <i class="fa fa-info-circle"></i>
+            <span>Dear {{ loggedUser }}, update your profile here.</span>
+          </div>
+
+          <div class="success-strip" *ngIf="temp === true">
+            <i class="fa fa-check-circle"></i>
+            <span>Profile Updated Successfully !!!</span>
+          </div>
+
+          <form #Updateform="ngForm" (ngSubmit)="updateUserProfile()" novalidate>
+            <div class="section-title">
+              <h4>Personal Information</h4>
+              <p>Update your basic profile details below.</p>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-group full-width">
+                <label>Email Address <span>*</span></label>
+                <div class="input-wrap">
+                  <i class="fa fa-envelope"></i>
+                  <input
+                    placeholder="Enter your email"
+                    type="email"
+                    class="form-control"
+                    name="email"
+                    [(ngModel)]="user.email"
+                    required
+                    pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
+                    #email="ngModel"
+                  />
+                </div>
+                <small class="error-msg" *ngIf="email.errors?.required && email.touched">
+                  Email is required
+                </small>
+                <small class="error-msg" *ngIf="email.errors?.pattern && email.touched">
+                  Invalid Email ID
+                </small>
+              </div>
+
+              <div class="form-group">
+                <label>User Name <span>*</span></label>
+                <div class="input-wrap">
+                  <i class="fa fa-user"></i>
+                  <input
+                    placeholder="Enter your username"
+                    type="text"
+                    class="form-control"
+                    name="username"
+                    [(ngModel)]="user.username"
+                    required
+                    #username="ngModel"
+                  />
+                </div>
+                <small class="error-msg" *ngIf="username.invalid && username.touched">
+                  Username is required
+                </small>
+              </div>
+
+              <div class="form-group">
+                <label>Gender <span>*</span></label>
+                <div class="input-wrap">
+                  <i class="fa fa-venus-mars"></i>
+                  <select
+                    class="form-control"
+                    name="gender"
+                    [(ngModel)]="user.gender"
+                    required
+                    #gender="ngModel"
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Others">Others</option>
+                  </select>
+                </div>
+                <small class="error-msg" *ngIf="gender.invalid && gender.touched">
+                  Gender is required
+                </small>
+              </div>
+
+              <div class="form-group">
+                <label>Age <span>*</span></label>
+                <div class="input-wrap">
+                  <i class="fa fa-calendar"></i>
+                  <input
+                    placeholder="Enter your age"
+                    type="number"
+                    class="form-control"
+                    name="age"
+                    [(ngModel)]="user.age"
+                    required
+                    #age="ngModel"
+                  />
+                </div>
+                <small class="error-msg" *ngIf="age.invalid && age.touched">
+                  Age is required
+                </small>
+              </div>
+
+              <div class="form-group">
+                <label>Mobile Number <span>*</span></label>
+                <div class="input-wrap">
+                  <i class="fa fa-phone"></i>
+                  <input
+                    placeholder="Enter mobile number"
+                    type="tel"
+                    class="form-control"
+                    name="mobile"
+                    [(ngModel)]="user.mobile"
+                    required
+                    #mobile="ngModel"
+                  />
+                </div>
+                <small class="error-msg" *ngIf="mobile.invalid && mobile.touched">
+                  Mobile number is required
+                </small>
+              </div>
+
+              <div class="form-group full-width">
+                <label>Password <span>*</span></label>
+                <div class="input-wrap">
+                  <i class="fa fa-lock"></i>
+                  <input
+                    placeholder="Enter your password"
+                    type="password"
+                    class="form-control"
+                    name="pwd"
+                    [(ngModel)]="user.password"
+                    required
+                    #pwd="ngModel"
+                  />
+                </div>
+                <small class="error-msg" *ngIf="pwd.invalid && pwd.touched">
+                  Password is required
+                </small>
+              </div>
+            </div>
+
+            <div class="form-actions sticky-actions">
+              <button
+                type="submit"
+                class="primary-btn"
+                [disabled]="Updateform.invalid"
+              >
+                <i class="fa fa-save"></i>
+                Update Profile
+              </button>
+
+              <button
+                type="button"
+                class="secondary-btn"
+                routerLink="/userdashboard"
+              >
+                <i class="fa fa-arrow-left"></i>
+                Back to Dashboard
+              </button>
+            </div>
+          </form>
         </div>
-
-        <!-- SUCCESS MESSAGE -->
-
-        <div *ngIf="temp === true" class="success-msg">
-          Profile Updated Successfully!
-        </div>
-      </div>
+      </section>
     </div>
-
-    <!-- PROFILE UPDATE FORM -->
-
-    <div class="profile-container" id="profileform">
-      <h3 class="textual">Update User Profile</h3>
-
-      <form #Updateform="ngForm" (ngSubmit)="updateUserProfile()">
-        <small *ngIf="temp === false" class="info-msg">
-          Dear {{ loggedUser }}, update your profile here
-        </small>
-
-        <small *ngIf="temp === true" class="success-msg">
-          Profile Updated Successfully !!!
-        </small>
-
-        <!-- EMAIL -->
-        <div class="form-group">
-          <label>Email *</label>
-
-          <input
-            placeholder="enter your email.."
-            type="email"
-            class="form-control"
-            name="email"
-            [(ngModel)]="user.email"
-            required
-            pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
-            #email="ngModel"
-          />
-
-          <small
-            class="error-msg"
-            *ngIf="email.errors?.pattern && email.touched"
-          >
-            Invalid Email ID
-          </small>
-        </div>
-
-        <!-- USERNAME -->
-        <div class="form-group">
-          <label>User Name *</label>
-
-          <input
-            placeholder="enter your username.."
-            type="text"
-            class="form-control"
-            name="username"
-            [(ngModel)]="user.username"
-            required
-          />
-        </div>
-
-        <!-- GENDER -->
-        <div class="form-group">
-          <label>Gender *</label>
-
-          <select
-            class="form-control"
-            name="gender"
-            [(ngModel)]="user.gender"
-            required
-          >
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Others">Others</option>
-          </select>
-        </div>
-
-        <!-- AGE -->
-        <div class="form-group">
-          <label>Age *</label>
-
-          <input
-            placeholder="enter your age.."
-            type="number"
-            class="form-control"
-            name="age"
-            [(ngModel)]="user.age"
-            required
-          />
-        </div>
-
-        <!-- MOBILE -->
-        <div class="form-group">
-          <label>Mobile Number *</label>
-
-          <input
-            placeholder="contact no."
-            type="tel"
-            class="form-control"
-            name="mobile"
-            [(ngModel)]="user.mobile"
-            required
-          />
-        </div>
-
-        <!-- PASSWORD -->
-        <div class="form-group">
-          <label>Password *</label>
-
-          <input
-            placeholder="********"
-            type="password"
-            class="form-control"
-            name="pwd"
-            [(ngModel)]="user.password"
-            required
-          />
-        </div>
-
-        <!-- SUBMIT BUTTON -->
-        <button
-          type="submit"
-          class="btn registerbtn"
-          [disabled]="Updateform.invalid"
-        >
-          Update Profile
-        </button>
-      </form>
-    </div>
-
-    <app-footer></app-footer>
   </div>
 </div>
+
+<app-footer></app-footer>
