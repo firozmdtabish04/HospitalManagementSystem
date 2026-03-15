@@ -53,17 +53,28 @@ export class LoginComponent implements OnInit {
     this._service.loginUserFromRemote(user).subscribe(
       (data: any) => {
         console.log('User login success', data);
+
         sessionStorage.clear();
+
+        const userName =
+          data?.username ||
+          data?.name ||
+          data?.fullName ||
+          data?.userName ||
+          this.getNameFromEmail(this.email);
+
         sessionStorage.setItem('loggedUser', this.email);
         sessionStorage.setItem('USER', 'user');
         sessionStorage.setItem('ROLE', 'user');
-        sessionStorage.setItem('name', this.email);
-        sessionStorage.setItem('gender', 'male');
+        sessionStorage.setItem('username', userName);
+        sessionStorage.setItem('name', userName);
+        sessionStorage.setItem('gender', data?.gender || 'male');
 
         if (this.rememberMe)
         {
           localStorage.setItem('rememberedEmail', this.email);
-        } else
+        }
+        else
         {
           localStorage.removeItem('rememberedEmail');
         }
@@ -71,7 +82,7 @@ export class LoginComponent implements OnInit {
         this.loading = false;
         this._router.navigate(['/userdashboard']);
       },
-      (error: any) => {
+      () => {
         this.tryDoctorLogin();
       }
     );
@@ -85,17 +96,28 @@ export class LoginComponent implements OnInit {
     this._service.loginDoctorFromRemote(doctor).subscribe(
       (data: any) => {
         console.log('Doctor login success', data);
+
         sessionStorage.clear();
+
+        const doctorName =
+          data?.doctorname ||
+          data?.name ||
+          data?.fullName ||
+          data?.doctorName ||
+          this.getNameFromEmail(this.email);
+
         sessionStorage.setItem('loggedUser', this.email);
         sessionStorage.setItem('USER', 'doctor');
         sessionStorage.setItem('ROLE', 'doctor');
-        sessionStorage.setItem('doctorname', this.email);
-        sessionStorage.setItem('gender', 'male');
+        sessionStorage.setItem('doctorname', doctorName);
+        sessionStorage.setItem('name', doctorName);
+        sessionStorage.setItem('gender', data?.gender || 'male');
 
         if (this.rememberMe)
         {
           localStorage.setItem('rememberedEmail', this.email);
-        } else
+        }
+        else
         {
           localStorage.removeItem('rememberedEmail');
         }
@@ -103,7 +125,7 @@ export class LoginComponent implements OnInit {
         this.loading = false;
         this._router.navigate(['/doctordashboard']);
       },
-      (error: any) => {
+      () => {
         this.tryAdminLogin();
       }
     );
@@ -115,27 +137,48 @@ export class LoginComponent implements OnInit {
     if (isAdmin)
     {
       console.log('Admin login success');
+
       sessionStorage.clear();
       sessionStorage.setItem('loggedUser', this.email);
       sessionStorage.setItem('USER', 'admin');
       sessionStorage.setItem('ROLE', 'admin');
-      sessionStorage.setItem('name', 'admin');
+      sessionStorage.setItem('name', 'Admin');
+      sessionStorage.setItem('username', 'Admin');
       sessionStorage.setItem('gender', 'male');
 
       if (this.rememberMe)
       {
         localStorage.setItem('rememberedEmail', this.email);
-      } else
+      }
+      else
       {
         localStorage.removeItem('rememberedEmail');
       }
 
       this.loading = false;
       this._router.navigate(['/admindashboard']);
-    } else
+    }
+    else
     {
       this.loading = false;
       this.msg = 'Invalid credentials. Please enter correct email and password.';
     }
+  }
+
+  private getNameFromEmail(email: string): string {
+    if (!email)
+    {
+      return 'User';
+    }
+
+    const namePart = email.split('@')[0];
+
+    return namePart
+      .replace(/[._-]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
   }
 }
