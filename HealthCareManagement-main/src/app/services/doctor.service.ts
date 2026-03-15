@@ -23,32 +23,32 @@ export class DoctorService {
     return this._http.post<any>(`${NAV_URL}/addDoctor`, doctor);
   }
 
-  getDoctorList(): Observable<any> {
-    return this._http.get<any>(`${NAV_URL}/doctorlist`);
+  getDoctorList(): Observable<Doctor[]> {
+    return this._http.get<Doctor[]>(`${NAV_URL}/doctorlist`);
   }
 
-  getSlotList(): Observable<any> {
-    return this._http.get<any>(`${NAV_URL}/slotDetails`);
+  getSlotList(): Observable<Slots[]> {
+    return this._http.get<Slots[]>(`${NAV_URL}/slotDetails`);
   }
 
-  getSlotListWithUniqueDoctors(): Observable<any> {
-    return this._http.get<any>(`${NAV_URL}/slotDetailsWithUniqueDoctors`);
+  getSlotListWithUniqueDoctors(): Observable<string[]> {
+    return this._http.get<string[]>(`${NAV_URL}/slotDetailsWithUniqueDoctors`);
   }
 
-  getSlotListWithUniqueSpecializations(): Observable<any> {
-    return this._http.get<any>(`${NAV_URL}/slotDetailsWithUniqueSpecializations`);
+  getSlotListWithUniqueSpecializations(): Observable<string[]> {
+    return this._http.get<string[]>(`${NAV_URL}/slotDetailsWithUniqueSpecializations`);
   }
 
-  getSlotDetails(loggedUser: string): Observable<any> {
-    return this._http.get<any>(`${NAV_URL}/slotDetails/` + loggedUser);
+  getSlotDetails(loggedUser: string): Observable<Slots[]> {
+    return this._http.get<Slots[]>(`${NAV_URL}/slotDetails/${loggedUser}`);
   }
 
-  getDoctorListByEmail(loggedUser: string): Observable<any> {
-    return this._http.get<any>(`${NAV_URL}/doctorlistbyemail/` + loggedUser);
+  getDoctorListByEmail(loggedUser: string): Observable<Doctor[]> {
+    return this._http.get<Doctor[]>(`${NAV_URL}/doctorlistbyemail/${loggedUser}`);
   }
 
   getPatientListByEmail(email: string): Observable<any> {
-    return this._http.get<any>(`${NAV_URL}/patientlistbyemail/` + email);
+    return this._http.get<any>(`${NAV_URL}/patientlistbyemail/${email}`);
   }
 
   getPatientList(): Observable<any> {
@@ -56,51 +56,49 @@ export class DoctorService {
   }
 
   getPatientListByDoctorEmail(loggedUser: string): Observable<any> {
-    return this._http.get<any>(`${NAV_URL}/patientlistbydoctoremail/` + loggedUser);
+    return this._http.get<any>(`${NAV_URL}/patientlistbydoctoremail/${loggedUser}`);
   }
 
   getPatientListByDoctorEmailAndDate(loggedUser: string): Observable<any> {
-    return this._http.get<any>(`${NAV_URL}/patientlistbydoctoremailanddate/` + loggedUser);
+    return this._http.get<any>(`${NAV_URL}/patientlistbydoctoremailanddate/${loggedUser}`);
   }
 
-  public acceptRequestForDoctorApproval(email: string): Observable<any> {
-    console.log('accepted');
-    return this._http.get<any>(`${NAV_URL}/acceptstatus/` + email);
+  acceptRequestForDoctorApproval(email: string): Observable<any> {
+    return this._http.get<any>(`${NAV_URL}/acceptstatus/${email}`);
   }
 
-  public rejectRequestForDoctorApproval(email: string): Observable<any> {
-    return this._http.get<any>(`${NAV_URL}/rejectstatus/` + email);
+  rejectRequestForDoctorApproval(email: string): Observable<any> {
+    return this._http.get<any>(`${NAV_URL}/rejectstatus/${email}`);
   }
 
-  public acceptRequestForPatientApproval(slot: string): Observable<any> {
-    console.log('accepted');
-    return this._http.get<any>(`${NAV_URL}/acceptpatient/` + slot);
+  acceptRequestForPatientApproval(slot: string): Observable<any> {
+    return this._http.get<any>(`${NAV_URL}/acceptpatient/${slot}`);
   }
 
-  public rejectRequestForPatientApproval(slot: string): Observable<any> {
-    return this._http.get<any>(`${NAV_URL}/rejectpatient/` + slot);
+  rejectRequestForPatientApproval(slot: string): Observable<any> {
+    return this._http.get<any>(`${NAV_URL}/rejectpatient/${slot}`);
   }
 
-  public addBookingSlots(slot: Slots): Observable<any> {
+  addBookingSlots(slot: Slots): Observable<any> {
     return this._http.post<any>(`${NAV_URL}/addBookingSlots`, slot);
   }
 
-  public addPrescriptions(prescription: Prescription): Observable<any> {
+  addPrescriptions(prescription: Prescription): Observable<any> {
     return this._http.post<any>(`${NAV_URL}/addPrescription`, prescription);
   }
 
-  public getProfileDetails(loggedUser: string): Observable<any> {
-    return this._http.get(`${NAV_URL}/doctorProfileDetails/` + loggedUser);
+  getProfileDetails(loggedUser: string): Observable<Doctor[]> {
+    return this._http.get<Doctor[]>(`${NAV_URL}/doctorProfileDetails/${loggedUser}`);
   }
 
-  public UpdateDoctorProfile(user: any): Observable<any> {
-    return this._http.put<any>(`${NAV_URL}/updatedoctor`, user);
+  UpdateDoctorProfile(user: Doctor): Observable<Doctor> {
+    return this._http.put<Doctor>(`${NAV_URL}/updatedoctor`, user);
   }
 
-  public deleteDoctor(email: string): Observable<any> {
+  deleteDoctor(email: string): Observable<string> {
     const role = sessionStorage.getItem('ROLE') || '';
-    return this._http.delete<any>(`${NAV_URL}/deletedoctor/` + email + '/' + role, {
-      responseType: 'text' as 'json'
+    return this._http.delete(`${NAV_URL}/deletedoctor/${email}/${role}`, {
+      responseType: 'text'
     });
   }
 }

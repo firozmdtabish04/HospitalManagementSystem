@@ -20,9 +20,9 @@ export class BookappointmentComponent implements OnInit {
 
   appointment = new Appointment();
 
-  slots: Observable<Slots[]> | undefined;
-  doctors: Observable<Slots[]> | undefined;
-  specializations: Observable<Slots[]> | undefined;
+  slots!: Observable<Slots[]>;
+  doctors!: Observable<string[]>;
+  specializations!: Observable<string[]>;
 
   minDate = '';
   isSubmitting = false;
@@ -35,11 +35,8 @@ export class BookappointmentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loggedUser = JSON.stringify(sessionStorage.getItem('loggedUser') || '{}');
-    this.loggedUser = this.loggedUser.replace(/"/g, '');
-
-    this.currRole = JSON.stringify(sessionStorage.getItem('ROLE') || '{}');
-    this.currRole = this.currRole.replace(/"/g, '');
+    this.loggedUser = sessionStorage.getItem('loggedUser') || '';
+    this.currRole = sessionStorage.getItem('ROLE') || '';
 
     this.doctors = this._service.getSlotListWithUniqueDoctors();
     this.specializations = this._service.getSlotListWithUniqueSpecializations();
@@ -78,7 +75,7 @@ export class BookappointmentComponent implements OnInit {
     $('#appointmentcontent').show();
   }
 
-  bookAppointment() {
+  bookAppointment(): void {
     this.isSubmitting = true;
 
     this.userService.addBookingAppointments(this.appointment).subscribe(

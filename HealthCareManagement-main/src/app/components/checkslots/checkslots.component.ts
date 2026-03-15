@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Slots } from 'src/app/models/slots';
+import { Doctor } from 'src/app/models/doctor';
 import { DoctorService } from 'src/app/services/doctor.service';
 
 @Component({
@@ -11,8 +11,6 @@ import { DoctorService } from 'src/app/services/doctor.service';
 export class CheckslotsComponent implements OnInit {
   currRole: string = '';
   loggedUser: string = '';
-
-  slots!: Observable<Slots[]>;
 
   doctorSearch: string = '';
   specializationSearch: string = '';
@@ -29,37 +27,88 @@ export class CheckslotsComponent implements OnInit {
   itemsPerPage: number = 6;
   totalPages: number = 1;
 
+  approvedDoctorNames: Set<string> = new Set<string>();
+
+  isLoading: boolean = true;
+
   constructor(private _service: DoctorService) { }
 
   ngOnInit(): void {
     this.loggedUser = sessionStorage.getItem('loggedUser') || '';
     this.currRole = sessionStorage.getItem('ROLE') || '';
 
-    this.slots = this._service.getSlotList();
+    this.loadApprovedDoctorsAndSlots();
+  }
 
-    this.slots.subscribe((data: Slots[]) => {
-      const upcomingSlots = (data || [])
-        .filter((slot) => this.isRecentOrToday(slot.date))
-        .sort((a, b) => this.convertToDate(a.date).getTime() - this.convertToDate(b.date).getTime());
+  loadApprovedDoctorsAndSlots(): void {
+    this.isLoading = true;
 
-      this.allSlots = upcomingSlots;
-      this.totalSchedules = this.allSlots.length;
-      this.applyFilters();
+    this._service.getDoctorList().subscribe({
+      next: (doctors: Doctor[]) => {
+        const approvedDoctors = (doctors || []).filter(
+          (doctor) => doctor.status?.toLowerCase() === 'accept'
+        );
+
+        this.approvedDoctorNames = new Set(
+          approvedDoctors
+            .map((doctor) => doctor.doctorname?.trim().toLowerCase())
+            .filter((name): name is string => !!name)
+        );
+
+        this.loadSlots();
+      },
+      error: (err) => {
+        console.error('Failed to load doctors', err);
+        this.approvedDoctorNames = new Set<string>();
+        this.loadSlots();
+      }
     });
   }
 
-  filterSlot(doctor: Slots): boolean {
+  loadSlots(): void {
+    this._service.getSlotList().subscribe({
+      next: (data: Slots[]) => {
+        const upcomingSlots = (data || [])
+          .filter((slot) => this.isRecentOrToday(slot.date))
+          .filter((slot) => this.isDoctorApproved(slot.doctorname))
+          .sort(
+            (a, b) =>
+              this.convertToDate(a.date).getTime() -
+              this.convertToDate(b.date).getTime()
+          );
+
+        this.allSlots = upcomingSlots;
+        this.totalSchedules = this.allSlots.length;
+        this.applyFilters();
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Failed to load slots', err);
+        this.allSlots = [];
+        this.totalSchedules = 0;
+        this.applyFilters();
+        this.isLoading = false;
+      }
+    });
+  }
+
+  isDoctorApproved(doctorName: string): boolean {
+    if (!doctorName) return false;
+    return this.approvedDoctorNames.has(doctorName.trim().toLowerCase());
+  }
+
+  filterSlot(slot: Slots): boolean {
     const doctorName = this.doctorSearch.toLowerCase().trim();
     const specialization = this.specializationSearch.toLowerCase().trim();
 
     const nameMatch =
-      !doctorName || doctor.doctorname?.toLowerCase().includes(doctorName);
+      !doctorName || slot.doctorname?.toLowerCase().includes(doctorName);
 
     const specializationMatch =
-      !specialization || doctor.specialization?.toLowerCase().includes(specialization);
+      !specialization || slot.specialization?.toLowerCase().includes(specialization);
 
     const availableMatch =
-      !this.showOnlyAvailable || this.hasAnyAvailableSlot(doctor);
+      !this.showOnlyAvailable || this.hasAnyAvailableSlot(slot);
 
     return nameMatch && specializationMatch && availableMatch;
   }

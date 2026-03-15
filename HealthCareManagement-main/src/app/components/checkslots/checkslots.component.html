@@ -19,15 +19,15 @@
         <p class="eyebrow">Appointment Availability</p>
         <h1 class="heading">Available Booking Slots</h1>
         <p class="subheading">
-          View only active and upcoming doctor schedules. Previous dates are
-          automatically hidden for a cleaner booking experience.
+          View only active and upcoming doctor schedules. Previous dates and inactive doctors
+          are automatically hidden for a cleaner booking experience.
         </p>
       </div>
 
       <div class="hero-side">
         <div class="hero-badge">
           <i class="fa fa-calendar-check-o"></i>
-          <span>Upcoming Slots Only</span>
+          <span>Approved Doctor Slots Only</span>
         </div>
       </div>
     </section>
@@ -177,7 +177,7 @@
       <div class="table-top">
         <div>
           <h2>Doctor Slot Availability</h2>
-          <p>Upcoming slots sorted by nearest date first.</p>
+          <p>Only approved doctor slots are shown.</p>
         </div>
 
         <div class="record-badge">
@@ -231,7 +231,7 @@
                   No Slots
                 </span>
 
-                <span *ngIf="doctor.amstatus === 'booked'" class="badge booked">
+                <span *ngIf="doctor.amslot !== 'empty' && doctor.amstatus === 'booked'" class="badge booked">
                   <i class="fa fa-lock"></i>
                   Booked
                 </span>
@@ -251,7 +251,7 @@
                   No Slots
                 </span>
 
-                <span *ngIf="doctor.noonstatus === 'booked'" class="badge booked">
+                <span *ngIf="doctor.noonslot !== 'empty' && doctor.noonstatus === 'booked'" class="badge booked">
                   <i class="fa fa-lock"></i>
                   Booked
                 </span>
@@ -271,7 +271,7 @@
                   No Slots
                 </span>
 
-                <span *ngIf="doctor.pmstatus === 'booked'" class="badge booked">
+                <span *ngIf="doctor.pmslot !== 'empty' && doctor.pmstatus === 'booked'" class="badge booked">
                   <i class="fa fa-lock"></i>
                   Booked
                 </span>
@@ -292,7 +292,7 @@
               </td>
             </tr>
 
-            <tr *ngIf="paginatedSlots.length === 0">
+            <tr *ngIf="!isLoading && paginatedSlots.length === 0">
               <td colspan="7">
                 <div class="empty-state">
                   <i class="fa fa-search"></i>
@@ -302,6 +302,15 @@
                     <i class="fa fa-refresh"></i>
                     Reset Search
                   </button>
+                </div>
+              </td>
+            </tr>
+
+            <tr *ngIf="isLoading">
+              <td colspan="7">
+                <div class="empty-state">
+                  <i class="fa fa-spinner fa-spin"></i>
+                  <h3>Loading approved doctor slots...</h3>
                 </div>
               </td>
             </tr>
