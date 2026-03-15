@@ -406,9 +406,9 @@
         font-size: 1.15rem;
     }
 
-    .support-actions {
+    /* .support-actions {
         flex-direction: column;
-    }
+    } */
 
     .support-btn,
     .contact-chip {
