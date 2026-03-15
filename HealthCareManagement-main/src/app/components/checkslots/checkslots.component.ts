@@ -9,30 +9,36 @@ import { DoctorService } from 'src/app/services/doctor.service';
   styleUrls: ['./checkslots.component.css']
 })
 export class CheckslotsComponent implements OnInit {
-
   currRole: string = '';
   loggedUser: string = '';
 
   slots!: Observable<Slots[]>;
 
-  // ⭐ Search variables
   doctorSearch: string = '';
   specializationSearch: string = '';
+
+  allSlots: Slots[] = [];
+  filteredSlots: Slots[] = [];
+
+  totalSchedules: number = 0;
+  filteredCount: number = 0;
 
   constructor(private _service: DoctorService) { }
 
   ngOnInit(): void {
-
     this.loggedUser = sessionStorage.getItem('loggedUser') || '';
     this.currRole = sessionStorage.getItem('ROLE') || '';
 
     this.slots = this._service.getSlotList();
 
+    this.slots.subscribe((data: Slots[]) => {
+      this.allSlots = data || [];
+      this.totalSchedules = this.allSlots.length;
+      this.applyFilters();
+    });
   }
 
-  // ⭐ Filter function
   filterSlot(doctor: Slots): boolean {
-
     const doctorName = this.doctorSearch.toLowerCase();
     const specialization = this.specializationSearch.toLowerCase();
 
@@ -45,7 +51,20 @@ export class CheckslotsComponent implements OnInit {
       doctor.specialization?.toLowerCase().includes(specialization);
 
     return nameMatch && specializationMatch;
-
   }
 
+  applyFilters(): void {
+    this.filteredSlots = this.allSlots.filter((slot) => this.filterSlot(slot));
+    this.filteredCount = this.filteredSlots.length;
+  }
+
+  clearFilters(): void {
+    this.doctorSearch = '';
+    this.specializationSearch = '';
+    this.applyFilters();
+  }
+
+  ngDoCheck(): void {
+    this.applyFilters();
+  }
 }
