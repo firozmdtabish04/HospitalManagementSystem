@@ -7,83 +7,81 @@
 
 <div class="slots-page">
   <div class="slots-shell">
-    <!-- TOP BAR -->
     <div class="top-bar">
       <button class="back-btn" routerLink="/userdashboard">
         <i class="fa fa-arrow-left"></i>
-        Back
+        <span>Back</span>
       </button>
     </div>
 
-    <!-- PAGE HERO -->
     <section class="page-hero">
-      <div>
-        <p class="eyebrow">Slot Management</p>
+      <div class="hero-content">
+        <p class="eyebrow">Appointment Availability</p>
         <h1 class="heading">Available Booking Slots</h1>
         <p class="subheading">
-          View doctor-wise appointment availability, search by specialization,
-          and quickly identify booked and open consultation slots.
+          View only active and upcoming doctor schedules. Previous dates are
+          automatically hidden for a cleaner booking experience.
         </p>
       </div>
 
-      <div class="hero-badge">
-        <i class="fa fa-calendar-check-o"></i>
-        <span>Healthcare Scheduling</span>
+      <div class="hero-side">
+        <div class="hero-badge">
+          <i class="fa fa-calendar-check-o"></i>
+          <span>Upcoming Slots Only</span>
+        </div>
       </div>
     </section>
 
-    <!-- OVERVIEW CARDS -->
-    <section class="overview-grid">
-      <article class="overview-card">
-        <div class="overview-icon teal">
+    <section class="stats-grid">
+      <article class="stat-card">
+        <div class="stat-icon teal">
           <i class="fa fa-calendar"></i>
         </div>
-        <div>
-          <h3>Total Schedules</h3>
-          <p>{{ totalSchedules }}</p>
+        <div class="stat-info">
+          <p class="stat-label">Upcoming Schedules</p>
+          <h3>{{ totalSchedules }}</h3>
         </div>
       </article>
 
-      <article class="overview-card">
-        <div class="overview-icon green">
+      <article class="stat-card">
+        <div class="stat-icon green">
           <i class="fa fa-check-circle"></i>
         </div>
-        <div>
-          <h3>Visible Records</h3>
-          <p>{{ filteredCount }}</p>
+        <div class="stat-info">
+          <p class="stat-label">Visible Records</p>
+          <h3>{{ filteredCount }}</h3>
         </div>
       </article>
 
-      <article class="overview-card">
-        <div class="overview-icon blue">
+      <article class="stat-card">
+        <div class="stat-icon blue">
           <i class="fa fa-user-md"></i>
         </div>
-        <div>
-          <h3>Doctor Search</h3>
-          <p>{{ doctorSearch ? doctorSearch : 'All doctors' }}</p>
+        <div class="stat-info">
+          <p class="stat-label">Doctor Filter</p>
+          <h3>{{ doctorSearch || 'All Doctors' }}</h3>
         </div>
       </article>
 
-      <article class="overview-card">
-        <div class="overview-icon orange">
+      <article class="stat-card">
+        <div class="stat-icon orange">
           <i class="fa fa-stethoscope"></i>
         </div>
-        <div>
-          <h3>Specialization</h3>
-          <p>{{ specializationSearch ? specializationSearch : 'All departments' }}</p>
+        <div class="stat-info">
+          <p class="stat-label">Specialization</p>
+          <h3>{{ specializationSearch || 'All Specializations' }}</h3>
         </div>
       </article>
     </section>
 
-    <!-- FILTER CARD -->
     <section class="filter-card">
       <div class="filter-header">
         <div>
           <h2>Search and Filter Slots</h2>
-          <p>Use the filters below to find relevant doctor schedules faster.</p>
+          <p>Search doctors, specialization, and show only available time slots.</p>
         </div>
 
-        <div class="legend-wrap">
+        <div class="legend-group">
           <span class="legend-item">
             <span class="legend-dot available-dot"></span>
             Available
@@ -93,7 +91,7 @@
             Booked
           </span>
           <span class="legend-item">
-            <span class="legend-dot noslot-dot"></span>
+            <span class="legend-dot no-slot-dot"></span>
             No Slot
           </span>
         </div>
@@ -108,6 +106,7 @@
               type="text"
               placeholder="Search doctor name..."
               [(ngModel)]="doctorSearch"
+              (ngModelChange)="applyFilters()"
               class="search-box"
             />
           </div>
@@ -121,12 +120,26 @@
               type="text"
               placeholder="Search specialization..."
               [(ngModel)]="specializationSearch"
+              (ngModelChange)="applyFilters()"
               class="search-box"
             />
           </div>
         </div>
 
-        <div class="action-field">
+        <div class="toggle-field">
+          <label class="toggle-label">Availability</label>
+          <button
+            type="button"
+            class="toggle-btn"
+            [class.active]="showOnlyAvailable"
+            (click)="toggleAvailableOnly()"
+          >
+            <i class="fa" [ngClass]="showOnlyAvailable ? 'fa-toggle-on' : 'fa-toggle-off'"></i>
+            {{ showOnlyAvailable ? 'Only Available' : 'All Slots' }}
+          </button>
+        </div>
+
+        <div class="search-action">
           <button class="clear-btn" type="button" (click)="clearFilters()">
             <i class="fa fa-refresh"></i>
             Clear Filters
@@ -145,19 +158,26 @@
           Specialization: {{ specializationSearch }}
         </span>
 
-        <span class="filter-chip neutral-chip" *ngIf="!doctorSearch && !specializationSearch">
+        <span class="filter-chip" *ngIf="showOnlyAvailable">
+          <i class="fa fa-check-circle"></i>
+          Showing only available slots
+        </span>
+
+        <span
+          class="filter-chip neutral"
+          *ngIf="!doctorSearch && !specializationSearch && !showOnlyAvailable"
+        >
           <i class="fa fa-info-circle"></i>
-          No filters applied
+          No extra filters applied
         </span>
       </div>
     </section>
 
-    <!-- TABLE CARD -->
     <section class="table-card">
-      <div class="table-header">
+      <div class="table-top">
         <div>
           <h2>Doctor Slot Availability</h2>
-          <p>Review available timing windows before booking an appointment.</p>
+          <p>Upcoming slots sorted by nearest date first.</p>
         </div>
 
         <div class="record-badge">
@@ -180,7 +200,7 @@
           </thead>
 
           <tbody>
-            <tr *ngFor="let doctor of filteredSlots">
+            <tr *ngFor="let doctor of paginatedSlots">
               <td>
                 <span class="date-badge">
                   <i class="fa fa-calendar-o"></i>
@@ -193,7 +213,7 @@
                   <div class="doctor-avatar">
                     <i class="fa fa-user-md"></i>
                   </div>
-                  <div>
+                  <div class="doctor-meta">
                     <strong>{{ doctor.doctorname }}</strong>
                   </div>
                 </div>
@@ -205,81 +225,60 @@
                 </span>
               </td>
 
-              <!-- FN SLOT -->
               <td>
-                <span
-                  class="badge no-slot"
-                  *ngIf="doctor.amslot === 'empty'"
-                >
+                <span *ngIf="doctor.amslot === 'empty'" class="badge no-slot">
                   <i class="fa fa-ban"></i>
                   No Slots
                 </span>
 
-                <span
-                  class="badge booked"
-                  *ngIf="doctor.amstatus === 'booked'"
-                >
+                <span *ngIf="doctor.amstatus === 'booked'" class="badge booked">
                   <i class="fa fa-lock"></i>
                   Booked
                 </span>
 
                 <span
-                  class="badge available"
                   *ngIf="doctor.amslot !== 'empty' && doctor.amstatus === 'unbooked'"
+                  class="badge available"
                 >
                   <i class="fa fa-check-circle"></i>
                   {{ doctor.amslot }}
                 </span>
               </td>
 
-              <!-- NOON SLOT -->
               <td>
-                <span
-                  class="badge no-slot"
-                  *ngIf="doctor.noonslot === 'empty'"
-                >
+                <span *ngIf="doctor.noonslot === 'empty'" class="badge no-slot">
                   <i class="fa fa-ban"></i>
                   No Slots
                 </span>
 
-                <span
-                  class="badge booked"
-                  *ngIf="doctor.noonstatus === 'booked'"
-                >
+                <span *ngIf="doctor.noonstatus === 'booked'" class="badge booked">
                   <i class="fa fa-lock"></i>
                   Booked
                 </span>
 
                 <span
-                  class="badge available"
                   *ngIf="doctor.noonslot !== 'empty' && doctor.noonstatus === 'unbooked'"
+                  class="badge available"
                 >
                   <i class="fa fa-check-circle"></i>
                   {{ doctor.noonslot }}
                 </span>
               </td>
 
-              <!-- PM SLOT -->
               <td>
-                <span
-                  class="badge no-slot"
-                  *ngIf="doctor.pmslot === 'empty'"
-                >
+                <span *ngIf="doctor.pmslot === 'empty'" class="badge no-slot">
                   <i class="fa fa-ban"></i>
                   No Slots
                 </span>
 
-                <span
-                  class="badge booked"
-                  *ngIf="doctor.pmstatus === 'booked'"
-                >
+                <span *ngIf="doctor.pmstatus === 'booked'" class="badge booked">
                   <i class="fa fa-lock"></i>
                   Booked
                 </span>
 
                 <span
-                  class="badge available"
                   *ngIf="doctor.pmslot !== 'empty' && doctor.pmstatus === 'unbooked'"
+                  class="badge available"
                 >
                   <i class="fa fa-check-circle"></i>
                   {{ doctor.pmslot }}
@@ -287,20 +286,18 @@
               </td>
 
               <td>
-                <span class="patient-type-pill">
+                <span class="patient-pill">
                   {{ doctor.patienttype || 'General' }}
                 </span>
               </td>
             </tr>
 
-            <tr *ngIf="filteredSlots.length === 0">
+            <tr *ngIf="paginatedSlots.length === 0">
               <td colspan="7">
                 <div class="empty-state">
                   <i class="fa fa-search"></i>
-                  <h3>No matching slots found</h3>
-                  <p>
-                    Try changing doctor name or specialization filters to view more schedules.
-                  </p>
+                  <h3>No matching upcoming slots found</h3>
+                  <p>Try changing the search filters or reset them.</p>
                   <button type="button" class="clear-btn" (click)="clearFilters()">
                     <i class="fa fa-refresh"></i>
                     Reset Search
@@ -310,6 +307,34 @@
             </tr>
           </tbody>
         </table>
+      </div>
+
+      <div class="pagination-bar" *ngIf="filteredSlots.length > 0">
+        <div class="pagination-info">
+          Showing {{ startRecord }} - {{ endRecord }} of {{ filteredCount }}
+        </div>
+
+        <div class="pagination-controls">
+          <button
+            type="button"
+            class="page-btn"
+            (click)="previousPage()"
+            [disabled]="currentPage === 1"
+          >
+            <i class="fa fa-chevron-left"></i>
+          </button>
+
+          <span class="page-number">Page {{ currentPage }} of {{ totalPages }}</span>
+
+          <button
+            type="button"
+            class="page-btn"
+            (click)="nextPage()"
+            [disabled]="currentPage === totalPages"
+          >
+            <i class="fa fa-chevron-right"></i>
+          </button>
+        </div>
       </div>
     </section>
   </div>
