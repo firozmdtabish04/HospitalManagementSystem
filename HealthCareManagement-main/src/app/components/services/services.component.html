@@ -1,51 +1,262 @@
-<!-- Header / Navbar -->
 <app-header></app-header>
 
-<!-- ================= HERO SECTION ================= -->
-<section class="services-hero text-center py-5">
-  <div class="container">
-    <h1 class="services-hero-h1 display-4 fw-bold">Our Hospital Services</h1>
-    <p class="lead">Comprehensive care for you and your family</p>
-  </div>
-</section>
+<div class="services-page">
+  <section class="services-hero">
+    <div class="container hero-layout">
+      <div class="hero-left">
+        <span class="hero-badge">All Departments</span>
+        <h1>Medical Services Directory</h1>
+        <p>
+          Explore all hospital services in one enterprise-grade experience.
+          Search, filter, and book appointments with the right speciality.
+        </p>
 
-
-
-<!-- ================= SERVICES CARDS ================= -->
-<!-- ================= SERVICES CARDS ================= -->
-<section class="services py-5">
-  <div class="container">
-    <div class="services-grid">
-      <div class="service-card" *ngFor="let service of services">
-        <div class="card-body text-center">
-          <i [class]="service.icon + ' display-4 text-danger'"></i>
-          <h4 class="card-title mt-3">{{ service.title }}</h4>
-          <p class="card-text">{{ service.text }}</p>
-          <button class="btn btn-danger mt-3" (click)="bookAppointment(service.title)">
+        <div class="hero-actions">
+          <a routerLink="/bookappointment" class="hero-btn primary-btn">
+            <i class="fa fa-calendar-check-o"></i>
             Book Appointment
+          </a>
+          <a href="#services-directory" class="hero-btn secondary-btn">
+            <i class="fa fa-list-alt"></i>
+            Explore Services
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="stats-grid">
+          <div class="stat-card" *ngFor="let stat of hospitalStats">
+            <div class="stat-icon">
+              <i [class]="stat.icon"></i>
+            </div>
+            <div>
+              <h3>{{ stat.value }}</h3>
+              <p>{{ stat.label }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="services-filters container" id="services-directory">
+    <div class="filters-header">
+      <div>
+        <h2>Find the right medical service</h2>
+        <p>Search by department, category, or availability.</p>
+      </div>
+
+      <button type="button" class="clear-btn" (click)="clearFilters()">
+        <i class="fa fa-refresh"></i>
+        Clear Filters
+      </button>
+    </div>
+
+    <div class="filters-panel">
+      <div class="search-box">
+        <i class="fa fa-search"></i>
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          placeholder="Search services, speciality, diagnostics..."
+        />
+      </div>
+
+      <div class="select-group">
+        <select [(ngModel)]="selectedCategory">
+          <option *ngFor="let category of categories; trackBy: trackByCategory" [value]="category">
+            {{ category }}
+          </option>
+        </select>
+
+        <select [(ngModel)]="selectedAvailability">
+          <option value="All">All Availability</option>
+          <option value="24/7">24/7</option>
+          <option value="Mon-Sat">Mon-Sat</option>
+        </select>
+      </div>
+
+      <label class="featured-toggle">
+        <input type="checkbox" [(ngModel)]="showOnlyFeatured" />
+        <span>Show featured services only</span>
+      </label>
+    </div>
+  </section>
+
+  <section class="featured-section container">
+    <div class="section-heading">
+      <h2>Featured Departments</h2>
+      <p>Most trusted and frequently booked healthcare services.</p>
+    </div>
+
+    <div class="featured-grid">
+      <div class="featured-card" *ngFor="let service of featuredServices; trackBy: trackByService">
+        <div class="featured-icon">
+          <i [class]="service.icon"></i>
+        </div>
+        <div class="featured-content">
+          <div class="featured-top">
+            <h3>{{ service.title }}</h3>
+            <span class="featured-badge">{{ service.badge }}</span>
+          </div>
+          <p>{{ service.text }}</p>
+          <div class="featured-meta">
+            <span><i class="fa fa-folder-open-o"></i> {{ service.category }}</span>
+            <span><i class="fa fa-clock-o"></i> {{ service.availability }}</span>
+            <span><i class="fa fa-star"></i> {{ service.rating }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="services-section container">
+    <div class="section-heading">
+      <h2>All Medical Services</h2>
+      <p>{{ filteredServices.length }} services available</p>
+    </div>
+
+    <div class="services-grid">
+      <div
+        #serviceCard
+        class="service-card"
+        *ngFor="let service of filteredServices; trackBy: trackByService"
+      >
+        <div class="service-top">
+          <div class="service-icon-box">
+            <i [class]="service.icon"></i>
+          </div>
+          <span class="service-badge">{{ service.badge }}</span>
+        </div>
+
+        <h3>{{ service.title }}</h3>
+        <p class="service-description">{{ service.text }}</p>
+
+        <div class="service-meta">
+          <div class="meta-item">
+            <i class="fa fa-folder-open-o"></i>
+            <span>{{ service.category }}</span>
+          </div>
+          <div class="meta-item">
+            <i class="fa fa-clock-o"></i>
+            <span>{{ service.availability }}</span>
+          </div>
+          <div class="meta-item">
+            <i class="fa fa-star"></i>
+            <span>{{ service.rating }}</span>
+          </div>
+        </div>
+
+        <div class="service-actions">
+          <button type="button" class="service-btn primary-service-btn" (click)="bookAppointment(service.title)">
+            <i class="fa fa-calendar-plus-o"></i>
+            Book Appointment
+          </button>
+
+          <button type="button" class="service-btn secondary-service-btn" (click)="viewService(service)">
+            <i class="fa fa-arrow-right"></i>
+            Continue
           </button>
         </div>
       </div>
     </div>
-  </div>
-</section>
 
+    <div class="no-data-card" *ngIf="filteredServices.length === 0">
+      <i class="fa fa-search"></i>
+      <h3>No matching services found</h3>
+      <p>Try changing your search keyword or filters.</p>
+      <button type="button" class="clear-btn" (click)="clearFilters()">Reset Filters</button>
+    </div>
+  </section>
 
+  <section class="emergency-section container">
+    <div class="emergency-card">
+      <div class="emergency-left">
+        <div class="emergency-icon">
+          <i class="fa fa-ambulance"></i>
+        </div>
 
-<!-- ================= TESTIMONIALS ================= -->
-<section class="reviews py-5 bg-light">
-  <div class="container text-center">
-    <h2 class="mb-5 fw-bold text-danger">What Our Patients Say</h2>
-    <div class="row g-4">
-      <div class="col-md-4" *ngFor="let review of reviews">
-        <div class="card h-100 shadow-sm p-3">
-          <p>"{{ review.text }}"</p>
-          <h6 class="mt-3 fw-bold">{{ review.name }}</h6>
-          <small>{{ review.designation }}</small>
+        <div>
+          <h3>Need immediate medical attention?</h3>
+          <p>
+            Our emergency and trauma support teams are available 24/7.
+            Contact support instantly using WhatsApp, direct call, or SMS.
+          </p>
+        </div>
+      </div>
+
+      <div class="emergency-actions">
+        <button
+          type="button"
+          class="emergency-btn whatsapp-btn"
+          (click)="openEmergencyWhatsApp()"
+          [disabled]="isFetchingLocation"
+        >
+          <i class="fa fa-whatsapp"></i>
+          {{ isFetchingLocation ? 'Fetching location...' : 'WhatsApp Help' }}
+        </button>
+
+        <button type="button" class="emergency-btn call-btn" (click)="callEmergency()">
+          <i class="fa fa-phone"></i>
+          Call Now
+        </button>
+
+        <button type="button" class="emergency-btn sms-btn" (click)="openEmergencySms()">
+          <i class="fa fa-commenting"></i>
+          Send SMS
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="reviews-section container">
+    <div class="section-heading">
+      <h2>What Our Patients Say</h2>
+      <p>Trusted feedback from patients across departments.</p>
+    </div>
+
+    <div class="reviews-grid">
+      <div class="review-card" *ngFor="let review of reviews; trackBy: trackByReview">
+        <div class="review-top">
+          <img [src]="review.image" [alt]="review.name" class="review-image" />
+          <div>
+            <h3>{{ review.name }}</h3>
+            <p>{{ review.designation }}</p>
+          </div>
+        </div>
+
+        <div class="review-stars">
+          <i class="fa fa-star" *ngFor="let star of getStars(review.rating)"></i>
+        </div>
+
+        <p class="review-text">“{{ review.text }}”</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq-section container">
+    <div class="section-heading">
+      <h2>Frequently Asked Questions</h2>
+      <p>Helpful information for appointments and services.</p>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item" *ngFor="let faq of faqs; let i = index; trackBy: trackByFaq">
+        <button type="button" class="faq-question" (click)="toggleFaq(i)">
+          <span>{{ faq.question }}</span>
+          <i class="fa" [ngClass]="faq.isOpen ? 'fa-minus' : 'fa-plus'"></i>
+        </button>
+
+        <div class="faq-answer" *ngIf="faq.isOpen">
+          <p>{{ faq.answer }}</p>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
+  <button class="scroll-top-btn" type="button" (click)="scrollToTop()">
+    <i class="fa fa-chevron-up"></i>
+  </button>
+</div>
 
+<app-footer></app-footer>
