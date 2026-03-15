@@ -1,134 +1,395 @@
 <app-header></app-header>
-<div class="menu">
-  <ul>
-    <li>
-      <div class="card" style="width: 200px; background-color: #23ad9b">
-        <div id="userimg" style="width: 150px">
-          <img
-            *ngIf="gender === 'male' || gender === 'Male'"
-            class="card-img-top"
-            [src]="'assets/img/maledoctor.png'"
-            alt="Card image"
-            style="width: 100%"
-          />
-          <img
-            *ngIf="gender === 'female' || gender === 'Female'"
-            class="card-img-top"
-            [src]="'assets/img/femaledoctor.png'"
-            alt="Card image"
-            style="width: 100%"
-          />
+
+<div class="dashboard-shell">
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.sidebar-collapsed]="!isSidebarOpen">
+    <div class="sidebar-header">
+      <button class="sidebar-toggle" (click)="toggleSidebar()">
+        <i class="fa" [ngClass]="isSidebarOpen ? 'fa-angle-left' : 'fa-angle-right'"></i>
+      </button>
+
+      <div class="brand-block" *ngIf="isSidebarOpen">
+        <div class="brand-logo">
+          <i class="fa fa-heartbeat"></i>
         </div>
-        <div style="margin-left: auto; margin-right: auto" class="card-body">
-          <h4 style="font-weight: bold" class="card-title">
-            <b>{{ name }}</b>
-          </h4>
+        <div class="brand-meta">
+          <h3>HealthCare</h3>
+          <p>Doctor Workspace</p>
         </div>
       </div>
-    </li>
-    <li>
-      <a
-        ><i class="fa fa-edit" aria-hidden="true"></i
-        ><label [routerLink]="['/editdoctorprofile']" style="cursor: pointer"
-          >&nbsp; Edit Profile</label
-        ></a
-      >
-    </li>
-    <li>
-      <a
-        ><i class="fa fa-check" aria-hidden="true"></i
-        ><label [routerLink]="['/approvalstatus']" style="cursor: pointer"
-          >&nbsp; Approval status</label
-        ></a
-      >
-    </li>
-    <li>
-      <a
-        ><i class="fa fa-clock-o" aria-hidden="true"></i
-        ><label [routerLink]="['/scheduleslots']" style="cursor: pointer"
-          >&nbsp; Your schedule</label
-        ></a
-      >
-    </li>
-    <li>
-      <a
-        ><i class="fa fa-user-md" aria-hidden="true"></i
-        ><label [routerLink]="['/doctorlist']" style="cursor: pointer"
-          >&nbsp; Doctor List</label
-        ></a
-      >
-    </li>
-    <li>
-      <a
-        ><i class="fa fa-user-o" aria-hidden="true"></i
-        ><label [routerLink]="['/patientlist']" style="cursor: pointer"
-          >&nbsp; Patients</label
-        ></a
-      >
-    </li>
-    <!-- <li>
-      <a
-        ><i class="fa fa-calendar" aria-hidden="true"></i
-        ><label [routerLink]="['/appointments']" style="cursor: pointer"
-          >&nbsp; Appointments</label
-        ></a
-      >
-    </li> -->
-    <li>
-      <a
-        ><i class="fa fa-sticky-note-o" aria-hidden="true"></i
-        ><label [routerLink]="['/addprescription']" style="cursor: pointer"
-          >&nbsp; Add Prescriptions</label
-        ></a
-      >
-    </li>
-  </ul>
+    </div>
+
+    <div class="doctor-profile" *ngIf="isSidebarOpen">
+      <div class="doctor-avatar-wrap">
+        <img [src]="getProfileImage()" alt="Doctor" class="doctor-avatar" />
+      </div>
+      <h4 [title]="loggedUser">{{ loggedUser }}</h4>
+      <p>{{ currRole }}</p>
+      <span class="online-badge">Online</span>
+    </div>
+
+    <div class="sidebar-section-title" *ngIf="isSidebarOpen">Main Menu</div>
+
+    <nav class="sidebar-nav">
+      <a class="nav-link active-link" (click)="navigateTo('/doctordashboard')">
+        <i class="fa fa-home"></i>
+        <span *ngIf="isSidebarOpen">Dashboard</span>
+      </a>
+
+      <a class="nav-link" (click)="navigateTo('/editdoctorprofile')">
+        <i class="fa fa-edit"></i>
+        <span *ngIf="isSidebarOpen">Edit Profile</span>
+      </a>
+
+      <a class="nav-link" (click)="navigateTo('/approvalstatus')">
+        <i class="fa fa-check-circle"></i>
+        <span *ngIf="isSidebarOpen">Approval Status</span>
+      </a>
+
+      <a class="nav-link" (click)="navigateTo('/scheduleslots')">
+        <i class="fa fa-clock-o"></i>
+        <span *ngIf="isSidebarOpen">Your Schedule</span>
+      </a>
+
+      <a class="nav-link" (click)="navigateTo('/doctorlist')">
+        <i class="fa fa-user-md"></i>
+        <span *ngIf="isSidebarOpen">Doctor List</span>
+      </a>
+
+      <a class="nav-link" (click)="navigateTo('/patientlist')">
+        <i class="fa fa-users"></i>
+        <span *ngIf="isSidebarOpen">Patients</span>
+      </a>
+
+      <a class="nav-link" (click)="navigateTo('/addprescription')">
+        <i class="fa fa-sticky-note-o"></i>
+        <span *ngIf="isSidebarOpen">Add Prescription</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-version" *ngIf="isSidebarOpen">
+      <div class="version-chip">{{ dashboardVersion }}</div>
+      <small>Secure enterprise dashboard build</small>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-area">
+    <!-- Topbar -->
+    <section class="enterprise-topbar">
+      <div class="topbar-left">
+        <h1>Doctor Dashboard</h1>
+        <p>{{ appName }}</p>
+      </div>
+
+      <div class="topbar-right">
+        <div class="notification-pill">
+          <i class="fa fa-bell-o"></i>
+          <span>3 Notifications</span>
+        </div>
+
+        <div class="topbar-user-card">
+          <div class="topbar-avatar">{{ getShortName() }}</div>
+          <div class="topbar-user-meta">
+            <strong>{{ name }}</strong>
+            <small>{{ currRole }}</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hero -->
+    <section class="hero-panel">
+      <div class="hero-left">
+        <span class="hero-badge">{{ getGreeting() }}, {{ loggedUser }}</span>
+        <h2>Welcome back, Doctor</h2>
+        <p>
+          Monitor appointments, manage patients, review schedules, and stay updated
+          with hospital operations through your enterprise dashboard.
+        </p>
+      </div>
+
+      <div class="hero-right">
+        <div class="hero-info-card">
+          <span>Today</span>
+          <strong>{{ currentDate | date:'EEEE, MMMM d, y' }}</strong>
+        </div>
+        <div class="hero-info-card">
+          <span>Performance</span>
+          <strong>{{ completionRate }}%</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- KPI -->
+    <section class="kpi-grid">
+      <div class="kpi-card teal">
+        <div class="kpi-icon"><i class="fa fa-sticky-note"></i></div>
+        <div class="kpi-content">
+          <h3>{{ totalPrescriptions }}</h3>
+          <p>Total Prescriptions</p>
+          <span class="trend-badge">+12% this month</span>
+        </div>
+      </div>
+
+      <div class="kpi-card green">
+        <div class="kpi-icon"><i class="fa fa-user-md"></i></div>
+        <div class="kpi-content">
+          <h3>{{ totalDoctors }}</h3>
+          <p>Total Doctors</p>
+          <span class="trend-badge">Active team members</span>
+        </div>
+      </div>
+
+      <div class="kpi-card gold">
+        <div class="kpi-icon"><i class="fa fa-users"></i></div>
+        <div class="kpi-content">
+          <h3>{{ totalPatients }}</h3>
+          <p>Total Patients</p>
+          <span class="trend-badge">+8% registrations</span>
+        </div>
+      </div>
+
+      <div class="kpi-card orange">
+        <div class="kpi-icon"><i class="fa fa-calendar"></i></div>
+        <div class="kpi-content">
+          <h3>{{ totalSlots }}</h3>
+          <p>Total Slots</p>
+          <span class="trend-badge">Available this week</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Middle Row -->
+    <section class="two-column-grid">
+      <!-- Quick Actions -->
+      <div class="panel-card">
+        <div class="panel-header">
+          <div>
+            <h3>Quick Actions</h3>
+            <p>Frequently used modules for daily workflow</p>
+          </div>
+        </div>
+
+        <div class="quick-actions-grid">
+          <div
+            class="quick-action-card"
+            *ngFor="let action of quickActions"
+            (click)="navigateTo(action.route)"
+          >
+            <div class="quick-action-icon">
+              <i class="fa" [ngClass]="action.icon"></i>
+            </div>
+
+            <div class="quick-action-content">
+              <h4>{{ action.title }}</h4>
+              <p>{{ action.description }}</p>
+            </div>
+
+            <i class="fa fa-angle-right action-arrow"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Performance -->
+      <div class="panel-card">
+        <div class="panel-header">
+          <div>
+            <h3>Performance Overview</h3>
+            <p>Operational highlights and key healthcare metrics</p>
+          </div>
+        </div>
+
+        <div class="progress-item">
+          <div class="progress-meta">
+            <span>Patient Satisfaction</span>
+            <strong>{{ patientSatisfaction }}%</strong>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" [style.width.%]="patientSatisfaction"></div>
+          </div>
+        </div>
+
+        <div class="progress-item">
+          <div class="progress-meta">
+            <span>Prescription Completion</span>
+            <strong>{{ completionRate }}%</strong>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill second" [style.width.%]="completionRate"></div>
+          </div>
+        </div>
+
+        <div class="mini-stat-grid">
+          <div class="mini-stat-card">
+            <h4>{{ monthlyAppointments }}</h4>
+            <p>Monthly Appointments</p>
+          </div>
+
+          <div class="mini-stat-card">
+            <h4>{{ activeCases }}</h4>
+            <p>Active Cases</p>
+          </div>
+
+          <div class="mini-stat-card">
+            <h4>{{ availableSlotsToday }}</h4>
+            <p>Available Slots</p>
+          </div>
+
+          <div class="mini-stat-card">
+            <h4>{{ pendingApprovals }}</h4>
+            <p>Pending Approvals</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Upper -->
+    <section class="two-column-grid">
+      <!-- Schedule -->
+      <div class="panel-card">
+        <div class="panel-header">
+          <div>
+            <h3>Today's Schedule</h3>
+            <p>Upcoming consultations, visits, and reviews</p>
+          </div>
+        </div>
+
+        <div class="schedule-list">
+          <div class="schedule-card" *ngFor="let item of todaySchedule">
+            <div class="schedule-time">{{ item.time }}</div>
+
+            <div class="schedule-body">
+              <h4>{{ item.title }}</h4>
+              <p>{{ item.patient }}</p>
+            </div>
+
+            <div
+              class="status-pill"
+              [ngClass]="{
+                'confirmed': item.status === 'Confirmed',
+                'pending': item.status === 'Pending',
+                'completed': item.status === 'Completed'
+              }"
+            >
+              {{ item.status }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity -->
+      <div class="panel-card">
+        <div class="panel-header">
+          <div>
+            <h3>Recent Activity</h3>
+            <p>Latest actions recorded in the system</p>
+          </div>
+        </div>
+
+        <div class="activity-list">
+          <div class="activity-item" *ngFor="let activity of recentActivities">
+            <div class="activity-icon">
+              <i class="fa" [ngClass]="activity.icon"></i>
+            </div>
+
+            <div class="activity-content">
+              <h4>{{ activity.title }}</h4>
+              <p>{{ activity.subtitle }}</p>
+            </div>
+
+            <span class="activity-time">{{ activity.time }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Appointments Table + Version -->
+    <section class="two-column-grid appointments-version-grid">
+      <!-- Table -->
+      <div class="panel-card large-panel">
+        <div class="panel-header">
+          <div>
+            <h3>Recent Appointments</h3>
+            <p>Structured overview of patient booking activity</p>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="enterprise-table">
+            <thead>
+              <tr>
+                <th>Patient Name</th>
+                <th>Department</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let appointment of recentAppointments">
+                <td>{{ appointment.patientName }}</td>
+                <td>{{ appointment.department }}</td>
+                <td>{{ appointment.date }}</td>
+                <td>{{ appointment.time }}</td>
+                <td>
+                  <span
+                    class="table-status"
+                    [ngClass]="{
+                      'confirmed': appointment.status === 'Confirmed',
+                      'pending': appointment.status === 'Pending',
+                      'completed': appointment.status === 'Completed'
+                    }"
+                  >
+                    {{ appointment.status }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Version -->
+      <div class="panel-card version-panel">
+        <div class="panel-header">
+          <div>
+            <h3>System Version</h3>
+            <p>Application release and environment details</p>
+          </div>
+        </div>
+
+        <div class="version-block">
+          <span class="version-label">Current Version</span>
+          <h2>{{ dashboardVersion }}</h2>
+        </div>
+
+        <div class="version-list">
+          <div class="version-item">
+            <span>Module</span>
+            <strong>Doctor Dashboard</strong>
+          </div>
+          <div class="version-item">
+            <span>UI Build</span>
+            <strong>Enterprise Edition</strong>
+          </div>
+          <div class="version-item">
+            <span>Status</span>
+            <strong class="status-live">Stable</strong>
+          </div>
+          <div class="version-item">
+            <span>Last Update</span>
+            <strong>{{ currentDate | date:'dd MMM yyyy' }}</strong>
+          </div>
+        </div>
+
+        <div class="version-note">
+          This enterprise dashboard version is optimized for modern healthcare
+          workflow, responsive navigation, and structured data visibility.
+        </div>
+      </div>
+    </section>
+  </main>
 </div>
 
-<div class="container">
-  <div class="row">
-    <div
-      style="
-        color: maroon;
-        font-weight: bolder;
-        font-family: aladin;
-        letter-spacing: 1px;
-        font-size: 40px;
-        margin: 0% 0% 1% 9%;
-      "
-    >
-      <b>Welcome to HealthCare Management System Doctor Dashboard</b>
-    </div>
-    <div class="dashboard-card">
-      <div class="circle"><i id="icons" class="fa fa-sticky-note"></i></div>
-      <div class="text">Prescriptions</div>
-      <div class="sub-text" *ngFor="let prescription of prescriptions | async">
-        {{ prescription }} medications
-      </div>
-    </div>
-    <div class="dashboard-card" style="background-color: rgb(26, 109, 74)">
-      <div class="circle"><i id="icons" class="fa fa-user"></i></div>
-      <div class="text">Total Doctors</div>
-      <div class="sub-text" *ngFor="let doctor of doctors | async">
-        {{ doctor }} doctors
-      </div>
-    </div>
-    <div class="dashboard-card" style="background-color: rgb(87, 92, 27)">
-      <div class="circle"><i id="icons" class="fa fa-user-o"></i></div>
-      <div class="text">Total Patients</div>
-      <div class="sub-text" *ngFor="let patient of patients | async">
-        {{ patient }} patients
-      </div>
-    </div>
-    <div class="dashboard-card" style="background-color: rgb(88, 45, 25)">
-      <div class="circle"><i id="icons" class="fa fa-calendar"></i></div>
-      <div class="text">Total Slots</div>
-      <div class="sub-text" *ngFor="let slot of slots | async">
-        {{ slot }} slots
-      </div>
-    </div>
-  </div>
-</div>
-
-<br /><br /><br /><br /><br /><br />
 <app-footer></app-footer>
