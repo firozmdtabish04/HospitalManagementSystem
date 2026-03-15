@@ -61,5 +61,6 @@ export class DoctorlistComponent implements OnInit {
     }
 
   }
+  
 
 }

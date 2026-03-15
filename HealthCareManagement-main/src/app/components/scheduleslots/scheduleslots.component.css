@@ -249,3 +249,29 @@
     gap: 20px;
   }
 }
+
+.delete-btn {
+  background: #fff1f2;
+  /* Light Red */
+  color: #e11d48;
+  /* Deep Red */
+  border: 1px solid #fecdd3;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-btn:hover {
+  background: #e11d48;
+  color: white;
+  transform: scale(1.1);
+  box-shadow: 0 4px 10px rgba(225, 29, 72, 0.2);
+}
+
+.delete-btn i {
+  font-size: 16px;
+}

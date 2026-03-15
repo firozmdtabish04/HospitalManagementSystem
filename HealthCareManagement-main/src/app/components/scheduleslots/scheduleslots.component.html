@@ -32,6 +32,7 @@
                 <th>Morning (AM)</th>
                 <th>Noon</th>
                 <th>Evening (PM)</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -58,6 +59,12 @@
                     [ngClass]="{'booked': slot.pmstatus === 'booked', 'empty': slot.pmslot === 'empty', 'available': slot.pmstatus === 'unbooked'}">
                     {{ slot.pmslot === 'empty' ? 'No Slot' : (slot.pmstatus === 'booked' ? 'Booked' : slot.pmslot) }}
                   </div>
+                </td>
+
+                <td>
+                  <button class="delete-btn" (click)="deleteSlot(slot.date)" title="Remove Slot">
+                    <i class="fa fa-trash-o"></i>
+                  </button>
                 </td>
               </tr>
             </tbody>

@@ -1,68 +1,47 @@
 <app-header></app-header>
 
-<div class="page-container">
-  <!-- BACK BUTTON -->
-  <div class="top-bar">
-    <button class="back-btn" routerLink="/userdashboard">← Back</button>
+<div class="main-wrapper">
+  <div class="page-header animate__animated animate__fadeInDown">
+    <h1 class="heading-text">Find Experts <span class="highlight">Doctors</span></h1>
+    <p class="subheading-text">Connect with verified medical professionals across all specializations.</p>
+
+    <div class="search-wrapper">
+      <div class="search-inner">
+        <i class="fa fa-search"></i>
+        <input type="text" placeholder="Search by name, specialist or email..." [(ngModel)]="searchText"
+          class="search-box" />
+      </div>
+    </div>
   </div>
 
-  <!-- PAGE TITLE -->
-  <h1 class="heading-text">Doctors List</h1>
+  <div class="doctor-grid">
+    <div *ngFor="let doctor of doctors | async" class="modern-card animate__animated animate__fadeInUp"
+      [hidden]="!filterDoctor(doctor)">
 
-  <p class="subheading-text">
-    Only approved doctors are suggested by the management
-  </p>
-
-  <!-- SEARCH -->
-  <div class="search-container">
-    <input
-      type="text"
-      placeholder="Search doctor by name, email, specialization..."
-      [(ngModel)]="searchText"
-      class="search-box"
-    />
-  </div>
-
-  <!-- DOCTOR GRID -->
-
-  <div class="doctor-container">
-    <div
-      *ngFor="let doctor of doctors | async"
-      class="doctor-card"
-      [hidden]="!filterDoctor(doctor)"
-    >
-      <!-- IMAGE -->
-      <div class="doctor-image">
-        <img
-          [src]="
-            doctor.gender?.toLowerCase() === 'female'
-              ? 'assets/img/femaledoctor.png'
-              : 'assets/img/maledoctor.png'
-          "
-          alt="Doctor"
-        />
+      <div class="status-tag" [ngClass]="getStatusClass(doctor.status)">
+        <i class="fa"
+          [ngClass]="{'fa-check-circle': doctor.status === 'accept', 'fa-clock-o': doctor.status !== 'accept'}"></i>
+        {{ getDoctorStatus(doctor.status) }}
       </div>
 
-      <!-- DETAILS -->
+      <div class="card-body">
+        <div class="image-wrapper">
+          <img
+            [src]="doctor.gender === 'female' ? 'assets/img/femaledoctor.png' : 'assets/img/maledoctor.png'"
+            alt="Doctor" />
+          <div class="experience-badge">{{ doctor.experience }}+ Yrs</div>
+        </div>
 
-      <div class="doctor-details">
-        <h3>{{ doctor.doctorname }}</h3>
+        <div class="doctor-info">
+          <h3>Dr. {{ doctor.doctorname }}</h3>
+          <span class="specialization">{{ doctor.specialization }}</span>
 
-        <p class="email">{{ doctor.email }}</p>
-
-        <p>📱 {{ doctor.mobile }}</p>
-
-        <p>🩺 {{ doctor.specialization }}</p>
-
-        <p>📊 {{ doctor.experience }} yrs experience</p>
-
-        <p>👤 {{ doctor.gender }}</p>
-
-        <!-- STATUS -->
-
-        <span class="status" [ngClass]="getStatusClass(doctor.status)">
-          {{ getDoctorStatus(doctor.status) }}
-        </span>
+          <div class="info-list">
+            <div class="info-item"><i class="fa fa-envelope-o"></i> {{ doctor.email }}</div>
+            <div class="info-item"><i class="fa fa-phone"></i> {{ doctor.mobile }}</div>
+            <div class="info-item"><i class="fa fa-map-marker"></i> {{ doctor.address || 'Hospital Center' }}</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

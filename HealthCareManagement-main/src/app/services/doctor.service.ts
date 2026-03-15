@@ -96,5 +96,11 @@ export class DoctorService {
   public UpdateDoctorProfile(user: any): Observable<any> {
     return this._http.put<any>(`${NAV_URL}/updatedoctor`, user)
   }
-
+  deleteSlot(email: string, date: string): Observable<any> {
+    // Params use karne se URL encoding ka issue khatam ho jata hai
+    return this._http.delete(`${NAV_URL}/deleteSlot`, {
+      params: { email: email, date: date },
+      responseType: 'text' as 'json'
+    });
+  }
 }

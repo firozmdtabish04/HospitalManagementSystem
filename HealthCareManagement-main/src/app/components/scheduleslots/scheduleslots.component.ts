@@ -98,4 +98,20 @@ export class ScheduleslotsComponent implements OnInit {
       }
     });
   }
+  // Is function ko class ke andar add karo
+  deleteSlot(date: string): void {
+    if (confirm("Bhai, kya aap sach mein ye slot delete karna chahte hain?")) {
+      this._service.deleteSlot(this.loggedUser, date).subscribe({
+        next: (res) => {
+          // Response string hai toh check karne ki zaroorat nahi seedha refresh karo
+          this.loadSlots();
+          alert("Slot deleted successfully!");
+        },
+        error: (err) => {
+          console.log("Delete failed", err);
+          alert("Slot delete nahi ho paya, backend check karo!");
+        }
+      });
+    }
+  }
 }
