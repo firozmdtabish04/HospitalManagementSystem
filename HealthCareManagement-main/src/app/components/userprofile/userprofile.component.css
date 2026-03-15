@@ -772,7 +772,9 @@
     padding: 20px;
   }
 
-
+  .stat-value {
+    font-size: 34px;
+  }
 
   .summary-box,
   .info-panel,
