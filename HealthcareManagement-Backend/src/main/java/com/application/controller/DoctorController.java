@@ -10,11 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.application.model.Appointments;
 import com.application.model.Doctor;
@@ -155,6 +158,19 @@ public class DoctorController {
 		return new ResponseEntity<List<Slots>>(slots, HttpStatus.OK);
 	}
 
+	// delete slot add new
+	@DeleteMapping("/deleteSlot")
+	@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*", methods = { RequestMethod.DELETE,
+			RequestMethod.OPTIONS })
+	public ResponseEntity<?> deleteSlot(@RequestParam("email") String email, @RequestParam("date") String date) {
+		try {
+			appointmentBookingService.deleteSlotByEmailAndDate(email, date);
+			return ResponseEntity.ok("{\"message\": \"Slot deleted successfully\"}");
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error");
+		}
+	}
+
 	@GetMapping("/slotDetailsWithUniqueDoctors")
 	@CrossOrigin(origins = "http://localhost:4200")
 	public ResponseEntity<Set<String>> getSlotDetailsWithUniqueDoctors() throws Exception {
@@ -256,32 +272,6 @@ public class DoctorController {
 	public ResponseEntity<Doctor> updateDoctorProfile(@RequestBody Doctor doctor) throws Exception {
 		Doctor doctorobj = doctorRegisterService.updateDoctorProfile(doctor);
 		return new ResponseEntity<Doctor>(doctorobj, HttpStatus.OK);
-	}
-
-	@GetMapping("/patientlistbydoctoremailanddate/{email}")
-	@CrossOrigin(origins = "http://localhost:4200")
-	public ResponseEntity<List<Appointments>> getPatientDetailsAndDate(@PathVariable String email) throws Exception {
-		List<Appointments> patients = appointmentBookingService.getAllPatients();
-		List<Doctor> history = doctorRegisterService.getDoctorListByEmail(email);
-		String doctorname = "";
-		OUTER: for (Doctor obj : history) {
-			if (obj.getEmail().equals(email)) {
-				doctorname = obj.getDoctorname();
-				break OUTER;
-			}
-		}
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = new Date();
-		String todayDate = formatter.format(date);
-		List<Appointments> appointmentsList = new ArrayList<>();
-		OUTER: for (Appointments obj : patients) {
-			if (obj.getDoctorname().equals(doctorname) && obj.getDate().equals(todayDate)) {
-				doctorname = obj.getDoctorname();
-				appointmentsList.add(obj);
-				break OUTER;
-			}
-		}
-		return new ResponseEntity<List<Appointments>>(appointmentsList, HttpStatus.OK);
 	}
 
 }
