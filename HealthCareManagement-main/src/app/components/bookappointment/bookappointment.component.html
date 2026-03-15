@@ -1,253 +1,475 @@
 <app-header></app-header>
 
-<div class="message" id="messagecard">
-  <b>{{ message }}</b>
-</div>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+/>
 
-<div class="container" id="appointmentform">
-  <h2 class="textual" style="color: darkgreen">
-    <i class="fa fa-calendar"></i>
-    <b>Book Your New Appointments</b>
-  </h2>
+<div class="booking-page">
+  <div class="booking-shell">
+    <!-- MESSAGE CARD -->
+    <div class="message-card" id="messagecard">
+      <div class="message-icon">
+        <i
+          class="fa"
+          [ngClass]="
+            isBookingFailed ? 'fa-exclamation-triangle' : 'fa-check-circle'
+          "
+        ></i>
+      </div>
 
-  <small style="color: maroon; font-weight: bold; margin-left: 15%">
-    Please check doctor's availability before booking your respective slot
-  </small>
+      <h3>{{ isBookingFailed ? "Booking Failed" : "Booking Successful" }}</h3>
 
-  <form #bookappointmentform="ngForm" (ngSubmit)="bookAppointment()">
-    <!-- Patient Name -->
-    <div class="form-group">
-      <label for="patientname">
-        Patient Name :
-        <b class="text-danger">*</b>
-        <small style="color: gray; font-size: 12px">
-          (please enter full name of the patient with initial)
-        </small>
-      </label>
+      <p>{{ message }}</p>
 
-      <input
-        type="text"
-        id="patientname"
-        class="form-control"
-        placeholder="enter your name"
-        name="patientname"
-        [(ngModel)]="appointment.patientname"
-        required
-        #patientname="ngModel"
-        [class.is-invalid]="patientname.invalid && patientname.touched"
-      />
+      <div class="message-actions">
+        <button class="secondary-btn" routerLink="/userdashboard">
+          <i class="fa fa-arrow-left"></i>
+          Back to Dashboard
+        </button>
 
-      <small
-        class="text-danger"
-        [class.d-none]="patientname.valid || patientname.untouched"
-      >
-        <b>required field</b>
-      </small>
-    </div>
-
-    <!-- Email -->
-    <div class="form-group">
-      <label for="patientemail">
-        Email address :
-        <b class="text-danger">*</b>
-      </label>
-
-      <input
-        type="email"
-        id="patientemail"
-        class="form-control"
-        placeholder="enter email address"
-        name="patientemail"
-        [(ngModel)]="appointment.email"
-        required
-        pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
-        #patientemail="ngModel"
-        [class.is-invalid]="patientemail.invalid && patientemail.touched"
-      />
-
-      <div *ngIf="patientemail.invalid && patientemail.touched">
-        <small class="text-danger" *ngIf="patientemail.errors?.required">
-          required field
-        </small>
-
-        <small class="text-danger" *ngIf="patientemail.errors?.pattern">
-          Invalid email Id
-        </small>
+        <button
+          class="primary-btn"
+          *ngIf="isBookingFailed"
+          (click)="showFormAgain()"
+        >
+          <i class="fa fa-refresh"></i>
+          Try Again
+        </button>
       </div>
     </div>
 
-    <!-- Doctor -->
-    <div class="form-group">
-      <label for="doctor">
-        Choose Doctor :
-        <b class="text-danger">*</b>
-      </label>
+    <!-- TOP OVERVIEW -->
+    <section class="overview-grid" id="appointmentform">
+      <div class="overview-card">
+        <div class="overview-icon teal">
+          <i class="fa fa-user-md"></i>
+        </div>
+        <div routerLink="/doctorlist">
+          <h4>Specialist Doctors</h4>
+          <p>Choose from available doctors and departments</p>
+        </div>
+      </div>
 
-      <select
-        id="doctor"
-        class="form-control"
-        name="doctor"
-        [(ngModel)]="appointment.doctorname"
-        #doctor="ngModel"
-      >
-        <option value="">Select doctor</option>
+      <div class="overview-card">
+        <div class="overview-icon blue">
+          <i class="fa fa-calendar-check-o"></i>
+        </div>
+        <div routerLink="/checkslots">
+          <h4>Easy Scheduling</h4>
+          <p>Book your slot in a few simple steps</p>
+        </div>
+      </div>
 
-        <option *ngFor="let doctor of doctors | async" [value]="doctor">
-          {{ doctor }}
-        </option>
-      </select>
+      <div class="overview-card">
+        <div class="overview-icon green">
+          <i class="fa fa-shield"></i>
+        </div>
+        <div>
+          <h4>Secure Booking</h4>
+          <p>Your appointment details stay organized and protected</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="booking-grid" id="appointmentcontent">
+      <!-- LEFT -->
+      <section class="booking-main-card">
+        <div class="page-header">
+          <div>
+            <p class="eyebrow">Appointment Management</p>
+            <h2 class="textual">
+              <i class="fa fa-calendar"></i>
+              Book Your New Appointment
+            </h2>
+            <p class="subtitle">
+              Fill in the patient details, choose your doctor, select a slot,
+              and confirm your appointment request.
+            </p>
+          </div>
+
+          <div class="header-badge">
+            <i class="fa fa-heartbeat"></i>
+            <span>Healthcare Portal</span>
+          </div>
+        </div>
+
+        <div class="alert-strip">
+          <i class="fa fa-info-circle"></i>
+          <span>
+            Please check doctor's availability before booking your respective
+            slot.
+          </span>
+        </div>
+
+        <form #bookappointmentform="ngForm" (ngSubmit)="bookAppointment()">
+          <div class="form-section-title">
+            <h3>Patient Information</h3>
+            <p>
+              Enter accurate details to help ensure a smooth appointment
+              process.
+            </p>
+          </div>
+
+          <div class="form-grid">
+            <!-- Patient Name -->
+            <div class="form-group full-width">
+              <label for="patientname">
+                Patient Name <span>*</span>
+                <small
+                  >(Please enter the full name of the patient with
+                  initial)</small
+                >
+              </label>
+
+              <div class="input-wrap">
+                <i class="fa fa-user"></i>
+                <input
+                  type="text"
+                  id="patientname"
+                  class="form-control"
+                  placeholder="Enter patient full name"
+                  name="patientname"
+                  [(ngModel)]="appointment.patientname"
+                  required
+                  #patientname="ngModel"
+                  [class.is-invalid]="
+                    patientname.invalid && patientname.touched
+                  "
+                />
+              </div>
+
+              <small
+                class="text-danger"
+                [class.d-none]="patientname.valid || patientname.untouched"
+              >
+                Required field
+              </small>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group full-width">
+              <label for="patientemail"> Email Address <span>*</span> </label>
+
+              <div class="input-wrap">
+                <i class="fa fa-envelope"></i>
+                <input
+                  type="email"
+                  id="patientemail"
+                  class="form-control"
+                  placeholder="Enter email address"
+                  name="patientemail"
+                  [(ngModel)]="appointment.email"
+                  required
+                  pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
+                  #patientemail="ngModel"
+                  [class.is-invalid]="
+                    patientemail.invalid && patientemail.touched
+                  "
+                />
+              </div>
+
+              <div *ngIf="patientemail.invalid && patientemail.touched">
+                <small
+                  class="text-danger"
+                  *ngIf="patientemail.errors?.required"
+                >
+                  Required field
+                </small>
+                <small class="text-danger" *ngIf="patientemail.errors?.pattern">
+                  Invalid email ID
+                </small>
+              </div>
+            </div>
+
+            <!-- Doctor -->
+            <div class="form-group">
+              <label for="doctor">Choose Doctor <span>*</span></label>
+
+              <div class="input-wrap">
+                <i class="fa fa-user-md"></i>
+                <select
+                  id="doctor"
+                  class="form-control"
+                  name="doctor"
+                  [(ngModel)]="appointment.doctorname"
+                  #doctor="ngModel"
+                >
+                  <option value="">Select doctor</option>
+                  <option
+                    *ngFor="let doctor of doctors | async"
+                    [value]="doctor"
+                  >
+                    {{ doctor }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Specialization -->
+            <div class="form-group">
+              <label for="specialization">Specialization <span>*</span></label>
+
+              <div class="input-wrap">
+                <i class="fa fa-stethoscope"></i>
+                <select
+                  id="specialization"
+                  class="form-control"
+                  name="specialization"
+                  [(ngModel)]="appointment.specialization"
+                  #specialization="ngModel"
+                >
+                  <option value="">Select speciality</option>
+                  <option
+                    *ngFor="let speciality of specializations | async"
+                    [value]="speciality"
+                  >
+                    {{ speciality }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Date -->
+            <div class="form-group">
+              <label for="date">Appointment Date <span>*</span></label>
+
+              <div class="input-wrap">
+                <i class="fa fa-calendar"></i>
+                <input
+                  type="date"
+                  id="date"
+                  class="form-control"
+                  name="date"
+                  [(ngModel)]="appointment.date"
+                  [min]="minDate"
+                  required
+                  #date="ngModel"
+                  [class.is-invalid]="date.invalid && date.touched"
+                />
+              </div>
+
+              <small
+                class="text-danger"
+                [class.d-none]="date.valid || date.untouched"
+              >
+                Required field
+              </small>
+            </div>
+
+            <!-- Slot -->
+            <div class="form-group">
+              <label for="slot">Appointment Slot <span>*</span></label>
+
+              <div class="input-wrap">
+                <i class="fa fa-clock-o"></i>
+                <select
+                  id="slot"
+                  class="form-control"
+                  name="slot"
+                  [(ngModel)]="appointment.slot"
+                  #slot="ngModel"
+                >
+                  <option value="AM slot">AM slot</option>
+                  <option value="Noon slot">Noon slot</option>
+                  <option value="PM slot">PM slot</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Age -->
+            <div class="form-group">
+              <label for="age">Patient Age <span>*</span></label>
+
+              <div class="input-wrap">
+                <i class="fa fa-id-card-o"></i>
+                <input
+                  type="number"
+                  id="age"
+                  class="form-control"
+                  placeholder="Enter patient age"
+                  name="age"
+                  [(ngModel)]="appointment.age"
+                  required
+                  #age="ngModel"
+                  [class.is-invalid]="age.invalid && age.touched"
+                />
+              </div>
+
+              <small
+                class="text-danger"
+                [class.d-none]="age.valid || age.untouched"
+              >
+                Required field
+              </small>
+            </div>
+
+            <!-- Gender -->
+            <div class="form-group">
+              <label for="gender">Patient Gender <span>*</span></label>
+
+              <div class="input-wrap">
+                <i class="fa fa-venus-mars"></i>
+                <select
+                  id="gender"
+                  class="form-control"
+                  name="gender"
+                  [(ngModel)]="appointment.gender"
+                  #gender="ngModel"
+                >
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Others">Others</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Problem -->
+            <div class="form-group full-width">
+              <label for="problem">Patient Problem <span>*</span></label>
+
+              <div class="input-wrap textarea-wrap">
+                <i class="fa fa-file-text-o"></i>
+                <textarea
+                  id="problem"
+                  class="form-control textarea-control"
+                  placeholder="Describe the patient's health issue"
+                  name="problem"
+                  [(ngModel)]="appointment.problem"
+                  required
+                  #problem="ngModel"
+                  [class.is-invalid]="problem.invalid && problem.touched"
+                ></textarea>
+              </div>
+
+              <small
+                class="text-danger"
+                [class.d-none]="problem.valid || problem.untouched"
+              >
+                Required field
+              </small>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button
+              [disabled]="bookappointmentform.form.invalid || isSubmitting"
+              type="submit"
+              class="primary-btn"
+            >
+              <i
+                class="fa"
+                [ngClass]="isSubmitting ? 'fa-spinner fa-spin' : 'fa-plus'"
+              ></i>
+              {{
+                isSubmitting
+                  ? "Booking Appointment..."
+                  : "Book Your Appointment"
+              }}
+            </button>
+
+            <button
+              type="button"
+              class="secondary-btn"
+              (click)="resetForm(bookappointmentform)"
+            >
+              <i class="fa fa-refresh"></i>
+              Reset Form
+            </button>
+
+            <button
+              type="button"
+              class="secondary-btn"
+              routerLink="/userdashboard"
+            >
+              <i class="fa fa-arrow-left"></i>
+              Cancel
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- RIGHT -->
+      <aside class="booking-side-card">
+        <div class="side-section">
+          <h3>Booking Guidelines</h3>
+
+          <div class="tip-item">
+            <i class="fa fa-check-circle"></i>
+            <p>Select the appropriate doctor and specialization carefully.</p>
+          </div>
+
+          <div class="tip-item">
+            <i class="fa fa-check-circle"></i>
+            <p>Use a valid email address for future updates.</p>
+          </div>
+
+          <div class="tip-item">
+            <i class="fa fa-check-circle"></i>
+            <p>Choose a valid date and confirm your preferred slot.</p>
+          </div>
+
+          <div class="tip-item">
+            <i class="fa fa-check-circle"></i>
+            <p>Provide accurate patient details for consultation readiness.</p>
+          </div>
+        </div>
+
+        <div class="side-section appointment-summary">
+          <h3>Live Appointment Summary</h3>
+
+          <div class="summary-row">
+            <span>Patient</span>
+            <strong>{{ appointment.patientname || "Not entered" }}</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Email</span>
+            <strong>{{ appointment.email || "Not entered" }}</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Doctor</span>
+            <strong>{{ appointment.doctorname || "Not selected" }}</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Specialization</span>
+            <strong>{{ appointment.specialization || "Not selected" }}</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Date</span>
+            <strong>{{ appointment.date || "Not selected" }}</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Slot</span>
+            <strong>{{ appointment.slot || "Not selected" }}</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Age</span>
+            <strong>{{ appointment.age || "Not entered" }}</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Gender</span>
+            <strong>{{ appointment.gender || "Not selected" }}</strong>
+          </div>
+        </div>
+
+        <div class="side-section support-card">
+          <h3>Important Note</h3>
+          <p>
+            Appointment confirmation depends on slot availability and doctor
+            scheduling in the system. Please review all details before
+            submitting.
+          </p>
+        </div>
+      </aside>
     </div>
-
-    <!-- Specialization -->
-    <div class="form-group">
-      <label for="specialization">
-        Specialization :
-        <b class="text-danger">*</b>
-      </label>
-
-      <select
-        id="specialization"
-        class="form-control"
-        name="specialization"
-        [(ngModel)]="appointment.specialization"
-        #specialization="ngModel"
-      >
-        <option value="">Select speciality</option>
-
-        <option
-          *ngFor="let speciality of specializations | async"
-          [value]="speciality"
-        >
-          {{ speciality }}
-        </option>
-      </select>
-    </div>
-
-    <!-- Date -->
-    <div class="form-group">
-      <label for="date">
-        Appointment Date :
-        <b class="text-danger">*</b>
-      </label>
-
-      <input
-        type="date"
-        id="date"
-        class="form-control"
-        name="date"
-        [(ngModel)]="appointment.date"
-        required
-        #date="ngModel"
-        [class.is-invalid]="date.invalid && date.touched"
-      />
-
-      <small class="text-danger" [class.d-none]="date.valid || date.untouched">
-        required field
-      </small>
-    </div>
-
-    <!-- Slot -->
-    <div class="form-group">
-      <label for="slot">
-        Appointment Slot :
-        <b class="text-danger">*</b>
-      </label>
-
-      <select
-        id="slot"
-        class="form-control"
-        name="slot"
-        [(ngModel)]="appointment.slot"
-        #slot="ngModel"
-      >
-        <option value="AM slot">AM slot</option>
-        <option value="Noon slot">Noon slot</option>
-        <option value="PM slot">PM slot</option>
-      </select>
-    </div>
-
-    <!-- Age -->
-    <div class="form-group">
-      <label for="age">
-        Patient Age :
-        <b class="text-danger">*</b>
-      </label>
-
-      <input
-        type="text"
-        id="age"
-        class="form-control"
-        name="age"
-        [(ngModel)]="appointment.age"
-        required
-        #age="ngModel"
-        [class.is-invalid]="age.invalid && age.touched"
-      />
-
-      <small class="text-danger" [class.d-none]="age.valid || age.untouched">
-        required field
-      </small>
-    </div>
-
-    <!-- Gender -->
-    <div class="form-group">
-      <label for="gender">
-        Patient Gender :
-        <b class="text-danger">*</b>
-      </label>
-
-      <select
-        id="gender"
-        class="form-control"
-        name="gender"
-        [(ngModel)]="appointment.gender"
-        #gender="ngModel"
-      >
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-        <option value="Others">Others</option>
-      </select>
-    </div>
-
-    <!-- Problem -->
-    <div class="form-group">
-      <label for="problem">
-        Patient's Problem :
-        <b class="text-danger">*</b>
-      </label>
-
-      <input
-        type="text"
-        id="problem"
-        class="form-control"
-        name="problem"
-        [(ngModel)]="appointment.problem"
-        required
-        #problem="ngModel"
-        [class.is-invalid]="problem.invalid && problem.touched"
-      />
-
-      <small
-        class="text-danger"
-        [class.d-none]="problem.valid || problem.untouched"
-      >
-        required field
-      </small>
-    </div>
-
-    <!-- Submit -->
-    <button
-      style="margin-top: 15px"
-      [disabled]="bookappointmentform.form.invalid"
-      type="submit"
-      class="btn registerbtn"
-    >
-      <i class="fa fa-plus"></i>
-      Book Your Appointment
-    </button>
-  </form>
+  </div>
 </div>
-
-<br /><br />
 
 <app-footer></app-footer>
