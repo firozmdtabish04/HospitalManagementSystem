@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Appointment } from 'src/app/models/appointment';
 import { Doctor } from 'src/app/models/doctor';
 import { DoctorService } from 'src/app/services/doctor.service';
-
+import * as $ from 'jquery';
 @Component({
   selector: 'app-approvalstatus',
   templateUrl: './approvalstatus.component.html',

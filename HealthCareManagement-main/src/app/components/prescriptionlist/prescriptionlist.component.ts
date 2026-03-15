@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Prescription } from 'src/app/models/prescription';
 import { UserService } from 'src/app/services/user.service';
-
+import * as $ from 'jquery';
 @Component({
   selector: 'app-prescriptionlist',
   templateUrl: './prescriptionlist.component.html',

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
-
+import * as $ from 'jquery';
 @Component({
   selector: 'app-doctordashboard',
   templateUrl: './doctordashboard.component.html',
