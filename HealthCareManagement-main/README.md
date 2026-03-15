@@ -47,6 +47,7 @@ This mode makes you as a user and you can perform various activities like...
 
 **[Additional Feature: The user can even print their respective prescriptions]**
 
+
 # About Project Development 🥅
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.3.
