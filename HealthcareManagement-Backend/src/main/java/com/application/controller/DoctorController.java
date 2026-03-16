@@ -111,9 +111,9 @@ public class DoctorController {
 
 	@PostMapping("/addBookingSlots")
 	@CrossOrigin(origins = "http://localhost:4200")
-	public String addNewSlot(@RequestBody Slots slots) throws Exception {
-		appointmentBookingService.saveSlots(slots);
-		return "modified successfully !!!";
+	public ResponseEntity<Slots> addNewSlot(@RequestBody Slots slots) throws Exception {
+		Slots savedSlot = appointmentBookingService.saveSlots(slots);
+		return new ResponseEntity<Slots>(savedSlot, HttpStatus.OK);
 	}
 
 	@GetMapping("/doctorlistbyemail/{email}")
