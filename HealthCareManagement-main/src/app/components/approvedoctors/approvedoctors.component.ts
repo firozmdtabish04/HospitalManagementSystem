@@ -22,17 +22,14 @@ export class ApprovedoctorsComponent implements OnInit {
   constructor(private _service: DoctorService) { }
 
   ngOnInit(): void {
-
     this.loggedUser = sessionStorage.getItem('loggedUser') || '';
     this.currRole = sessionStorage.getItem('ROLE') || '';
-
     this.loadDoctors();
-
   }
 
   loadDoctors(): void {
-
     this.loading = true;
+    this.error = '';
 
     this.doctors = this._service.getDoctorList();
 
@@ -43,50 +40,34 @@ export class ApprovedoctorsComponent implements OnInit {
         this.loading = false;
       }
     });
-
   }
 
-  // Accept Doctor
   acceptRequest(email: string): void {
-
     if (!email) return;
 
     this._service.acceptRequestForDoctorApproval(email).subscribe({
-
       next: () => {
         alert('Doctor Approved Successfully');
         this.loadDoctors();
       },
-
       error: () => alert('Approval Failed')
-
     });
-
   }
 
-  // Reject Doctor
   rejectRequest(email: string): void {
-
     if (!email) return;
 
     this._service.rejectRequestForDoctorApproval(email).subscribe({
-
       next: () => {
         alert('Doctor Rejected Successfully');
         this.loadDoctors();
       },
-
       error: () => alert('Rejection Failed')
-
     });
-
   }
 
-  // Search Filter
   filterDoctor(doctor: Doctor): boolean {
-
     if (!doctor) return false;
-
     if (!this.searchText) return true;
 
     const search = this.searchText.toLowerCase();
@@ -96,47 +77,41 @@ export class ApprovedoctorsComponent implements OnInit {
       doctor.email?.toLowerCase().includes(search) ||
       doctor.specialization?.toLowerCase().includes(search)
     );
-
   }
 
-  // Status Label
   getStatusLabel(status?: string): string {
-
     switch (status)
     {
-
       case 'accept':
         return 'Approved';
-
       case 'reject':
         return 'Rejected';
-
       case 'false':
       default:
         return 'Pending';
-
     }
-
   }
 
-  // Status Class
   getStatusClass(status?: string): string {
-
     switch (status)
     {
-
       case 'accept':
         return 'accepted';
-
       case 'reject':
         return 'rejected';
-
       case 'false':
       default:
         return 'pending';
-
     }
-
   }
 
+  getDoctorImage(doctor: Doctor): string {
+    return doctor.gender && doctor.gender.toLowerCase().trim() === 'female'
+      ? 'assets/img/femaledoctor.png'
+      : 'assets/img/maledoctor.png';
+  }
+
+  trackByDoctor(index: number, doctor: Doctor): string {
+    return doctor.email || index.toString();
+  }
 }

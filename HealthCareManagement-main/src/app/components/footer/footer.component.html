@@ -1,44 +1,156 @@
-<footer id="footer" class="bg-light text-center">
-  <div
-    class="text-center p-3"
-    style="background-color: #08072e; font-weight: bolder; color: white"
-  >
-    © 2026 Copyright:
-    <b style="color: white; font-weight: bolder" class="text-light"
-      >Tabish Firoz</b
-    >
-    <br /><br />
-    <section class="mb-4">
-      <a
-        class="btn btn-primary btn-floating m-1"
-        style="background-color: #3b5998; border: none"
-        role="button"
-        ><i class="fa fa-facebook-f"></i
-      ></a>
-      <a
-        class="btn btn-primary btn-floating m-1"
-        style="background-color: #55acee; border: none"
-        role="button"
-        ><i class="fa fa-twitter"></i
-      ></a>
-      <a
-        class="btn btn-primary btn-floating m-1"
-        style="background-color: #dd4b39; border: none"
-        role="button"
-        ><i class="fa fa-google"></i
-      ></a>
-      <a
-        class="btn btn-primary btn-floating m-1"
-        style="background-color: #0082ca; border: none"
-        role="button"
-        ><i class="fa fa-linkedin"></i
-      ></a>
-      <a
-        class="btn btn-primary btn-floating m-1"
-        style="background-color: #333333; border: none"
-        role="button"
-        ><i class="fa fa-github"></i
-      ></a>
-    </section>
+<footer class="enterprise-footer">
+  <div class="footer-top">
+    <div class="container-fluid">
+      <div class="footer-grid">
+        <!-- Brand Section -->
+        <div class="footer-card brand-card">
+          <div class="footer-brand">
+            <div class="footer-brand-icon">
+              <i class="fa fa-heartbeat" aria-hidden="true"></i>
+            </div>
+            <div>
+              <h2>{{ hospitalName }}</h2>
+              <p>{{ hospitalTagline }}</p>
+            </div>
+          </div>
+
+          <p class="brand-description">
+            A modern healthcare platform delivering secure patient services,
+            doctor workflows, emergency response support, and enterprise-grade
+            hospital management solutions.
+          </p>
+
+          <div class="footer-contact-list">
+            <button type="button" class="contact-chip" (click)="makeCall()">
+              <i class="fa fa-phone"></i>
+              <span>{{ emergencyPhoneDisplay }}</span>
+            </button>
+
+            <button type="button" class="contact-chip" (click)="sendMail()">
+              <i class="fa fa-envelope"></i>
+              <span>{{ supportEmail }}</span>
+            </button>
+
+            <div class="contact-chip static-chip">
+              <i class="fa fa-map-marker"></i>
+              <span>{{ address }}</span>
+            </div>
+          </div>
+
+          <div class="social-links">
+            <a
+              *ngFor="let social of socialLinks; trackBy: trackByLabel"
+              [href]="social.url"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="social-btn"
+              [attr.aria-label]="social.label"
+              [title]="social.label"
+            >
+              <i [class]="social.icon"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="footer-card">
+          <h3 class="footer-title">Quick Links</h3>
+          <ul class="footer-links">
+            <li *ngFor="let link of quickLinks; trackBy: trackByLabel">
+              <a [routerLink]="link.route">
+                <i class="fa fa-angle-right"></i>
+                <span>{{ link.label }}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Services -->
+        <div class="footer-card">
+          <h3 class="footer-title">Core Services</h3>
+          <ul class="footer-links">
+            <li *ngFor="let service of serviceLinks; trackBy: trackByLabel">
+              <a [routerLink]="service.route">
+                <i class="fa fa-angle-right"></i>
+                <span>{{ service.label }}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Support / Legal -->
+        <div class="footer-card">
+          <h3 class="footer-title">Support & Legal</h3>
+          <ul class="footer-links">
+            <li *ngFor="let link of legalLinks; trackBy: trackByLabel">
+              <a [routerLink]="link.route">
+                <i class="fa fa-angle-right"></i>
+                <span>{{ link.label }}</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="support-panel">
+            <h4>24/7 Emergency Desk</h4>
+            <p>
+              Get instant support through call or WhatsApp for emergency care
+              and urgent communication.
+            </p>
+
+            <div class="support-actions">
+              <button type="button" class="support-btn primary-btn" (click)="openWhatsApp()">
+                <i class="fa fa-whatsapp"></i>
+                <span>WhatsApp Support</span>
+              </button>
+
+              <button type="button" class="support-btn secondary-btn" (click)="makeCall()">
+                <i class="fa fa-phone"></i>
+                <span>Call Now</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Map Section -->
+      <div class="map-section">
+        <div class="map-header">
+          <div>
+            <h3>Hospital Location</h3>
+            <p>Find us easily with the integrated location map.</p>
+          </div>
+
+          <div class="map-badge">
+            <i class="fa fa-map-marker"></i>
+            <span>{{ address }}</span>
+          </div>
+        </div>
+
+        <div class="map-wrapper">
+          <iframe
+            [src]="googleMapUrl"
+            width="100%"
+            height="320"
+            style="border:0;"
+            loading="lazy"
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Hospital Location Map"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container-fluid footer-bottom-content">
+      <div class="copyright-text">
+        © {{ currentYear }} {{ hospitalName }}. All Rights Reserved.
+      </div>
+
+      <div class="footer-owner">
+        Designed & Managed by <span>Tabish Firoz</span>
+      </div>
+    </div>
   </div>
 </footer>

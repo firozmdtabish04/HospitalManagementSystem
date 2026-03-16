@@ -1,124 +1,276 @@
 <app-header></app-header>
-<div class="menu">
-  <ul>
-    <li>
-      <div class="card" style="width: 200px; background-color: #23ad9b">
-        <div id="userimg" style="width: 150px">
-          <img
-            [src]="'assets/img/admin.png'"
-            alt="Card image"
-            style="width: 100%"
-          />
+
+<div class="dashboard-wrapper">
+  <aside class="sidebar" [class.sidebar-open]="isMenuOpen">
+    <div class="sidebar-top">
+      <div class="brand-box">
+        <div class="brand-icon">
+          <i class="fa fa-hospital-o" aria-hidden="true"></i>
         </div>
-        <div style="margin-left: auto; margin-right: auto" class="card-body">
-          <h4 style="font-weight: bolder" class="card-title">
-            <b>{{ name }}</b>
-          </h4>
+        <div>
+          <h2>HealthCare</h2>
+          <p>Enterprise Admin Panel</p>
         </div>
       </div>
-    </li>
-    <li>
+
+      <button class="close-sidebar-btn" (click)="closeMenuOnMobile()">
+        <i class="fa fa-times"></i>
+      </button>
+    </div>
+
+    <div class="profile-card">
+      <div class="profile-image-box">
+        <img src="assets/img/admin.png" alt="Admin" class="profile-image" />
+      </div>
+
+      <div class="profile-info">
+        <p>{{ currRole }}</p>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
       <a
-        ><i class="fa fa-plus" aria-hidden="true"></i
-        ><label [routerLink]="['/addDoctor']" style="cursor: pointer"
-          >&nbsp; Add Doctor</label
-        ></a
+        *ngFor="let item of menuItems; trackBy: trackByMenu"
+        [routerLink]="item.route"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: item.exact || false }"
+        class="nav-item"
+        (click)="closeMenuOnMobile()"
       >
-    </li>
-    <li>
+        <i [class]="item.icon" aria-hidden="true"></i>
+        <span>{{ item.label }}</span>
+      </a>
+    </nav>
+  </aside>
+
+  <div
+    class="mobile-sidebar-backdrop"
+    [class.show]="isMenuOpen"
+    (click)="closeMenuOnMobile()"
+  ></div>
+
+  <main class="dashboard-content">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle" (click)="toggleMenu()">
+          <i class="fa fa-bars" aria-hidden="true"></i>
+        </button>
+
+        <div class="topbar-text">
+          <h1>Admin Dashboard</h1>
+          <p>
+            Monitor users, doctors, patients, appointments, prescriptions, and
+            platform activity from a centralized enterprise workspace.
+          </p>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <div class="admin-badge">
+          <i class="fa fa-shield"></i>
+          <span>{{ currRole }}</span>
+        </div>
+      </div>
+    </div>
+
+    <section class="hero-panel">
+      <div class="hero-content">
+        <div class="hero-text">
+          <span class="hero-label">Enterprise Admin Workspace</span>
+          <h2>Welcome back, {{ loggedUser }}</h2>
+          <p>
+            Manage doctor onboarding, users, patients, appointment workflows,
+            and platform operations through a scalable administrative dashboard.
+          </p>
+        </div>
+
+        <div class="hero-actions">
+          <a routerLink="/addDoctor" class="hero-btn primary-btn">
+            <i class="fa fa-plus-circle"></i>
+            <span>Add Doctor</span>
+          </a>
+
+          <a routerLink="/approvedoctors" class="hero-btn secondary-btn">
+            <i class="fa fa-check-circle"></i>
+            <span>Approve Doctors</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="mini-stats-grid">
+        <div
+          class="mini-stat-card"
+          *ngFor="let stat of miniStats; trackBy: trackByMiniStat"
+          [ngClass]="stat.statClass"
+        >
+          <div class="mini-stat-icon">
+            <i [class]="stat.icon"></i>
+          </div>
+          <div class="mini-stat-content">
+            <span>{{ stat.label }}</span>
+            <strong>{{ stat.value$ | async }}</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="dashboard-grid">
       <a
-        ><i class="fa fa-check" aria-hidden="true"></i
-        ><label [routerLink]="['/approvedoctors']" style="cursor: pointer"
-          >&nbsp; Approve Doctors</label
-        ></a
+        *ngFor="let card of dashboardCards; trackBy: trackByCard"
+        [routerLink]="card.route"
+        class="dashboard-card"
+        [ngClass]="card.cardClass"
       >
-    </li>
-    <li>
-      <a
-        ><i class="fa fa-user-md" aria-hidden="true"></i
-        ><label [routerLink]="['/doctorlist']" style="cursor: pointer"
-          >&nbsp; Doctor List</label
-        ></a
-      >
-    </li>
-    <li>
-      <a
-        ><i class="fa fa-user" aria-hidden="true"></i
-        ><label [routerLink]="['/userlist']" style="cursor: pointer"
-          >&nbsp; Users</label
-        ></a
-      >
-    </li>
-    <li>
-      <a
-        ><i class="fa fa-user-o" aria-hidden="true"></i
-        ><label [routerLink]="['/patientlist']" style="cursor: pointer"
-          >&nbsp; Patients</label
-        ></a
-      >
-    </li>
-  </ul>
+        <div class="card-top-strip">
+          <span>{{ card.trend }}</span>
+          <i class="fa fa-arrow-up"></i>
+        </div>
+
+        <div class="card-header">
+          <div class="card-content">
+            <p class="card-title">{{ card.title }}</p>
+            <h3 class="card-value">{{ card.count$ | async }}</h3>
+            <p class="card-subtext">{{ card.suffix }}</p>
+            <p class="card-description">{{ card.description }}</p>
+          </div>
+
+          <div class="card-icon">
+            <i [class]="card.icon" aria-hidden="true"></i>
+          </div>
+        </div>
+      </a>
+    </section>
+
+    <section class="content-grid">
+      <div class="panel-card">
+        <div class="section-header">
+          <div>
+            <h3>Quick Actions</h3>
+            <p>Frequently used administrative operations</p>
+          </div>
+        </div>
+
+        <div class="quick-actions-grid">
+          <a
+            *ngFor="let action of quickActions; trackBy: trackByAction"
+            [routerLink]="action.route"
+            class="quick-action-btn"
+            [ngClass]="action.buttonClass"
+          >
+            <i [class]="action.icon" aria-hidden="true"></i>
+            <span>{{ action.label }}</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <div class="section-header">
+          <div>
+            <h3>System Status</h3>
+            <p>Operational indicators for platform administration</p>
+          </div>
+        </div>
+
+        <div class="status-list">
+          <div
+            class="status-item"
+            *ngFor="let status of systemStatus; trackBy: trackByStatus"
+          >
+            <div class="status-label">{{ status.label }}</div>
+            <div class="status-pill" [ngClass]="status.statusClass">
+              {{ status.value }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-grid second-grid">
+      <div class="panel-card">
+        <div class="section-header">
+          <div>
+            <h3>Platform Shortcuts</h3>
+            <p>Fast navigation to major administrative modules</p>
+          </div>
+        </div>
+
+        <div class="shortcuts-grid">
+          <a
+            *ngFor="let item of shortcuts; trackBy: trackByShortcut"
+            [routerLink]="item.route"
+            class="shortcut-card"
+          >
+            <div class="shortcut-icon">
+              <i [class]="item.icon"></i>
+            </div>
+            <div class="shortcut-content">
+              <h4>{{ item.label }}</h4>
+              <p>{{ item.subtitle }}</p>
+            </div>
+            <i class="fa fa-angle-right shortcut-arrow"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <div class="section-header">
+          <div>
+            <h3>Operational Highlights</h3>
+            <p>Key combined business indicators</p>
+          </div>
+        </div>
+
+        <div class="highlight-metrics">
+          <div class="highlight-item aqua">
+            <span>Platform Total</span>
+            <strong>{{ totalPlatformCount$ | async }}</strong>
+          </div>
+
+          <div class="highlight-item blue">
+            <span>Approval Queue</span>
+            <strong>{{ pendingApprovalsCount$ | async }}</strong>
+          </div>
+
+          <div class="highlight-item orange">
+            <span>Ops Load</span>
+            <strong>{{ operationalLoadCount$ | async }}</strong>
+          </div>
+
+          <div class="highlight-item purple">
+            <span>Resource Coverage</span>
+            <strong>{{ resourceCoverageCount$ | async }}</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel-card full-width-panel">
+      <div class="section-header">
+        <div>
+          <h3>Recent Administrative Insights</h3>
+          <p>Operational highlights and module readiness overview</p>
+        </div>
+      </div>
+
+      <div class="activity-list">
+        <div
+          class="activity-item"
+          *ngFor="let activity of recentActivities; trackBy: trackByActivity"
+        >
+          <div class="activity-icon">
+            <i [class]="activity.icon" aria-hidden="true"></i>
+          </div>
+
+          <div class="activity-content">
+            <h4>{{ activity.title }}</h4>
+            <p>{{ activity.subtitle }}</p>
+          </div>
+
+          <div class="activity-badge" [ngClass]="activity.badgeClass">
+            {{ activity.badge }}
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 </div>
-
-<div class="container">
-  <div class="row">
-    <div
-      style="
-        color: maroon;
-        font-weight: bolder;
-        font-family: aladin;
-        letter-spacing: 1px;
-        font-size: 40px;
-        margin: 0% 0% 1% 9%;
-      "
-    >
-      <b>Welcome to HealthCare Management System Admin Dashboard</b>
-    </div>
-
-    <div class="dashboard-card">
-      <div class="circle"><i id="icons" class="fa fa-user-md"></i></div>
-      <div class="text">Total Users</div>
-      <div class="sub-text" *ngFor="let user of users | async">
-        {{ user }} users
-      </div>
-    </div>
-    <div class="dashboard-card" style="background-color: rgb(26, 109, 74)">
-      <div class="circle"><i id="icons" class="fa fa-user"></i></div>
-      <div class="text">Total Doctors</div>
-      <div class="sub-text" *ngFor="let doctor of doctors | async">
-        {{ doctor }} doctors
-      </div>
-    </div>
-    <div class="dashboard-card" style="background-color: rgb(88, 45, 25)">
-      <div class="circle"><i id="icons" class="fa fa-calendar"></i></div>
-      <div class="text">Total Slots</div>
-      <div class="sub-text" *ngFor="let slot of slots | async">
-        {{ slot }} slots available
-      </div>
-    </div>
-    <div class="dashboard-card" style="background-color: rgb(87, 92, 27)">
-      <div class="circle"><i id="icons" class="fa fa-user-o"></i></div>
-      <div class="text">Total Patients</div>
-      <div class="sub-text" *ngFor="let patient of patients | async">
-        {{ patient }} patients
-      </div>
-    </div>
-    <div class="dashboard-card" style="background-color: rgb(133, 134, 23)">
-      <div class="circle"><i id="icons" class="fa fa-sticky-note"></i></div>
-      <div class="text">Prescriptions</div>
-      <div class="sub-text" *ngFor="let prescription of prescriptions | async">
-        {{ prescription }} medications
-      </div>
-    </div>
-    <div class="dashboard-card" style="background-color: rgb(20, 21, 99)">
-      <div class="circle"><i id="icons" class="fa fa-check"></i></div>
-      <div class="text">Appointments</div>
-      <div class="sub-text" *ngFor="let appointment of appointments | async">
-        {{ appointment }} appointments
-      </div>
-    </div>
-  </div>
-</div>
-
-<br /><br /><br /><br /><br /><br />
-<app-footer></app-footer>

@@ -1,58 +1,128 @@
-
 <nav class="navbar navbar-expand-lg navbar-custom">
-
   <div class="container-fluid">
-    <!-- Logo / Title -->
-    <a class="navbar-brand" (click)="navigateHome()">
-      <i class="fa fa-hospital-o"></i>
-      {{ title }}
+    <a class="navbar-brand" [routerLink]="homeRoute">
+      <div class="brand-mark">
+        <i class="fa fa-hospital-o brand-icon" aria-hidden="true"></i>
+      </div>
+
+      <div class="brand-text">
+        <span class="brand-title">{{ title }}</span>
+        <small class="brand-subtitle"
+          >Smart Care • Secure Access • 24/7 Support</small
+        >
+      </div>
     </a>
 
-    <!-- Mobile Toggle -->
     <button
       class="navbar-toggler"
       type="button"
       data-bs-toggle="collapse"
       data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Menu -->
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto align-items-center">
-        <!-- Home -->
+      <ul
+        class="navbar-nav ms-auto align-items-lg-center align-items-start nav-menu"
+      >
         <li class="nav-item">
-          <a class="nav-link" (click)="navigateHome()">
-            <i class="fa fa-home"></i> Home
+          <a
+            class="nav-link"
+            [routerLink]="homeRoute"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <i class="fa fa-home"></i>
+            <span>Home</span>
           </a>
         </li>
 
-        <!-- About -->
         <li class="nav-item">
-          <a class="nav-link" routerLink="/about">
-            <i class="fa fa-info-circle"></i> About
+          <a class="nav-link" routerLink="/about" routerLinkActive="active">
+            <i class="fa fa-info-circle"></i>
+            <span>About</span>
           </a>
         </li>
 
-        <!-- Services -->
         <li class="nav-item">
-          <a class="nav-link" routerLink="/services">
-            <i class="fa fa-stethoscope"></i> Services
+          <a class="nav-link" routerLink="/services" routerLinkActive="active">
+            <i class="fa fa-stethoscope"></i>
+            <span>Services</span>
           </a>
         </li>
 
-        <!-- Logged User -->
-        <li class="nav-item user-info" *ngIf="loggedUser">
-          <i class="fa fa-user-circle"></i>
-          {{ loggedUser }}
-        </li>
-
-        <!-- Logout -->
-        <li class="nav-item">
-          <button class="logout-btn" (click)="logout()">
-            <i class="fa fa-sign-out"></i> Logout
+        <li class="nav-item emergency-nav-item">
+          <button
+            type="button"
+            class="emergency-btn"
+            (click)="openEmergencyWhatsApp()"
+            title="Open WhatsApp emergency support"
+          >
+            <i class="fa fa-whatsapp"></i>
+            <span>Emergency</span>
           </button>
+        </li>
+
+        <li class="nav-item user-dropdown-wrapper" *ngIf="displayUserName">
+          <div class="user-dropdown" [class.open]="isDropdownOpen">
+            <button
+              type="button"
+              class="user-dropdown-toggle"
+              (click)="toggleDropdown()"
+            >
+              <div class="user-avatar">
+                {{ getInitials(displayUserName) }}
+              </div>
+
+              <div class="user-meta">
+                <span class="user-name" [title]="displayUserName">{{
+                  displayUserName
+                }}</span>
+                <small class="user-role">{{ currRole | titlecase }}</small>
+              </div>
+
+              <i
+                class="fa"
+                [ngClass]="isDropdownOpen ? 'fa-chevron-up' : 'fa-chevron-down'"
+                aria-hidden="true"
+              ></i>
+            </button>
+
+            <div class="user-dropdown-menu" *ngIf="isDropdownOpen">
+              <button
+                type="button"
+                class="dropdown-item"
+                (click)="goToDashboard()"
+              >
+                <i class="fa fa-tachometer"></i>
+                <span>Dashboard</span>
+              </button>
+
+              <button
+                type="button"
+                class="dropdown-item"
+                routerLink="/edituserprofile"
+              >
+                <i class="fa fa-user-circle"></i>
+                <span>Profile</span>
+              </button>
+
+              <div class="dropdown-divider"></div>
+
+              <button
+                type="button"
+                class="dropdown-item logout-item"
+                (click)="logout()"
+              >
+                <i class="fa fa-sign-out"></i>
+                <span>Logout</span>
+              </button>
+            </div>
+          </div>
         </li>
       </ul>
     </div>
