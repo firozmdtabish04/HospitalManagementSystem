@@ -2,88 +2,56 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
+    selector: 'app-header',
 
-  selector: 'app-header',
+    templateUrl: './header.component.html',
 
-  templateUrl: './header.component.html',
-
-  styleUrls: ['./header.component.css']
-
+    styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
+    loggedUser = '';
 
-  loggedUser = '';
+    currRole = '';
 
-  currRole = '';
+    title = 'Hospital Management System';
 
-  title = 'Hospital Management System';
+    constructor(private router: Router) {}
 
-  constructor(private router: Router) { }
+    toggleSidebar(): void {
+        const navMenu = document.getElementById('navbarNav');
 
-  ngOnInit(): void {
-
-    this.loggedUser =
-      sessionStorage.getItem('loggedUser') || '';
-
-    this.currRole =
-      sessionStorage.getItem('ROLE') || '';
-
-    if (this.loggedUser === 'admin@gmail.com')
-    {
-
-      this.title = 'Admin Dashboard';
-
-    }
-    else if (this.currRole === 'doctor')
-    {
-
-      this.title = 'Doctor Dashboard';
-
-    }
-    else if (this.currRole === 'user')
-    {
-
-      this.title = 'User Dashboard';
-
+        navMenu?.classList.toggle('show');
     }
 
-  }
+    ngOnInit(): void {
+        this.loggedUser = sessionStorage.getItem('loggedUser') || '';
 
-  logout(): void {
+        this.currRole = sessionStorage.getItem('ROLE') || '';
 
-    sessionStorage.clear();
-
-    this.router.navigate(['/login']);
-
-  }
-
-  navigateHome(): void {
-
-    if (this.loggedUser === 'admin@gmail.com')
-    {
-
-      this.router.navigate(['/admindashboard']);
-
-    }
-    else if (this.currRole === 'doctor')
-    {
-
-      this.router.navigate(['/doctordashboard']);
-
-    }
-    else if (this.currRole === 'user')
-    {
-
-      this.router.navigate(['/userdashboard']);
-
-    }
-    else
-    {
-
-      this.router.navigate(['/']);
-
+        if (this.loggedUser === 'admin@gmail.com') {
+            this.title = 'Admin Dashboard';
+        } else if (this.currRole === 'doctor') {
+            this.title = 'Doctor Dashboard';
+        } else if (this.currRole === 'user') {
+            this.title = 'User Dashboard';
+        }
     }
 
-  }
+    logout(): void {
+        sessionStorage.clear();
 
+        this.router.navigate(['/login']);
+    }
+
+    navigateHome(): void {
+        if (this.loggedUser === 'admin@gmail.com') {
+            this.router.navigate(['/admindashboard']);
+        } else if (this.currRole === 'doctor') {
+            this.router.navigate(['/doctordashboard']);
+        } else if (this.currRole === 'user') {
+            this.router.navigate(['/userdashboard']);
+        } else {
+            this.router.navigate(['/']);
+        }
+    }
 }
