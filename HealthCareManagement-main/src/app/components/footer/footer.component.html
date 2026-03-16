@@ -26,11 +26,6 @@
               <span>{{ emergencyPhoneDisplay }}</span>
             </button>
 
-            <button type="button" class="contact-chip" (click)="sendMail()">
-              <i class="fa fa-envelope"></i>
-              <span>{{ supportEmail }}</span>
-            </button>
-
             <div class="contact-chip static-chip">
               <i class="fa fa-map-marker"></i>
               <span>{{ address }}</span>
@@ -98,12 +93,20 @@
             </p>
 
             <div class="support-actions">
-              <button type="button" class="support-btn primary-btn" (click)="openWhatsApp()">
+              <button
+                type="button"
+                class="support-btn primary-btn"
+                (click)="openWhatsApp()"
+              >
                 <i class="fa fa-whatsapp"></i>
                 <span>WhatsApp Support</span>
               </button>
 
-              <button type="button" class="support-btn secondary-btn" (click)="makeCall()">
+              <button
+                type="button"
+                class="support-btn secondary-btn"
+                (click)="makeCall()"
+              >
                 <i class="fa fa-phone"></i>
                 <span>Call Now</span>
               </button>
@@ -131,7 +134,7 @@
             [src]="googleMapUrl"
             width="100%"
             height="320"
-            style="border:0;"
+            style="border: 0"
             loading="lazy"
             allowfullscreen
             referrerpolicy="no-referrer-when-downgrade"

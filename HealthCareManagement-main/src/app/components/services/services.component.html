@@ -25,12 +25,12 @@
 
       <div class="hero-right">
         <div class="stats-grid">
-          <div class="stat-card" *ngFor="let stat of hospitalStats">
+          <div class="stat-card" *ngFor="let stat of hospitalStats; trackBy: trackByHospitalStat">
             <div class="stat-icon">
               <i [class]="stat.icon"></i>
             </div>
             <div>
-              <h3>{{ stat.value }}</h3>
+              <h3>{{ stat.value$ | async }}</h3>
               <p>{{ stat.label }}</p>
             </div>
           </div>

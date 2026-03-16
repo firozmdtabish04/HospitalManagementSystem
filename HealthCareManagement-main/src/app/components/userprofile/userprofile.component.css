@@ -225,7 +225,10 @@
 }
 
 .profile-actions {
-  text-align: center;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .success-banner {
@@ -548,7 +551,8 @@ select.form-control {
     font-size: 22px;
   }
 
-  .form-actions {
+  .form-actions,
+  .profile-actions {
     flex-direction: column;
   }
 

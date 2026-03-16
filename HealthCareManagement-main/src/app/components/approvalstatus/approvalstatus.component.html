@@ -27,29 +27,13 @@
             {{ lastUpdated | date:'dd MMM yyyy, hh:mm a' }}
           </span>
         </div>
-      </div>
-
-      <div class="hero-side">
-        <div class="hero-badge">
-          <i class="fa fa-shield"></i>
-          <span>Secure Status Monitoring</span>
-        </div>
-
         <div class="version-box">
           <span>Version</span>
           <strong>{{ pageVersion }}</strong>
         </div>
       </div>
     </section>
-
-    <!-- INFO / ERROR -->
-    <div class="message-row" *ngIf="infoMessage || errorMessage">
-      <div class="info-banner" *ngIf="infoMessage">
-        <i class="fa fa-info-circle"></i>
-        <span>{{ infoMessage }}</span>
-      </div>
-
-      <div class="error-banner" *ngIf="errorMessage">
+gIf="errorMessage">
         <i class="fa fa-exclamation-triangle"></i>
         <span>{{ errorMessage }}</span>
       </div>

@@ -1,12 +1,17 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   OnDestroy,
+  OnInit,
   QueryList,
   ViewChildren
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { catchError, map, shareReplay, startWith } from 'rxjs/operators';
+import { UserService } from 'src/app/services/user.service';
 
 interface ServiceItem {
   title: string;
@@ -34,15 +39,25 @@ interface FaqItem {
   isOpen?: boolean;
 }
 
+interface HospitalStat {
+  label: string;
+  value$: Observable<number | string>;
+  icon: string;
+}
+
 @Component({
   selector: 'app-services',
   templateUrl: './services.component.html',
-  styleUrls: ['./services.component.css']
+  styleUrls: ['./services.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ServicesComponent implements AfterViewInit, OnDestroy {
+export class ServicesComponent implements AfterViewInit, OnDestroy, OnInit {
   @ViewChildren('serviceCard') serviceCards!: QueryList<ElementRef>;
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private userService: UserService
+  ) { }
 
   observer?: IntersectionObserver;
 
@@ -57,12 +72,12 @@ export class ServicesComponent implements AfterViewInit, OnDestroy {
   emergencyCallNumber = '+918102946894';
   emergencySmsNumber = '8102946894';
 
-  hospitalStats = [
-    { label: 'Departments', value: '22+', icon: 'fa fa-hospital-o' },
-    { label: 'Doctors', value: '120+', icon: 'fa fa-user-md' },
-    { label: 'Happy Patients', value: '15K+', icon: 'fa fa-users' },
-    { label: 'Emergency Support', value: '24/7', icon: 'fa fa-ambulance' }
-  ];
+  usersCount$!: Observable<number>;
+  doctorsCount$!: Observable<number>;
+  slotsCount$!: Observable<number>;
+  patientsCount$!: Observable<number>;
+
+  hospitalStats: HospitalStat[] = [];
 
   categories: string[] = [
     'All',
@@ -218,12 +233,19 @@ export class ServicesComponent implements AfterViewInit, OnDestroy {
     }
   ];
 
+  ngOnInit(): void {
+    this.initializeCounts();
+    this.initializeHospitalStats();
+  }
+
   get filteredServices(): ServiceItem[] {
     return this.services.filter((service) => {
+      const search = this.searchTerm.toLowerCase();
+
       const matchesSearch =
-        service.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        service.text.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        service.category.toLowerCase().includes(this.searchTerm.toLowerCase());
+        service.title.toLowerCase().includes(search) ||
+        service.text.toLowerCase().includes(search) ||
+        service.category.toLowerCase().includes(search);
 
       const matchesCategory =
         this.selectedCategory === 'All' || service.category === this.selectedCategory;
@@ -251,6 +273,73 @@ export class ServicesComponent implements AfterViewInit, OnDestroy {
     this.observeCards();
   }
 
+  private initializeCounts(): void {
+    this.usersCount$ = this.toCount(this.userService.getTotalUsers());
+    this.doctorsCount$ = this.toCount(this.userService.getTotalDoctors());
+    this.slotsCount$ = this.toCount(this.userService.getTotalSlots());
+    this.patientsCount$ = this.toCount(this.userService.getTotalPatients());
+  }
+
+  private initializeHospitalStats(): void {
+    this.hospitalStats = [
+      {
+        label: 'Departments',
+        value$: of('22+'),
+        icon: 'fa fa-hospital-o'
+      },
+      {
+        label: 'Doctors',
+        value$: this.doctorsCount$,
+        icon: 'fa fa-user-md'
+      },
+      {
+        label: 'Patients',
+        value$: this.patientsCount$,
+        icon: 'fa fa-users'
+      },
+      {
+        label: 'Available Slots',
+        value$: this.slotsCount$,
+        icon: 'fa fa-calendar-check-o'
+      }
+    ];
+  }
+
+  private toCount(source$: Observable<any>): Observable<number> {
+    return source$.pipe(
+      map((response: any) => {
+        if (typeof response === 'number')
+        {
+          return response;
+        }
+
+        if (Array.isArray(response))
+        {
+          if (response.length === 1 && typeof response[0] === 'number')
+          {
+            return response[0];
+          }
+          return response.length;
+        }
+
+        if (response && typeof response.count === 'number')
+        {
+          return response.count;
+        }
+
+        if (response && typeof response.total === 'number')
+        {
+          return response.total;
+        }
+
+        return Number(response) || 0;
+      }),
+      startWith(0),
+      catchError(() => of(0)),
+      shareReplay(1)
+    );
+  }
+
   setupObserver(): void {
     this.observer = new IntersectionObserver(
       (entries) => {
@@ -270,7 +359,6 @@ export class ServicesComponent implements AfterViewInit, OnDestroy {
 
     this.serviceCards.forEach((card) => {
       const el = card.nativeElement;
-      el.classList.add('visible');
       this.observer?.observe(el);
     });
   }
@@ -340,7 +428,6 @@ export class ServicesComponent implements AfterViewInit, OnDestroy {
       },
       () => {
         this.isFetchingLocation = false;
-
         const whatsappUrl = `https://wa.me/${this.emergencyPhoneNumber}?text=${encodeURIComponent(baseMessage)}`;
         window.open(whatsappUrl, '_blank');
       },
@@ -379,6 +466,10 @@ export class ServicesComponent implements AfterViewInit, OnDestroy {
 
   trackByCategory(index: number, category: string): string {
     return category;
+  }
+
+  trackByHospitalStat(index: number, stat: HospitalStat): string {
+    return stat.label;
   }
 
   ngOnDestroy(): void {

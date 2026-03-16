@@ -8,8 +8,9 @@
 <div class="profile-page">
   <div class="profile-shell" *ngIf="profileDetails | async as users">
     <div *ngFor="let profile of users" class="profile-grid">
-      <!-- LEFT PROFILE PANEL -->
-      <section class="profile-card-panel" id="profilecard">
+      
+      <!-- LEFT PANEL -->
+      <section class="profile-card-panel">
         <div class="profile-cover">
           <div class="cover-pattern"></div>
         </div>
@@ -17,19 +18,19 @@
         <div class="profile-card">
           <div class="profile-avatar-wrap">
             <img
-              *ngIf="profile.gender?.toLowerCase() === 'male'"
+              *ngIf="(user.gender || profile.gender)?.toLowerCase() === 'male'"
               src="assets/img/maleuser.png"
               alt="Male User"
               class="profile-avatar"
             />
             <img
-              *ngIf="profile.gender?.toLowerCase() === 'female'"
+              *ngIf="(user.gender || profile.gender)?.toLowerCase() === 'female'"
               src="assets/img/femaleuser.png"
               alt="Female User"
               class="profile-avatar"
             />
             <img
-              *ngIf="profile.gender?.toLowerCase() !== 'male' && profile.gender?.toLowerCase() !== 'female'"
+              *ngIf="(user.gender || profile.gender)?.toLowerCase() !== 'male' && (user.gender || profile.gender)?.toLowerCase() !== 'female'"
               src="assets/img/maleuser.png"
               alt="User"
               class="profile-avatar"
@@ -37,8 +38,8 @@
           </div>
 
           <div class="profile-main-info">
-            <h2>{{ profile.username }}</h2>
-            <p class="profile-email">{{ profile.email }}</p>
+            <h2>{{ user.username || profile.username }}</h2>
+            <p class="profile-email">{{ user.email || profile.email }}</p>
             <span class="role-badge">{{ currRole || 'User' }}</span>
           </div>
 
@@ -101,10 +102,15 @@
             </div>
           </div>
 
-          <div class="profile-actions">
-            <button class="primary-btn" (click)="editProfile()">
+          <div class="profile-actions" *ngIf="!isEditMode">
+            <button class="primary-btn" type="button" (click)="editProfile()">
               <i class="fa fa-edit"></i>
               Edit Profile
+            </button>
+
+            <button class="secondary-btn" type="button" (click)="backToDashboard()">
+              <i class="fa fa-arrow-left"></i>
+              Back to Dashboard
             </button>
           </div>
 
@@ -115,8 +121,8 @@
         </div>
       </section>
 
-      <!-- RIGHT FORM PANEL -->
-      <section class="profile-form-panel" id="profileform">
+      <!-- RIGHT PANEL -->
+      <section class="profile-form-panel" *ngIf="isEditMode">
         <div class="form-card">
           <div class="form-header">
             <div>
@@ -138,7 +144,7 @@
               <i class="fa fa-envelope"></i>
               <div>
                 <span>Account Email</span>
-                <strong>{{ profile.email }}</strong>
+                <strong>{{ user.email || profile.email }}</strong>
               </div>
             </div>
 
@@ -212,10 +218,7 @@
                     required
                     #username="ngModel"
                   />
-                </div>
-                <small class="error-msg" *ngIf="username.invalid && username.touched">
-                  Username is required
-                </small>
+               
               </div>
 
               <div class="form-group">
@@ -270,11 +273,15 @@
                     name="mobile"
                     [(ngModel)]="user.mobile"
                     required
+                    pattern="^[0-9]{10}$"
                     #mobile="ngModel"
                   />
                 </div>
-                <small class="error-msg" *ngIf="mobile.invalid && mobile.touched">
+                <small class="error-msg" *ngIf="mobile.errors?.required && mobile.touched">
                   Mobile number is required
+                </small>
+                <small class="error-msg" *ngIf="mobile.errors?.pattern && mobile.touched">
+                  Enter valid 10 digit mobile number
                 </small>
               </div>
 
@@ -286,13 +293,13 @@
                     placeholder="Enter your password"
                     type="password"
                     class="form-control"
-                    name="pwd"
+                    name="password"
                     [(ngModel)]="user.password"
                     required
-                    #pwd="ngModel"
+                    #password="ngModel"
                   />
                 </div>
-                <small class="error-msg" *ngIf="pwd.invalid && pwd.touched">
+                <small class="error-msg" *ngIf="password.invalid && password.touched">
                   Password is required
                 </small>
               </div>
@@ -311,7 +318,16 @@
               <button
                 type="button"
                 class="secondary-btn"
-                routerLink="/userdashboard"
+                (click)="cancelEdit()"
+              >
+                <i class="fa fa-times"></i>
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                class="secondary-btn"
+                (click)="backToDashboard()"
               >
                 <i class="fa fa-arrow-left"></i>
                 Back to Dashboard
@@ -320,6 +336,7 @@
           </form>
         </div>
       </section>
+
     </div>
   </div>
 </div>

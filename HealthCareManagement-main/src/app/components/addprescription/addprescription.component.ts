@@ -1,16 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { Appointment } from 'src/app/models/appointment';
-import { Prescription } from 'src/app/models/prescription';
-import { DoctorService } from 'src/app/services/doctor.service';
-import { UserService } from 'src/app/services/user.service';
 
-@Component({
-  selector: 'app-addprescription',
-  templateUrl: './addprescription.component.html',
-  styleUrls: ['./addprescription.component.css']
-})
 export class AddprescriptionComponent implements OnInit {
   currRole = '';
   loggedUser = '';
