@@ -172,7 +172,7 @@
               </thead>
 
               <tbody>
-                <tr *ngFor="let slotItem of slotList; trackBy: trackBySlot">
+                <tr *ngFor="let slotItem of slotList; let i = index; trackBy: trackBySlot">
                   <td>
                     <span class="date-cover">{{ slotItem.date }}</span>
                   </td>
@@ -367,7 +367,11 @@
           </div>
 
           <div class="form-actions">
-            <button type="submit" class="primary-btn" [disabled]="addslotform.invalid">
+            <button
+              type="submit"
+              class="primary-btn"
+              [disabled]="addslotform.invalid || (!slot.amslot && !slot.noonslot && !slot.pmslot)"
+            >
               <i class="fa fa-save"></i>
               Publish Slots
             </button>

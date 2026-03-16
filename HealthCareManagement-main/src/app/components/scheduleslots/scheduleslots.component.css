@@ -535,6 +535,13 @@ select:focus {
   transform: translateY(-1px);
 }
 
+.primary-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
 .empty-state {
   padding: 44px 20px;
   text-align: center;

@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./registrationsuccess.component.css']
 })
 export class RegistrationsuccessComponent implements OnInit, OnDestroy {
-  redirectSeconds: number = 5;
+  redirectSeconds: number = 3;
   private countdownInterval: any;
   private redirectTimeout: any;
 

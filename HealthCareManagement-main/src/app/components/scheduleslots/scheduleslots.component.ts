@@ -56,12 +56,19 @@ export class ScheduleslotsComponent implements OnInit {
     this.currRole = (sessionStorage.getItem('ROLE') || '').toLowerCase();
     this.minDate = this.getTodayDate();
 
+    this.resetFormData();
     this.loadSlots();
-    this.prefillDoctorData();
     this.infoMessage = 'Manage and publish your patient visiting slots from this workspace.';
   }
 
   loadSlots(): void {
+    if (!this.loggedUser)
+    {
+      this.errorMessage = 'Logged in user not found in session.';
+      this.infoMessage = '';
+      return;
+    }
+
     this.slots = this._service.getSlotDetails(this.loggedUser);
   }
 
@@ -77,7 +84,7 @@ export class ScheduleslotsComponent implements OnInit {
     this.successMessage = '';
     this.errorMessage = '';
     this.infoMessage = 'Enter slot details and publish availability.';
-    this.prefillDoctorData();
+    this.resetFormData();
   }
 
   backToPreview(): void {
@@ -85,17 +92,6 @@ export class ScheduleslotsComponent implements OnInit {
     this.successMessage = '';
     this.errorMessage = '';
     this.infoMessage = 'Viewing your published slot schedule.';
-  }
-
-  prefillDoctorData(): void {
-    this.slot.doctorname = this.slot.doctorname || '';
-    this.slot.email = this.loggedUser || this.slot.email || '';
-    this.slot.specialization = this.slot.specialization || '';
-    this.slot.amslot = this.slot.amslot || '';
-    this.slot.noonslot = this.slot.noonslot || '';
-    this.slot.pmslot = this.slot.pmslot || '';
-    this.slot.date = this.slot.date || '';
-    this.slot.patienttype = this.slot.patienttype || '';
   }
 
   addSlot(): void {
@@ -152,7 +148,18 @@ export class ScheduleslotsComponent implements OnInit {
   resetFormData(): void {
     const preservedEmail = this.loggedUser || '';
     this.slot = new Slots();
+
+    this.slot.doctorname = '';
     this.slot.email = preservedEmail;
+    this.slot.specialization = '';
+    this.slot.date = '';
+    this.slot.patienttype = '';
+    this.slot.amslot = '';
+    this.slot.noonslot = '';
+    this.slot.pmslot = '';
+    this.slot.amstatus = '';
+    this.slot.noonstatus = '';
+    this.slot.pmstatus = '';
   }
 
   clearForm(): void {
@@ -281,6 +288,6 @@ export class ScheduleslotsComponent implements OnInit {
   }
 
   trackBySlot(index: number, slotItem: Slots): string {
-    return `${slotItem.email || 'slot'}-${slotItem.date || index}`;
+    return `${slotItem.email || 'slot'}-${slotItem.date || index}-${index}`;
   }
 }
