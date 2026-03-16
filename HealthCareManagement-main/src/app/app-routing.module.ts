@@ -24,6 +24,7 @@ import { UserprofileComponent } from './components/userprofile/userprofile.compo
 import { WelcomepageComponent } from './components/welcomepage/welcomepage.component';
 import { AboutComponent } from './components/about/about.component';
 import { ServicesComponent } from './components/services/services.component';
+import { PaymentComponent } from './components/payment/payment.component';
 
 import { AdminGuard } from './guards/admin.guard';
 import { DoctorGuard } from './guards/doctor.guard';
@@ -60,6 +61,7 @@ const routes: Routes = [
 
   { path: 'about', component: AboutComponent },
   { path: 'services', component: ServicesComponent },
+  { path: 'payment', component: PaymentComponent, canActivate: [UserGuard] },
 
   { path: '**', redirectTo: '' }
 ];

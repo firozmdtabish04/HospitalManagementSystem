@@ -7,9 +7,9 @@
 
       <div class="brand-text">
         <span class="brand-title">{{ title }}</span>
-        <small class="brand-subtitle"
-          >Smart Care • Secure Access • 24/7 Support</small
-        >
+        <small class="brand-subtitle">
+          Smart Care • Secure Access • 24/7 Support
+        </small>
       </div>
     </a>
 
@@ -55,6 +55,13 @@
           </a>
         </li>
 
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/payment" routerLinkActive="active">
+            <i class="fa fa-credit-card"></i>
+            <span>Payment</span>
+          </a>
+        </li>
+
         <li class="nav-item emergency-nav-item">
           <button
             type="button"
@@ -79,9 +86,9 @@
               </div>
 
               <div class="user-meta">
-                <span class="user-name" [title]="displayUserName">{{
-                  displayUserName
-                }}</span>
+                <span class="user-name" [title]="displayUserName">
+                  {{ displayUserName }}
+                </span>
                 <small class="user-role">{{ currRole | titlecase }}</small>
               </div>
 

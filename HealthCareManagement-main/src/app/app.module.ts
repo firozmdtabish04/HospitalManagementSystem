@@ -34,6 +34,7 @@ import { WelcomepageComponent } from './components/welcomepage/welcomepage.compo
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AboutComponent } from './components/about/about.component';
 import { ServicesComponent } from './components/services/services.component';
+import { PaymentComponent } from './components/payment/payment.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -61,7 +62,8 @@ import { ServicesComponent } from './components/services/services.component';
     PrescriptionlistComponent,
     WelcomepageComponent,
     AboutComponent,
-    ServicesComponent
+    ServicesComponent,
+    PaymentComponent,
   ],
   imports: [
     BrowserModule,

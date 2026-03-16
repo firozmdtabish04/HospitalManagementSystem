@@ -1,0 +1,265 @@
+<div class="payment-page">
+  <div class="page-header">
+    <div>
+      <h1>{{ pageTitle }}</h1>
+      <p>{{ pageSubtitle }}</p>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn btn-secondary" (click)="clearFilters()">Reset</button>
+      <button class="btn btn-primary" (click)="loadPayments()">Refresh</button>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card revenue">
+      <div class="stat-label">Total Revenue</div>
+      <div class="stat-value">₹{{ getTotalRevenue() }}</div>
+      <div class="stat-subtext">Successful paid transactions</div>
+    </div>
+
+    <div class="stat-card total">
+      <div class="stat-label">Total Payments</div>
+      <div class="stat-value">{{ getTotalPayments() }}</div>
+      <div class="stat-subtext">All recorded transactions</div>
+    </div>
+
+    <div class="stat-card pending">
+      <div class="stat-label">Pending</div>
+      <div class="stat-value">{{ getPendingCount() }}</div>
+      <div class="stat-subtext">Awaiting confirmation</div>
+    </div>
+
+    <div class="stat-card failed">
+      <div class="stat-label">Failed</div>
+      <div class="stat-value">{{ getFailedCount() }}</div>
+      <div class="stat-subtext">Require intervention</div>
+    </div>
+
+    <div class="stat-card refunded">
+      <div class="stat-label">Refunded</div>
+      <div class="stat-value">{{ getRefundedCount() }}</div>
+      <div class="stat-subtext">Processed refunds</div>
+    </div>
+
+    <div class="stat-card success">
+      <div class="stat-label">Success Rate</div>
+      <div class="stat-value">{{ getSuccessRate() }}%</div>
+      <div class="stat-subtext">Paid transaction ratio</div>
+    </div>
+  </div>
+
+  <div class="toolbar-panel">
+    <div class="toolbar-title">
+      <h2>Payment Records</h2>
+      <span>{{ filteredPayments.length }} record(s)</span>
+    </div>
+
+    <div class="filter-grid">
+      <div class="form-group search-group">
+        <label for="search">Search</label>
+        <input
+          id="search"
+          type="text"
+          [(ngModel)]="searchTerm"
+          (input)="applyFilters()"
+          placeholder="Search by payment id, patient, doctor, invoice..."
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="statusFilter">Payment Status</label>
+        <select
+          id="statusFilter"
+          [(ngModel)]="selectedStatus"
+          (change)="applyFilters()"
+        >
+          <option *ngFor="let status of statusOptions" [value]="status">
+            {{ status }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="methodFilter">Payment Method</label>
+        <select
+          id="methodFilter"
+          [(ngModel)]="selectedMethod"
+          (change)="applyFilters()"
+        >
+          <option *ngFor="let method of methodOptions" [value]="method">
+            {{ method }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="departmentFilter">Department</label>
+        <select
+          id="departmentFilter"
+          [(ngModel)]="selectedDepartment"
+          (change)="applyFilters()"
+        >
+          <option *ngFor="let dept of departmentOptions" [value]="dept">
+            {{ dept }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-panel">
+    <div *ngIf="loading" class="loading-box">
+      <div class="loader"></div>
+      <p>Loading payment records...</p>
+    </div>
+
+    <div *ngIf="!loading && filteredPayments.length === 0" class="empty-state">
+      <h3>No payment records found</h3>
+      <p>Try changing filters or search criteria.</p>
+    </div>
+
+    <div *ngIf="!loading && filteredPayments.length > 0" class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th (click)="sortBy('paymentId')">Payment ID</th>
+            <th (click)="sortBy('patientName')">Patient</th>
+            <th (click)="sortBy('doctorName')">Doctor</th>
+            <th (click)="sortBy('department')">Department</th>
+            <th (click)="sortBy('netAmount')">Net Amount</th>
+            <th (click)="sortBy('method')">Method</th>
+            <th (click)="sortBy('status')">Status</th>
+            <th (click)="sortBy('paymentDate')">Payment Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let payment of paginatedPayments; trackBy: trackByPayment">
+            <td>
+              <div class="primary-text">{{ payment.paymentId }}</div>
+              <div class="secondary-text">{{ payment.invoiceNo }}</div>
+            </td>
+
+            <td>
+              <div class="primary-text">{{ payment.patientName }}</div>
+              <div class="secondary-text">{{ payment.patientEmail }}</div>
+            </td>
+
+            <td>
+              <div class="primary-text">{{ payment.doctorName }}</div>
+              <div class="secondary-text">{{ payment.appointmentDate }}</div>
+            </td>
+
+            <td>{{ payment.department }}</td>
+            <td class="amount-cell">₹{{ payment.netAmount }}</td>
+            <td>{{ payment.method }}</td>
+
+            <td>
+              <span class="status-badge" [ngClass]="getStatusClass(payment.status)">
+                {{ payment.status }}
+              </span>
+            </td>
+
+            <td>{{ payment.paymentDate }}</td>
+
+            <td>
+              <div class="action-group">
+                <button class="table-btn view" (click)="viewDetails(payment)">View</button>
+                <button
+                  class="table-btn success"
+                  *ngIf="payment.status !== 'Paid'"
+                  (click)="markAsPaid(payment)"
+                >
+                  Mark Paid
+                </button>
+                <button
+                  class="table-btn warning"
+                  *ngIf="payment.status === 'Failed'"
+                  (click)="retryPayment(payment)"
+                >
+                  Retry
+                </button>
+                <button
+                  class="table-btn danger"
+                  *ngIf="payment.status === 'Paid'"
+                  (click)="markAsRefunded(payment)"
+                >
+                  Refund
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="pagination-bar">
+        <button class="btn btn-secondary" (click)="previousPage()" [disabled]="currentPage === 1">
+          Previous
+        </button>
+
+        <span>Page {{ currentPage }} of {{ totalPages }}</span>
+
+        <button class="btn btn-secondary" (click)="nextPage()" [disabled]="currentPage === totalPages">
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="activity-panel">
+    <h2>Recent Payment Insights</h2>
+    <div class="activity-grid">
+      <div class="activity-card">
+        <h3>Top Performing Method</h3>
+        <p>UPI is driving the highest successful payment volume.</p>
+      </div>
+
+      <div class="activity-card">
+        <h3>Attention Needed</h3>
+        <p>{{ getFailedCount() }} failed transaction(s) need follow-up from billing team.</p>
+      </div>
+
+      <div class="activity-card">
+        <h3>Refund Tracking</h3>
+        <p>{{ getRefundedCount() }} payment(s) were refunded due to cancellations or corrections.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" *ngIf="selectedPayment">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Payment Details</h2>
+        <button class="close-btn" (click)="closeDetails()">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="details-grid">
+          <div><strong>Payment ID:</strong> {{ selectedPayment.paymentId }}</div>
+          <div><strong>Invoice No:</strong> {{ selectedPayment.invoiceNo }}</div>
+          <div><strong>Patient:</strong> {{ selectedPayment.patientName }}</div>
+          <div><strong>Email:</strong> {{ selectedPayment.patientEmail }}</div>
+          <div><strong>Phone:</strong> {{ selectedPayment.patientPhone }}</div>
+          <div><strong>Doctor:</strong> {{ selectedPayment.doctorName }}</div>
+          <div><strong>Department:</strong> {{ selectedPayment.department }}</div>
+          <div><strong>Appointment Date:</strong> {{ selectedPayment.appointmentDate }}</div>
+          <div><strong>Payment Date:</strong> {{ selectedPayment.paymentDate }}</div>
+          <div><strong>Amount:</strong> ₹{{ selectedPayment.amount }}</div>
+          <div><strong>Tax:</strong> ₹{{ selectedPayment.tax }}</div>
+          <div><strong>Discount:</strong> ₹{{ selectedPayment.discount }}</div>
+          <div><strong>Net Amount:</strong> ₹{{ selectedPayment.netAmount }}</div>
+          <div><strong>Method:</strong> {{ selectedPayment.method }}</div>
+          <div><strong>Status:</strong> {{ selectedPayment.status }}</div>
+          <div><strong>Transaction ID:</strong> {{ selectedPayment.transactionId }}</div>
+        </div>
+
+        <div class="remarks-box">
+          <strong>Remarks:</strong>
+          <p>{{ selectedPayment.remarks }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
